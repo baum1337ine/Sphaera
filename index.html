@@ -1,10 +1,2473 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>SPHAERA</title>
-</head>
-<body>
-  <h1>Hallo, SPHAERA!</h1>
-  <p>Die Domain funktioniert.</p>
-</body>
+<!doctype html>
+<html lang="de" data-locale="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1322" />
+    <title>Sphaera | Visuelle Planung nach Zeit, Energie und Rhythmus</title>
+    <meta
+      name="description"
+      content="Sphaera ist ein ganzheitlicher, zyklusorientierter Planer, der Zeit, Energie und Aufgaben in einem visuellen System verbindet – mit Rädern für Tag, Woche, Monat und Jahr, Energie-Tracking, Mondkalender und starkem Datenschutzfokus."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:title" content="Sphaera | Visuelle Planung nach Zeit, Energie und Rhythmus" />
+    <meta
+      property="og:description"
+      content="Ganzheitliche, zyklusorientierte Planung mit visuellen Rädern, Aufgabenmanagement, Energie-Tracking, integriertem Mondkalender und lokalem Datenschutzfokus."
+    />
+    <meta property="og:url" content="https://sphaera.app/" />
+    <meta property="og:image" content="https://sphaera.app/assets/og-placeholder.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        --bg: #07101c;
+        --bg-deep: #050b14;
+        --surface: rgba(13, 22, 36, 0.88);
+        --surface-soft: rgba(15, 26, 43, 0.72);
+        --surface-glass: rgba(255, 255, 255, 0.04);
+        --line: rgba(201, 218, 239, 0.14);
+        --line-strong: rgba(201, 218, 239, 0.22);
+        --text: #f2f5f8;
+        --text-soft: #d7dfea;
+        --muted: #acb8c8;
+        --accent: #d0b07a;
+        --accent-strong: #e2c48f;
+        --accent-soft: rgba(208, 176, 122, 0.14);
+        --accent-ink: #1a1308;
+        --focus: #f6d59c;
+        --success: #98d7be;
+        --danger: #f1b4b0;
+        --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.35);
+        --shadow-md: 0 14px 32px rgba(0, 0, 0, 0.28);
+        --radius-xl: 1.35rem;
+        --radius-lg: 1rem;
+        --radius-md: 0.8rem;
+        --radius-sm: 0.55rem;
+        --container: min(1120px, calc(100% - 1.4rem));
+        --header-h: 4.25rem;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 14% 10%, rgba(208, 176, 122, 0.08), transparent 44%),
+          radial-gradient(circle at 88% 14%, rgba(166, 191, 235, 0.09), transparent 38%),
+          radial-gradient(circle at 82% 78%, rgba(208, 176, 122, 0.05), transparent 48%),
+          linear-gradient(180deg, #081223 0%, #070f1a 38%, #050b14 100%);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.55;
+        text-rendering: optimizeLegibility;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      body::before {
+        opacity: 0.23;
+        background-image:
+          radial-gradient(circle at 22px 22px, transparent 0 20px, rgba(208, 176, 122, 0.12) 20px 21px, transparent 21px 44px),
+          radial-gradient(circle at 66px 22px, transparent 0 20px, rgba(208, 176, 122, 0.08) 20px 21px, transparent 21px 44px),
+          radial-gradient(circle at 44px 60px, transparent 0 20px, rgba(208, 176, 122, 0.09) 20px 21px, transparent 21px 44px);
+        background-size: 88px 88px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8), transparent 85%);
+      }
+
+      body::after {
+        opacity: 0.18;
+        background:
+          conic-gradient(from 180deg at 85% 20%, rgba(208, 176, 122, 0.28), transparent 35%, rgba(208, 176, 122, 0.12), transparent 80%),
+          radial-gradient(circle at 10% 82%, rgba(164, 186, 226, 0.18), transparent 46%);
+        filter: blur(46px);
+      }
+
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+
+      a,
+      button,
+      input,
+      summary {
+        font: inherit;
+        color: inherit;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 3px;
+        box-shadow: 0 0 0 6px rgba(246, 213, 156, 0.14);
+        border-radius: 0.35rem;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: 0.7rem;
+        top: -3rem;
+        background: var(--accent);
+        color: var(--accent-ink);
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.5rem;
+        font-weight: 700;
+        text-decoration: none;
+        z-index: 200;
+      }
+
+      .skip-link:focus {
+        top: 0.7rem;
+      }
+
+      .container {
+        width: var(--container);
+        margin-inline: auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(6, 11, 20, 0.76);
+        border-bottom: 1px solid rgba(201, 218, 239, 0.08);
+        backdrop-filter: blur(14px) saturate(130%);
+      }
+
+      .header-inner {
+        min-height: var(--header-h);
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.75rem;
+        align-items: center;
+        padding-block: 0.65rem;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+        font-weight: 700;
+        font-size: 1.12rem;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        color: var(--text);
+        white-space: nowrap;
+      }
+
+      .brand-mark {
+        width: 1.7rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 1px solid rgba(208, 176, 122, 0.55);
+        position: relative;
+        box-shadow: inset 0 0 0 1px rgba(208, 176, 122, 0.1);
+        background: radial-gradient(circle at 35% 35%, rgba(208, 176, 122, 0.28), transparent 60%);
+      }
+
+      .brand-mark::before,
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        inset: 0.28rem;
+        border-radius: 50%;
+        border: 1px solid rgba(208, 176, 122, 0.28);
+      }
+
+      .brand-mark::after {
+        inset: 0.52rem;
+      }
+
+      .nav-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.55rem;
+        min-width: 0;
+      }
+
+      .site-nav {
+        min-width: 0;
+      }
+
+      .site-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .site-nav ul::-webkit-scrollbar {
+        display: none;
+      }
+
+      .site-nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.1rem;
+        padding: 0.4rem 0.65rem;
+        border-radius: 999px;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+        font-size: 0.9rem;
+      }
+
+      .site-nav a:hover {
+        color: var(--text-soft);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        min-height: 2.65rem;
+        padding: 0.7rem 1rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button-primary {
+        background: linear-gradient(180deg, var(--accent-strong), var(--accent));
+        color: var(--accent-ink);
+        box-shadow: 0 8px 20px rgba(208, 176, 122, 0.2);
+      }
+
+      .button-primary:hover {
+        box-shadow: 0 12px 24px rgba(208, 176, 122, 0.25);
+      }
+
+      .button-secondary {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(201, 218, 239, 0.2);
+        color: var(--text);
+      }
+
+      .button-secondary:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(201, 218, 239, 0.3);
+      }
+
+      .button-ghost {
+        background: transparent;
+        border-color: rgba(208, 176, 122, 0.28);
+        color: var(--text-soft);
+      }
+
+      .button-ghost:hover {
+        border-color: rgba(208, 176, 122, 0.45);
+        background: rgba(208, 176, 122, 0.08);
+      }
+
+      .button-small {
+        min-height: 2.2rem;
+        padding: 0.45rem 0.8rem;
+        font-size: 0.9rem;
+      }
+
+      .header-cta {
+        display: none;
+      }
+
+      main {
+        position: relative;
+      }
+
+      section {
+        scroll-margin-top: calc(var(--header-h) + 0.6rem);
+      }
+
+      .section {
+        padding-block: 3.4rem;
+      }
+
+      .section + .section {
+        border-top: 1px solid rgba(201, 218, 239, 0.05);
+      }
+
+      .section-head {
+        display: grid;
+        gap: 0.9rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        width: fit-content;
+        margin: 0;
+        color: var(--accent-strong);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.8;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        line-height: 1.15;
+        color: var(--text);
+        font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+        letter-spacing: -0.01em;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 6vw, 3.55rem);
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 4.6vw, 2.4rem);
+      }
+
+      h3 {
+        font-size: 1.08rem;
+      }
+
+      p {
+        margin: 0;
+        color: var(--text-soft);
+      }
+
+      .lead {
+        color: var(--muted);
+        max-width: 70ch;
+        font-size: 1rem;
+      }
+
+      .kicker-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.95rem;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        min-height: 2rem;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid rgba(201, 218, 239, 0.13);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--muted);
+        font-size: 0.83rem;
+      }
+
+      .pill-dot {
+        width: 0.36rem;
+        height: 0.36rem;
+        border-radius: 50%;
+        background: var(--accent);
+        opacity: 0.85;
+      }
+
+      .hero {
+        padding-top: 2.1rem;
+        padding-bottom: 2.8rem;
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .visual-panel {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+        border: 1px solid rgba(201, 218, 239, 0.1);
+        border-radius: calc(var(--radius-xl) + 0.2rem);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .hero-panel {
+        padding: 1.15rem;
+      }
+
+      .hero-subline {
+        margin-top: 0.95rem;
+        color: var(--text-soft);
+        font-size: 1rem;
+      }
+
+      .hero-list {
+        margin: 1rem 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .hero-list li {
+        display: grid;
+        grid-template-columns: 1rem 1fr;
+        gap: 0.55rem;
+        align-items: start;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .hero-list li::before {
+        content: "";
+        width: 0.6rem;
+        height: 0.6rem;
+        margin-top: 0.32rem;
+        border-radius: 50%;
+        border: 1px solid rgba(208, 176, 122, 0.75);
+        box-shadow: inset 0 0 0 2px rgba(208, 176, 122, 0.14);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 1.1rem;
+      }
+
+      .hero-note {
+        margin-top: 0.9rem;
+        color: rgba(215, 223, 234, 0.78);
+        font-size: 0.87rem;
+      }
+
+      .visual-panel {
+        padding: 0.95rem;
+        background:
+          radial-gradient(circle at 74% 24%, rgba(208, 176, 122, 0.1), transparent 48%),
+          radial-gradient(circle at 15% 80%, rgba(152, 215, 190, 0.07), transparent 42%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      }
+
+      .orbital {
+        position: relative;
+        min-height: 20rem;
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(201, 218, 239, 0.08);
+        background:
+          radial-gradient(circle at center, rgba(255, 255, 255, 0.01), transparent 62%),
+          linear-gradient(180deg, rgba(9, 16, 29, 0.95), rgba(7, 12, 21, 0.9));
+        overflow: hidden;
+      }
+
+      .orbital::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(circle at center, transparent 0 23%, rgba(201, 218, 239, 0.08) 23.1% 23.4%, transparent 23.5%),
+          radial-gradient(circle at center, transparent 0 39%, rgba(201, 218, 239, 0.06) 39.1% 39.4%, transparent 39.5%),
+          radial-gradient(circle at center, transparent 0 57%, rgba(201, 218, 239, 0.05) 57.1% 57.4%, transparent 57.5%);
+        opacity: 0.9;
+      }
+
+      .orbital-grid {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(rgba(201, 218, 239, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(201, 218, 239, 0.03) 1px, transparent 1px);
+        background-size: 28px 28px;
+        opacity: 0.35;
+      }
+
+      .orbital-ring {
+        position: absolute;
+        inset: 14%;
+        border-radius: 50%;
+        border: 1px solid rgba(208, 176, 122, 0.22);
+        box-shadow: inset 0 0 26px rgba(208, 176, 122, 0.05);
+      }
+
+      .orbital-ring.r2 {
+        inset: 8%;
+        border-color: rgba(201, 218, 239, 0.14);
+      }
+
+      .orbital-ring.r3 {
+        inset: 2%;
+        border-color: rgba(208, 176, 122, 0.12);
+      }
+
+      .orbital-center {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        transform: translate(-50%, -50%);
+        width: 9.3rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        padding: 0.8rem;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        background:
+          radial-gradient(circle at 30% 25%, rgba(208, 176, 122, 0.25), transparent 55%),
+          linear-gradient(180deg, rgba(15, 26, 43, 0.95), rgba(10, 18, 31, 0.94));
+        border: 1px solid rgba(208, 176, 122, 0.3);
+        box-shadow: 0 0 0 1px rgba(208, 176, 122, 0.08), 0 12px 36px rgba(0, 0, 0, 0.35);
+      }
+
+      .orbital-center strong {
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+      }
+
+      .orbital-center span {
+        color: var(--muted);
+        font-size: 0.76rem;
+      }
+
+      .orbit-chip {
+        position: absolute;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.38rem 0.55rem;
+        border-radius: 999px;
+        border: 1px solid rgba(201, 218, 239, 0.12);
+        background: rgba(10, 18, 31, 0.88);
+        color: var(--text-soft);
+        font-size: 0.78rem;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+      }
+
+      .orbit-chip::before {
+        content: "";
+        width: 0.34rem;
+        height: 0.34rem;
+        border-radius: 50%;
+        background: var(--accent);
+        opacity: 0.9;
+      }
+
+      .orbit-chip.c1 { top: 9%; left: 8%; }
+      .orbit-chip.c2 { top: 20%; right: 7%; }
+      .orbit-chip.c3 { bottom: 24%; left: 9%; }
+      .orbit-chip.c4 { bottom: 9%; right: 8%; }
+      .orbit-chip.c5 { top: 44%; right: 2%; }
+
+      .hero-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.6rem;
+        margin-top: 0.8rem;
+      }
+
+      .meta-card {
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(201, 218, 239, 0.09);
+        background: rgba(255, 255, 255, 0.02);
+        padding: 0.65rem;
+      }
+
+      .meta-label {
+        color: var(--muted);
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .meta-value {
+        margin-top: 0.22rem;
+        color: var(--text);
+        font-weight: 600;
+        font-size: 0.92rem;
+      }
+
+      .panel,
+      .card,
+      .faq-item,
+      .status-card {
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      }
+
+      .panel {
+        padding: 1rem;
+        box-shadow: var(--shadow-md);
+      }
+
+      .grid {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .cards-2,
+      .cards-3,
+      .cards-4 {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .card {
+        padding: 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: auto -25% -45% auto;
+        width: 7rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(208, 176, 122, 0.09), transparent 65%);
+        pointer-events: none;
+      }
+
+      .feature-icon {
+        width: 2.15rem;
+        height: 2.15rem;
+        border-radius: 50%;
+        border: 1px solid rgba(208, 176, 122, 0.25);
+        background: rgba(208, 176, 122, 0.06);
+        position: relative;
+        margin-bottom: 0.75rem;
+        color: var(--accent-strong);
+      }
+
+      .feature-icon::before,
+      .feature-icon::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        border-radius: 999px;
+      }
+
+      .icon-clarity::before {
+        width: 1rem;
+        height: 1rem;
+        border: 1px solid currentColor;
+        border-radius: 50%;
+      }
+
+      .icon-clarity::after {
+        width: 0.36rem;
+        height: 0.36rem;
+        background: currentColor;
+      }
+
+      .icon-energy::before {
+        width: 0.9rem;
+        height: 1.15rem;
+        clip-path: polygon(55% 0%, 15% 55%, 48% 55%, 30% 100%, 85% 38%, 55% 38%);
+        background: currentColor;
+        border-radius: 0;
+      }
+
+      .icon-flow::before {
+        width: 1.15rem;
+        height: 1.15rem;
+        border: 1px solid currentColor;
+        border-radius: 50%;
+      }
+
+      .icon-flow::after {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-top: 1px solid currentColor;
+        border-right: 1px solid currentColor;
+        transform: rotate(35deg);
+        border-radius: 0;
+        inset: -0.05rem -0.05rem 0 0;
+      }
+
+      .icon-lock::before {
+        width: 0.9rem;
+        height: 0.7rem;
+        border: 1px solid currentColor;
+        border-radius: 0.12rem;
+        top: 0.22rem;
+        bottom: auto;
+      }
+
+      .icon-lock::after {
+        width: 0.52rem;
+        height: 0.52rem;
+        border: 1px solid currentColor;
+        border-bottom: 0;
+        border-radius: 0.45rem 0.45rem 0 0;
+        top: -0.55rem;
+        bottom: auto;
+      }
+
+      .card p,
+      .card li,
+      .faq-item p,
+      .status-card p {
+        color: var(--muted);
+      }
+
+      .card-list,
+      .check-list,
+      .spec-list,
+      .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .check-list li,
+      .spec-list li {
+        display: grid;
+        grid-template-columns: 1rem 1fr;
+        gap: 0.55rem;
+        align-items: start;
+      }
+
+      .check-list li::before,
+      .spec-list li::before {
+        content: "";
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 50%;
+        margin-top: 0.28rem;
+      }
+
+      .check-list li::before {
+        background: radial-gradient(circle at 50% 45%, rgba(152, 215, 190, 1) 0 32%, rgba(152, 215, 190, 0.25) 35% 100%);
+        border: 1px solid rgba(152, 215, 190, 0.35);
+      }
+
+      .spec-list li::before {
+        background: radial-gradient(circle at 50% 45%, rgba(208, 176, 122, 1) 0 32%, rgba(208, 176, 122, 0.2) 35% 100%);
+        border: 1px solid rgba(208, 176, 122, 0.35);
+      }
+
+      .muted-note {
+        color: rgba(172, 184, 200, 0.9);
+        font-size: 0.9rem;
+      }
+
+      .split {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .subpanel {
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(201, 218, 239, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+        padding: 0.9rem;
+      }
+
+      .subpanel h3 {
+        margin-bottom: 0.6rem;
+      }
+
+      .inline-stat {
+        display: grid;
+        gap: 0.35rem;
+        padding: 0.8rem;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(208, 176, 122, 0.18);
+        background: rgba(208, 176, 122, 0.05);
+      }
+
+      .inline-stat strong {
+        font-size: 1rem;
+      }
+
+      .inline-stat span {
+        color: var(--muted);
+        font-size: 0.87rem;
+      }
+
+      .wheel-layout {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .wheel-stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .wheel-tier {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.75rem;
+        align-items: start;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(201, 218, 239, 0.08);
+        background: rgba(255, 255, 255, 0.015);
+        padding: 0.75rem;
+      }
+
+      .wheel-badge {
+        width: 2.2rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: var(--accent-strong);
+        border: 1px solid rgba(208, 176, 122, 0.3);
+        background: rgba(208, 176, 122, 0.05);
+        flex-shrink: 0;
+      }
+
+      .wheel-badge svg {
+        width: 1.1rem;
+        height: 1.1rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .wheel-tier h3 {
+        margin-bottom: 0.25rem;
+      }
+
+      .shot-grid {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .shot-card {
+        margin: 0;
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .shot-card figcaption {
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .shot-frame {
+        position: relative;
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(201, 218, 239, 0.12);
+        background:
+          radial-gradient(circle at 70% 20%, rgba(208, 176, 122, 0.12), transparent 44%),
+          linear-gradient(180deg, rgba(11, 19, 33, 0.96), rgba(8, 14, 24, 0.96));
+        min-height: 13.5rem;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+      }
+
+      .shot-frame img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 2;
+      }
+
+      .shot-frame.is-missing img {
+        display: none;
+      }
+
+      .shot-fallback {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: grid;
+        place-content: center;
+        gap: 0.45rem;
+        justify-items: center;
+        text-align: center;
+        padding: 1rem;
+        background-image:
+          radial-gradient(circle at 50% 50%, transparent 0 34px, rgba(208, 176, 122, 0.14) 34px 35px, transparent 35px 68px),
+          radial-gradient(circle at 50% 50%, transparent 0 72px, rgba(201, 218, 239, 0.08) 72px 73px, transparent 73px 120px),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+      }
+
+      .shot-tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.8rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        border: 1px solid rgba(201, 218, 239, 0.15);
+        color: var(--text-soft);
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 0.75rem;
+      }
+
+      .shot-fallback strong {
+        font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+        font-size: 1rem;
+      }
+
+      .shot-fallback code {
+        color: var(--muted);
+        font-size: 0.78rem;
+        word-break: break-all;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.2rem 0.45rem;
+        border-radius: 0.35rem;
+      }
+
+      .task-flow {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .flow-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.6rem;
+        align-items: center;
+        padding: 0.75rem;
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(201, 218, 239, 0.08);
+      }
+
+      .flow-path {
+        color: var(--text-soft);
+        font-weight: 600;
+      }
+
+      .flow-note {
+        color: var(--muted);
+        font-size: 0.84rem;
+        text-align: right;
+      }
+
+      .detail-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin-top: 0.7rem;
+      }
+
+      .detail-tags span {
+        border-radius: 999px;
+        border: 1px solid rgba(201, 218, 239, 0.14);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-soft);
+        padding: 0.25rem 0.55rem;
+        font-size: 0.78rem;
+      }
+
+      .energy-layout {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .bars {
+        display: grid;
+        gap: 0.55rem;
+        margin-top: 0.75rem;
+      }
+
+      .bar-row {
+        display: grid;
+        grid-template-columns: 4.2rem 1fr auto;
+        gap: 0.55rem;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .bar-track {
+        height: 0.52rem;
+        border-radius: 999px;
+        background: rgba(201, 218, 239, 0.08);
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, rgba(208, 176, 122, 0.75), rgba(152, 215, 190, 0.85));
+      }
+
+      .moon-layout {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .moon-panel {
+        display: grid;
+        gap: 0.85rem;
+        align-items: center;
+      }
+
+      .moon-visual {
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(201, 218, 239, 0.12);
+        background: radial-gradient(circle at 50% 50%, rgba(208, 176, 122, 0.08), transparent 62%), rgba(255, 255, 255, 0.01);
+        min-height: 15rem;
+        display: grid;
+        place-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .moon-visual::before,
+      .moon-visual::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid rgba(201, 218, 239, 0.08);
+      }
+
+      .moon-visual::before {
+        width: 12.5rem;
+        height: 12.5rem;
+        opacity: 0.8;
+      }
+
+      .moon-visual::after {
+        width: 8.8rem;
+        height: 8.8rem;
+        opacity: 0.55;
+      }
+
+      .moon-disc {
+        width: 6.1rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 35% 32%, rgba(255, 245, 215, 0.95), rgba(212, 191, 147, 0.88) 55%, rgba(150, 128, 94, 0.72) 100%);
+        box-shadow: 0 0 28px rgba(208, 176, 122, 0.16);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(208, 176, 122, 0.35);
+      }
+
+      .moon-disc::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        transform: translateX(28%);
+        background: rgba(7, 11, 18, 0.76);
+        box-shadow: -12px 0 20px rgba(7, 11, 18, 0.45);
+      }
+
+      .moon-caption {
+        text-align: center;
+        display: grid;
+        gap: 0.35rem;
+        color: var(--text-soft);
+      }
+
+      .moon-caption small {
+        color: var(--muted);
+      }
+
+      .security-layout {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .security-specs {
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(208, 176, 122, 0.2);
+        background: linear-gradient(180deg, rgba(208, 176, 122, 0.05), rgba(208, 176, 122, 0.02));
+        padding: 1rem;
+      }
+
+      .security-specs h3 {
+        margin-bottom: 0.7rem;
+      }
+
+      .spec-grid {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .spec-item {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+        padding: 0.7rem;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(208, 176, 122, 0.15);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .spec-item strong {
+        color: var(--text);
+        font-size: 0.9rem;
+      }
+
+      .spec-item span {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .audience-card h3 {
+        margin-bottom: 0.35rem;
+      }
+
+      .faq-list {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .faq-item {
+        overflow: hidden;
+      }
+
+      .faq-item summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 0.9rem 1rem;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0.65rem;
+        align-items: center;
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary::after {
+        content: "+";
+        color: var(--accent-strong);
+        font-size: 1.15rem;
+        line-height: 1;
+      }
+
+      .faq-item[open] summary::after {
+        content: "−";
+      }
+
+      .faq-answer {
+        padding: 0 1rem 1rem;
+        border-top: 1px solid rgba(201, 218, 239, 0.08);
+      }
+
+      .faq-answer p + p {
+        margin-top: 0.55rem;
+      }
+
+      .release-layout {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .status-card {
+        padding: 1rem;
+      }
+
+      .status-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: var(--text-soft);
+        font-weight: 600;
+      }
+
+      .status-label::before {
+        content: "";
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 0.25rem rgba(208, 176, 122, 0.08);
+      }
+
+      .store-grid {
+        display: grid;
+        gap: 0.55rem;
+        margin-top: 0.9rem;
+      }
+
+      .store-btn {
+        width: 100%;
+        min-height: 2.8rem;
+        border-radius: 0.85rem;
+        border: 1px solid rgba(201, 218, 239, 0.15);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-soft);
+        text-align: left;
+        padding: 0.65rem 0.8rem;
+        cursor: not-allowed;
+        opacity: 0.92;
+      }
+
+      .store-btn small {
+        display: block;
+        color: var(--muted);
+        font-size: 0.76rem;
+      }
+
+      .cta-section {
+        padding-bottom: 4rem;
+      }
+
+      .cta-wrap {
+        border-radius: calc(var(--radius-xl) + 0.1rem);
+        border: 1px solid rgba(208, 176, 122, 0.18);
+        background:
+          radial-gradient(circle at 88% 14%, rgba(208, 176, 122, 0.12), transparent 40%),
+          radial-gradient(circle at 12% 84%, rgba(152, 215, 190, 0.08), transparent 36%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+        box-shadow: var(--shadow-lg);
+        padding: 1rem;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .contact-points {
+        display: grid;
+        gap: 0.5rem;
+        margin-top: 0.95rem;
+      }
+
+      .contact-points a {
+        color: var(--text);
+        text-decoration-color: rgba(208, 176, 122, 0.4);
+        text-underline-offset: 0.2rem;
+      }
+
+      .contact-points a:hover {
+        text-decoration-color: rgba(208, 176, 122, 0.75);
+      }
+
+      .cta-form {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .form-field {
+        display: grid;
+        gap: 0.45rem;
+      }
+
+      .form-field label {
+        color: var(--text-soft);
+        font-weight: 600;
+        font-size: 0.92rem;
+      }
+
+      .input-wrap {
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .cta-form input[type="email"] {
+        width: 100%;
+        min-height: 2.85rem;
+        border-radius: 0.8rem;
+        border: 1px solid rgba(201, 218, 239, 0.16);
+        background: rgba(6, 11, 20, 0.6);
+        color: var(--text);
+        padding: 0.75rem 0.9rem;
+      }
+
+      .cta-form input[type="email"]::placeholder {
+        color: rgba(172, 184, 200, 0.7);
+      }
+
+      .fineprint {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .form-status {
+        min-height: 1.2rem;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .form-status[data-state="success"] {
+        color: var(--success);
+      }
+
+      .form-status[data-state="error"] {
+        color: var(--danger);
+      }
+
+      .cta-secondary {
+        border-top: 1px solid rgba(201, 218, 239, 0.08);
+        padding-top: 0.9rem;
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .cta-secondary-actions {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      footer {
+        border-top: 1px solid rgba(201, 218, 239, 0.08);
+        padding-block: 1.4rem 2.2rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .footer-brand {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .footer-links a,
+      .footer-meta a {
+        color: var(--text-soft);
+        text-decoration-color: rgba(208, 176, 122, 0.32);
+        text-underline-offset: 0.18rem;
+      }
+
+      .footer-links a:hover,
+      .footer-meta a:hover {
+        text-decoration-color: rgba(208, 176, 122, 0.72);
+      }
+
+      .footer-meta {
+        display: grid;
+        gap: 0.45rem;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .reveal {
+          opacity: 0;
+          transform: translateY(18px);
+          transition:
+            opacity 560ms ease,
+            transform 560ms ease;
+          transition-delay: var(--d, 0ms);
+        }
+
+        .reveal.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .orbital-ring.r1 {
+          animation: spin 42s linear infinite;
+        }
+
+        .orbital-ring.r2 {
+          animation: spin 58s linear infinite reverse;
+        }
+
+        .orbital-ring.r3 {
+          animation: spin 76s linear infinite;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .button,
+        .site-nav a,
+        .store-btn {
+          transition: none;
+        }
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (min-width: 640px) {
+        :root {
+          --container: min(1120px, calc(100% - 2rem));
+        }
+
+        .section {
+          padding-block: 4.2rem;
+        }
+
+        .hero-panel,
+        .visual-panel,
+        .panel,
+        .cta-wrap {
+          padding: 1.25rem;
+        }
+
+        .cards-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .cards-4 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .shot-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .shot-frame {
+          min-height: 15rem;
+        }
+
+        .input-wrap {
+          grid-template-columns: 1fr auto;
+          align-items: start;
+        }
+
+        .input-wrap .button {
+          min-width: 13rem;
+        }
+
+        .cta-secondary-actions {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .footer-grid {
+          grid-template-columns: 1.2fr 1fr 1fr;
+          align-items: start;
+        }
+      }
+
+      @media (min-width: 860px) {
+        .header-inner {
+          grid-template-columns: auto 1fr auto;
+          gap: 0.8rem;
+        }
+
+        .header-cta {
+          display: inline-flex;
+        }
+
+        .hero {
+          padding-top: 2.9rem;
+          padding-bottom: 3.3rem;
+        }
+
+        .hero-grid {
+          grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+          gap: 1rem;
+          align-items: stretch;
+        }
+
+        .hero-panel,
+        .visual-panel {
+          min-height: 100%;
+        }
+
+        .section-head {
+          grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+          align-items: end;
+          gap: 1.2rem;
+          margin-bottom: 1.4rem;
+        }
+
+        .cards-3 {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .cards-4 {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .split {
+          grid-template-columns: 1.05fr 0.95fr;
+          gap: 0.9rem;
+        }
+
+        .wheel-layout {
+          grid-template-columns: 1.05fr 0.95fr;
+          align-items: start;
+        }
+
+        .energy-layout {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .moon-layout {
+          grid-template-columns: 1.05fr 0.95fr;
+          align-items: start;
+        }
+
+        .moon-panel {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .security-layout {
+          grid-template-columns: 1.05fr 0.95fr;
+        }
+
+        .spec-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .release-layout {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .cta-wrap {
+          grid-template-columns: 1.05fr 0.95fr;
+          gap: 1rem;
+          align-items: start;
+        }
+      }
+
+      @media (min-width: 1080px) {
+        .site-nav ul {
+          gap: 0.45rem;
+        }
+
+        .site-nav a {
+          padding-inline: 0.75rem;
+        }
+
+        .shot-frame {
+          min-height: 16.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+
+    <header class="site-header" id="seitenanfang">
+      <div class="container header-inner">
+        <a class="brand" href="#seitenanfang" aria-label="Sphaera Startseite">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Sphaera</span>
+        </a>
+
+        <div class="nav-wrap">
+          <nav class="site-nav" aria-label="Hauptnavigation">
+            <ul>
+              <li><a href="#warum">Warum Sphaera</a></li>
+              <li><a href="#visuelles-system">Räder</a></li>
+              <li><a href="#aufgaben">Aufgaben</a></li>
+              <li><a href="#energie">Energie</a></li>
+              <li><a href="#mondkalender">Mondkalender</a></li>
+              <li><a href="#sicherheit">Sicherheit</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <li><a href="#release">Release</a></li>
+              <li><a href="#newsletter">Kontakt</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <a class="button button-primary button-small header-cta" href="#newsletter" data-i18n="hero.cta.primary">
+          Launch-Infos erhalten
+        </a>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- HERO -->
+      <section class="section hero" aria-labelledby="hero-title">
+        <div class="container hero-grid">
+          <div class="hero-panel reveal">
+            <p class="eyebrow" data-i18n="hero.eyebrow">Visuelle Planung mit Rhythmus</p>
+            <h1 id="hero-title" data-i18n="hero.title">
+              Plane im Einklang mit Zeit, Energie und Rhythmus.
+            </h1>
+            <p class="hero-subline" data-i18n="hero.subline">
+              Ein zyklusorientierter Planer für Menschen, die ihren Alltag ganzheitlich strukturieren wollen – mit Tages-, Wochen-, Monats- und Jahresrad, Energie-Tracking, Aufgabenmanagement, integriertem Mondkalender und starkem Datenschutz.
+            </p>
+
+            <ul class="hero-list" aria-label="Kernversprechen von Sphaera">
+              <li>Sphaera verbindet Fokus, Aufgaben, Energie und Mondkalender in einer visuellen Planung.</li>
+              <li>Planung nicht nur nach Uhrzeit, sondern auch nach Energie und Rhythmus.</li>
+              <li>Mobile First: iPhone &amp; Android sind der Hauptfokus für den ersten Release. Desktop ist geplant.</li>
+            </ul>
+
+            <div class="hero-actions" aria-label="Primäre Aktionen">
+              <a class="button button-primary" href="#newsletter" data-i18n="hero.cta.primary">Launch-Infos erhalten</a>
+              <a class="button button-secondary" href="#visuelles-system" data-i18n="hero.cta.secondary">Funktionen ansehen</a>
+            </div>
+
+            <div class="kicker-row" aria-label="Kurzinfos">
+              <span class="pill"><span class="pill-dot" aria-hidden="true"></span>Mobile-first Release</span>
+              <span class="pill"><span class="pill-dot" aria-hidden="true"></span>Datenschutzfokus</span>
+              <span class="pill"><span class="pill-dot" aria-hidden="true"></span>Visuelle Räder + Mondkalender</span>
+            </div>
+
+            <p class="hero-note">
+              Sphaera ist ein Planungswerkzeug und ersetzt keine medizinische, psychologische, finanzielle oder rechtliche Beratung.
+            </p>
+          </div>
+
+          <div class="visual-panel reveal" style="--d: 80ms" aria-label="Visuelle Vorschau des Planungssystems">
+            <div class="orbital" aria-hidden="true">
+              <div class="orbital-grid"></div>
+              <div class="orbital-ring r1"></div>
+              <div class="orbital-ring r2"></div>
+              <div class="orbital-ring r3"></div>
+
+              <div class="orbital-center">
+                <div>
+                  <strong>Tagesfokus</strong>
+                  <span>im Zentrum</span>
+                </div>
+              </div>
+
+              <div class="orbit-chip c1">Tag</div>
+              <div class="orbit-chip c2">Woche</div>
+              <div class="orbit-chip c3">Monat</div>
+              <div class="orbit-chip c4">Jahr</div>
+              <div class="orbit-chip c5">Energie + Mond</div>
+            </div>
+
+            <div class="hero-meta" aria-label="Produktfokus und Architekturhinweise">
+              <div class="meta-card">
+                <div class="meta-label">Planungssystem</div>
+                <div class="meta-value">Zeit, Energie, Aufgaben in einem System</div>
+              </div>
+              <div class="meta-card">
+                <div class="meta-label">Datenschutz</div>
+                <div class="meta-value">Primär lokal, kontrollierbar, ohne externe Analytics standardmäßig</div>
+              </div>
+              <div class="meta-card">
+                <div class="meta-label">Rhythmus</div>
+                <div class="meta-value">Individuelle Tagesrhythmen pro Wochentag</div>
+              </div>
+              <div class="meta-card">
+                <div class="meta-label">Release-Status</div>
+                <div class="meta-value">Mobile First · Desktop-Version in Planung</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <!-- WARUM SPHAERA -->
+      <section class="section" id="warum" aria-labelledby="warum-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Nutzen / Warum Sphaera</p>
+              <h2 id="warum-title">Ein ruhiges, visuelles System für echte Alltagssteuerung</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Sphaera wurde als ganzheitlicher, zyklusorientierter Planer gedacht: nicht nur Aufgaben sammeln, sondern Zeit, Energie und Rhythmus so verbinden, dass Planung im Alltag tatsächlich nutzbar wird.
+            </p>
+          </div>
+
+          <div class="cards-4">
+            <article class="card reveal" style="--d: 40ms">
+              <div class="feature-icon icon-clarity" aria-hidden="true"></div>
+              <h3>Mehr Klarheit im Alltag</h3>
+              <p>
+                Tagesfokus im Zentrum, visuelle Ebenen für Tag, Woche, Monat und Jahr und eine verständliche Struktur statt isolierter Listen.
+              </p>
+            </article>
+
+            <article class="card reveal" style="--d: 100ms">
+              <div class="feature-icon icon-energy" aria-hidden="true"></div>
+              <h3>Planung nach Energie statt nur Uhrzeit</h3>
+              <p>
+                Zeitfenster und Rhythmen lassen sich mit deinem realen Energieverlauf kombinieren – hilfreich bei wechselnden Tagen und Prioritäten.
+              </p>
+            </article>
+
+            <article class="card reveal" style="--d: 160ms">
+              <div class="feature-icon icon-flow" aria-hidden="true"></div>
+              <h3>Aufgaben wirklich umsetzen</h3>
+              <p>
+                Aufgaben werden zwischen Jahres-, Monats-, Wochen- und Tagesebene verteilt, statt nur gesammelt und aus dem Blick zu geraten.
+              </p>
+            </article>
+
+            <article class="card reveal" style="--d: 220ms">
+              <div class="feature-icon icon-lock" aria-hidden="true"></div>
+              <h3>Lokale Datenhoheit &amp; Sicherheit</h3>
+              <p>
+                Daten bleiben primär lokal auf dem Gerät, mit Verschlüsselung, optionalem App-Lock und klarer Kontrolle über Backups.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISUELLES PLANUNGSSYSTEM -->
+      <section class="section" id="visuelles-system" aria-labelledby="visuelles-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Visuelles Planungssystem</p>
+              <h2 id="visuelles-title">Räder für Tag, Woche, Monat und Jahr greifen ineinander</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Sphaera verbindet die Ebenen als zusammenhängendes System: Tagesfokus im Zentrum des Tagesrads, Wochen- und Monatskontext für Verteilung und ein Jahresrad für größere Planungslinien.
+            </p>
+          </div>
+
+          <div class="wheel-layout">
+            <div class="panel reveal">
+              <div class="wheel-stack" aria-label="Ebenen des visuellen Planungssystems">
+                <div class="wheel-tier">
+                  <div class="wheel-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="8"></circle>
+                      <path d="M12 7v5l3 2"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Tagesrad</h3>
+                    <p>
+                      Tagesfokus im Zentrum, Segmente flexibel (nicht starr) und in 15-Minuten-Schritten anpassbar. Anzahl der Segmente im Tagesrad ist variabel.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="wheel-tier">
+                  <div class="wheel-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 7h16"></path>
+                      <path d="M7 4v6"></path>
+                      <path d="M17 4v6"></path>
+                      <rect x="4" y="7" width="16" height="13" rx="2"></rect>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Wochenrad</h3>
+                    <p>
+                      Individuelle Tagesrhythmen pro Wochentag unterstützen unterschiedliche Routinen, Schichtarbeit oder abweichende Wochenenden.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="wheel-tier">
+                  <div class="wheel-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <rect x="4" y="5" width="16" height="15" rx="2"></rect>
+                      <path d="M8 10h2"></path>
+                      <path d="M12 10h2"></path>
+                      <path d="M16 10h0"></path>
+                      <path d="M8 14h2"></path>
+                      <path d="M12 14h2"></path>
+                      <path d="M16 14h0"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Monats- &amp; Jahresrad</h3>
+                    <p>
+                      Wochen-, Monats- und Jahresrad bieten Überblick für Planung, Aufgabenverteilung und zyklische Orientierung über längere Zeiträume.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="inline-stat" role="note" aria-label="Zusätzliche visuelle Hinweise">
+                  <strong>Visuelle Atmosphäre im Planer</strong>
+                  <span>
+                    Rotierende Hintergründe und subtile visuelle Elemente unterstützen Orientierung und Ruhe, ohne die Planung zu überladen.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="shot-grid" aria-label="Screenshot-Platzhalter für das visuelle Planungssystem">
+              <figure class="shot-card reveal" style="--d: 100ms">
+                <div class="shot-frame" data-shot-frame>
+                  <img
+                    src="assets/website/day-wheel.png"
+                    alt="Screenshot-Platzhalter für das Tagesrad von Sphaera"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="shot-fallback" aria-hidden="true">
+                    <span class="shot-tag">Screenshot-Platzhalter</span>
+                    <strong>Tagesrad</strong>
+                    <code>assets/website/day-wheel.png</code>
+                  </div>
+                </div>
+                <figcaption>
+                  Tagesrad mit Fokus im Zentrum, flexiblen Segmenten und Anpassung in 15-Minuten-Schritten.
+                </figcaption>
+              </figure>
+
+              <figure class="shot-card reveal" style="--d: 160ms">
+                <div class="shot-frame" data-shot-frame>
+                  <img
+                    src="assets/website/month-wheel.png"
+                    alt="Screenshot-Platzhalter für das Monatsrad von Sphaera"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="shot-fallback" aria-hidden="true">
+                    <span class="shot-tag">Screenshot-Platzhalter</span>
+                    <strong>Monatsrad</strong>
+                    <code>assets/website/month-wheel.png</code>
+                  </div>
+                </div>
+                <figcaption>
+                  Monatsübersicht mit visuellem Kontext für Aufgabenverteilung, Planung und eingebundene zyklische Orientierung.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUFGABEN & UMSETZUNG -->
+      <section class="section" id="aufgaben" aria-labelledby="aufgaben-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Aufgaben &amp; Umsetzung</p>
+              <h2 id="aufgaben-title">Von Jahreszielen bis zur konkreten Tagesaufgabe</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Sphaera unterstützt Aufgabenmanagement auf mehreren Ebenen (Jahr → Monat → Woche → Tag) und hilft bei der Verteilung zwischen diesen Ebenen, damit aus Planung tatsächliche Umsetzung wird.
+            </p>
+          </div>
+
+          <div class="split">
+            <div class="panel reveal">
+              <h3>Top-down-Verteilung &amp; wiederkehrende Aufgaben</h3>
+              <p class="muted-note" style="margin-top: 0.45rem;">
+                Ziele und Aufgaben können über die Ebenen geplant, konkretisiert und neu verteilt werden – inklusive Wiederholungen (täglich, wöchentlich, monatlich, jährlich).
+              </p>
+
+              <div class="task-flow" style="margin-top: 0.9rem;" aria-label="Beispiel für Aufgabenverteilung">
+                <div class="flow-row">
+                  <div class="flow-path">Jahr → Monat</div>
+                  <div class="flow-note">Ziele herunterbrechen</div>
+                </div>
+                <div class="flow-row">
+                  <div class="flow-path">Monat → Woche</div>
+                  <div class="flow-note">Prioritäten verteilen</div>
+                </div>
+                <div class="flow-row">
+                  <div class="flow-path">Woche → Tag</div>
+                  <div class="flow-note">Konkrete Umsetzung planen</div>
+                </div>
+              </div>
+
+              <ul class="check-list" style="margin-top: 0.95rem;">
+                <li>Echte System-Erinnerungen/Benachrichtigungen im Betriebssystem-Kontext (je nach Gerät).</li>
+                <li>Fälligkeiten, Wiederholungen und Prioritäten sind in die Aufgabenplanung eingebunden.</li>
+                <li>Archiv für erledigte Aufgaben mit Wiederherstellen-Möglichkeit.</li>
+                <li>Autosave: Änderungen werden automatisch gespeichert.</li>
+              </ul>
+            </div>
+
+            <div class="panel reveal" style="--d: 100ms">
+              <h3>Aufgaben-Detailseite für tatsächliche Arbeitsorganisation</h3>
+              <p class="muted-note" style="margin-top: 0.45rem;">
+                Jede Aufgabe kann detailliert gepflegt werden, damit Planung und Ausführung im gleichen System bleiben.
+              </p>
+
+              <ul class="spec-list" style="margin-top: 0.85rem;" aria-label="Elemente der Aufgaben-Detailseite">
+                <li>Notizen</li>
+                <li>Fälligkeit</li>
+                <li>Erinnerungen</li>
+                <li>Wiederholung</li>
+                <li>Priorität</li>
+                <li>Tags</li>
+                <li>Subtasks</li>
+              </ul>
+
+              <div class="detail-tags" aria-label="Beispiel-Tags">
+                <span>#Fokus</span>
+                <span>#Routine</span>
+                <span>#DeepWork</span>
+                <span>#Erledigen</span>
+              </div>
+
+              <div class="subpanel" style="margin-top: 0.9rem;" role="note">
+                <h3 style="margin-bottom: 0.35rem;">Mehrsprachigkeit</h3>
+                <p>
+                  Sphaera ist für Mehrsprachigkeit ausgelegt (DE, EN, KA, ES, FR, PT), damit Planung in der bevorzugten Sprache möglich bleibt.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENERGIE & ANALYSE -->
+      <section class="section" id="energie" aria-labelledby="energie-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Energie &amp; Analyse</p>
+              <h2 id="energie-title">Energieverlauf sichtbar machen statt nur nach Gefühl planen</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Sphaera ermöglicht Energie-Tracking pro Tag und eine Energieauswertung für Woche, Monat und Jahr – mit visueller Übersicht statt reiner Zahlenlisten.
+            </p>
+          </div>
+
+          <div class="energy-layout">
+            <div class="panel reveal">
+              <h3>Tägliche Erfassung und langfristige Muster</h3>
+              <p class="muted-note" style="margin-top: 0.45rem;">
+                Energie wird im Alltag erfasst und in den Planungsfluss integriert, damit du Aufgaben realistischer platzieren und Rhythmen besser einschätzen kannst.
+              </p>
+
+              <div class="bars" aria-label="Beispielhafte Energieauswertung (Illustration)">
+                <div class="bar-row">
+                  <span>Mo</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 78%"></div></div>
+                  <span>hoch</span>
+                </div>
+                <div class="bar-row">
+                  <span>Di</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 62%"></div></div>
+                  <span>mittel</span>
+                </div>
+                <div class="bar-row">
+                  <span>Mi</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 86%"></div></div>
+                  <span>hoch</span>
+                </div>
+                <div class="bar-row">
+                  <span>Do</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 48%"></div></div>
+                  <span>ruhig</span>
+                </div>
+                <div class="bar-row">
+                  <span>Fr</span>
+                  <div class="bar-track"><div class="bar-fill" style="width: 70%"></div></div>
+                  <span>fokussiert</span>
+                </div>
+              </div>
+
+              <ul class="check-list" style="margin-top: 0.95rem;">
+                <li>Energieauswertung für Woche / Monat / Jahr.</li>
+                <li>Visuelle Übersicht statt reiner Zahlenlisten.</li>
+                <li>Verknüpfung mit Tagesfokus und Aufgabenplanung.</li>
+              </ul>
+            </div>
+
+            <figure class="shot-card reveal" style="--d: 120ms; margin: 0;">
+              <div class="shot-frame" data-shot-frame>
+                <img
+                  src="assets/website/energy-analysis.png"
+                  alt="Screenshot-Platzhalter für die Energieanalyse von Sphaera"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="shot-fallback" aria-hidden="true">
+                  <span class="shot-tag">Screenshot-Platzhalter</span>
+                  <strong>Energieanalyse</strong>
+                  <code>assets/website/energy-analysis.png</code>
+                </div>
+              </div>
+              <figcaption>
+                Platzhalter für eine spätere Ansicht der Energieauswertung mit Wochen-, Monats- und Jahreskontext.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- MONDKALENDER -->
+      <section class="section" id="mondkalender" aria-labelledby="mond-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Mondkalender</p>
+              <h2 id="mond-title">Planung + zyklische Orientierung im selben Kontext</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Sphaera enthält einen integrierten Mondkalender mit täglicher Mondphase (visuell dargestellt) sowie Einbettung der Mondphasen in Tages- und Monatskontext – als Orientierung innerhalb des Planers, ohne überzogene Versprechen.
+            </p>
+          </div>
+
+          <div class="moon-layout">
+            <div class="panel reveal moon-panel">
+              <div class="moon-visual" aria-hidden="true">
+                <div class="moon-disc"></div>
+              </div>
+              <div class="moon-caption">
+                <strong>Tägliche Mondphase sichtbar im Planungsfluss</strong>
+                <small>
+                  Verbindung aus Planung + zyklischer Orientierung: im Tagesrad und in der Monatsübersicht eingebunden.
+                </small>
+              </div>
+            </div>
+
+            <div class="panel reveal" style="--d: 100ms">
+              <h3>Was der Mondkalender in Sphaera ist (und was nicht)</h3>
+              <ul class="check-list" style="margin-top: 0.75rem;">
+                <li>Integrierter Mondkalender im Planungs-Kontext, nicht als separates Gimmick.</li>
+                <li>Tägliche Mondphase mit visueller Darstellung.</li>
+                <li>Mondphasen in Tages- und Monatskontext eingebunden.</li>
+                <li>Nutzbar als zusätzliche Orientierung neben Zeit, Aufgaben und Energie.</li>
+              </ul>
+              <p class="muted-note" style="margin-top: 0.85rem;">
+                Sphaera macht keine esoterischen Heilversprechen und ersetzt keine fachliche Beratung. Der Fokus liegt auf strukturierter Planung und bewusster Orientierung.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section class="section" id="sicherheit" aria-labelledby="sicherheit-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Sicherheit &amp; Datenschutz</p>
+              <h2 id="sicherheit-title">Datenschutz- und Sicherheitsfokus mit lokaler Kontrolle</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Sphaera ist auf lokale Datenhoheit und kontrollierbare Sicherung ausgelegt: Daten bleiben primär lokal auf dem Gerät, ohne externe Analytics standardmäßig.
+            </p>
+          </div>
+
+          <div class="security-layout">
+            <div class="panel reveal">
+              <h3>Datenschutz praktisch gedacht</h3>
+              <ul class="check-list" style="margin-top: 0.75rem;">
+                <li>Lokale Speicherung als Primärmodell für persönliche Planungsdaten.</li>
+                <li>Keine externe Analytics standardmäßig.</li>
+                <li>Verschlüsselte Backups mit AES-256-GCM.</li>
+                <li>Optionaler App-Lock mit Passwort.</li>
+                <li>Biometrische Entsperrung (wo vom Gerät unterstützt).</li>
+                <li>Recovery-Key-Konzept zur Wiederherstellung im vorgesehenen Sicherheitsrahmen.</li>
+              </ul>
+
+              <div class="subpanel" style="margin-top: 0.9rem;">
+                <h3>Transparenz &amp; Support</h3>
+                <p>
+                  In-App Hilfe / FAQ sowie Datenschutz &amp; Nutzungsbedingungen sind vorgesehen, damit Funktionen, Datenverarbeitung und Nutzung nachvollziehbar bleiben.
+                </p>
+                <p style="margin-top: 0.55rem;">
+                  Lokale Crash-Reports sind optional und exportierbar, damit Support gezielt unterstützt werden kann, ohne standardmäßige externe Analyse-Skripte.
+                </p>
+              </div>
+            </div>
+
+            <div class="security-specs reveal" style="--d: 100ms" aria-label="Technische Sicherheitsparameter">
+              <h3>Technische Sicherheitsparameter (klar formuliert)</h3>
+              <div class="spec-grid">
+                <div class="spec-item">
+                  <strong>Lokale Datenverschlüsselung</strong>
+                  <span>AES-256-GCM</span>
+                </div>
+                <div class="spec-item">
+                  <strong>Verschlüsselte Backups</strong>
+                  <span>AES-256-GCM</span>
+                </div>
+                <div class="spec-item">
+                  <strong>Schlüsselableitung</strong>
+                  <span>PBKDF2-HMAC-SHA512 (600.000 Iterationen)</span>
+                </div>
+                <div class="spec-item">
+                  <strong>Salt / Nonce</strong>
+                  <span>16-Byte Salt, 12-Byte Nonce</span>
+                </div>
+                <div class="spec-item">
+                  <strong>Zugriffsschutz</strong>
+                  <span>Optionaler App-Lock mit Passwort + biometrische Entsperrung (geräteseitig)</span>
+                </div>
+                <div class="spec-item">
+                  <strong>Datenspeicherung</strong>
+                  <span>Daten bleiben primär lokal auf dem Gerät</span>
+                </div>
+              </div>
+              <p class="muted-note" style="margin-top: 0.8rem;">
+                Die Angaben beschreiben Sicherheitsmechanismen und keinen Garantie- oder Rechtsberatungsersatz.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FÜR WEN IST SPHAERA -->
+      <section class="section" id="fuer-wen" aria-labelledby="fuerwen-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Für wen ist Sphaera?</p>
+              <h2 id="fuerwen-title">Für Menschen, die Struktur mit Realität verbinden wollen</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Sphaera passt zu Arbeitsweisen, in denen Fokus, Energie und wechselnde Rhythmen eine echte Rolle spielen – und Datenschutz nicht optional ist.
+            </p>
+          </div>
+
+          <div class="cards-4">
+            <article class="card audience-card reveal" style="--d: 40ms">
+              <h3>Selbstständige &amp; Kreative</h3>
+              <p>
+                Für Projektarbeit, wechselnde Intensitäten und die Verbindung aus langfristiger Planung und täglichem Fokus.
+              </p>
+            </article>
+            <article class="card audience-card reveal" style="--d: 100ms">
+              <h3>Menschen mit wechselndem Rhythmus</h3>
+              <p>
+                Sinnvoll bei unregelmäßigen Tagen, Schichtarbeit oder Wochen, die nicht in starre Standardroutinen passen.
+              </p>
+            </article>
+            <article class="card audience-card reveal" style="--d: 160ms">
+              <h3>Fokus-orientierte Planer</h3>
+              <p>
+                Für alle, die Aufgaben priorisieren, visuell planen und ihre Umsetzung aktiv steuern möchten.
+              </p>
+            </article>
+            <article class="card audience-card reveal" style="--d: 220ms">
+              <h3>Menschen mit hohem Datenschutzanspruch</h3>
+              <p>
+                Für Nutzerinnen und Nutzer, die ihre Planungsdaten primär lokal und kontrollierbar halten wollen.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section" id="faq" aria-labelledby="faq-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">FAQ</p>
+              <h2 id="faq-title">Häufige Fragen zu Nutzung, Daten und Release-Status</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Kurz, sachlich und hilfreich: Die Antworten beschreiben den Ansatz von Sphaera ohne Funktionen als veröffentlicht darzustellen, wenn sie noch in Planung sind.
+            </p>
+          </div>
+
+          <div class="faq-list" role="list">
+            <details class="faq-item reveal" style="--d: 20ms">
+              <summary>Wie plane ich meinen Tag mit Sphaera?</summary>
+              <div class="faq-answer">
+                <p>
+                  Der Tag wird im Tagesrad geplant: Ein Tagesfokus steht im Zentrum, Aufgaben werden passend zu Zeitfenstern und Energie verteilt. Segmente sind flexibel und in 15-Minuten-Schritten anpassbar.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item reveal" style="--d: 60ms">
+              <summary>Wie arbeiten Tag/Woche/Monat/Jahr zusammen?</summary>
+              <div class="faq-answer">
+                <p>
+                  Sphaera nutzt zusammenhängende Ebenen: Jahresziele können in Monate, Wochen und Tage heruntergebrochen werden. Dadurch bleiben Überblick und tägliche Umsetzung im selben System verbunden.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item reveal" style="--d: 100ms">
+              <summary>Wie funktionieren Erinnerungen und Wiederholungen?</summary>
+              <div class="faq-answer">
+                <p>
+                  Aufgaben können Fälligkeiten, Erinnerungen und Wiederholungen (täglich, wöchentlich, monatlich, jährlich) erhalten. Erinnerungen sind als echte System-Erinnerungen/Benachrichtigungen vorgesehen.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item reveal" style="--d: 140ms">
+              <summary>Wie sichere ich meine Daten?</summary>
+              <div class="faq-answer">
+                <p>
+                  Geplant ist ein Sicherheitsmodell mit lokaler Datenverschlüsselung und verschlüsselten Backups (AES-256-GCM). Zusätzlich sind Passwortschutz, optionaler App-Lock und ein Recovery-Key-Konzept Teil des Datenschutz- und Sicherheitsfokus.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item reveal" style="--d: 180ms">
+              <summary>Was passiert mit meinen Daten (Datenschutz)?</summary>
+              <div class="faq-answer">
+                <p>
+                  Sphaera ist auf primär lokale Datenspeicherung ausgelegt. Es werden standardmäßig keine externen Analytics eingesetzt. Datenschutz- und Nutzungsinformationen sollen in der App nachvollziehbar bereitstehen.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item reveal" style="--d: 220ms">
+              <summary>Ist Sphaera schon für Desktop verfügbar?</summary>
+              <div class="faq-answer">
+                <p>
+                  Nein. Der Hauptfokus liegt auf einem Mobile-first Release für iPhone &amp; Android. Eine Desktop-Version für macOS, Windows und Linux ist geplant, aber hier nicht als bereits verfügbar dargestellt.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- RELEASE STATUS / PLATTFORMEN -->
+      <section class="section" id="release" aria-labelledby="release-title">
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow">Release-Status / Plattformen</p>
+              <h2 id="release-title">Mobile First: iPhone &amp; Android · Desktop in Planung</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms">
+              Diese Seite nutzt bewusst keine falschen Store-Links. Die Buttons unten sind Platzhalter mit „Coming soon“, bis reale Release-Informationen verfügbar sind.
+            </p>
+          </div>
+
+          <div class="release-layout">
+            <div class="status-card reveal">
+              <div class="status-label">Mobile First: iPhone &amp; Android</div>
+              <p style="margin-top: 0.55rem;">
+                Der erste Release-Fokus liegt auf Mobile (iPhone/Android), damit die Nutzung im Alltag schnell, direkt und visuell auf dem Hauptgerät funktioniert.
+              </p>
+              <div class="store-grid" aria-label="Plattform-Buttons als Platzhalter">
+                <button class="store-btn" type="button" disabled aria-disabled="true">
+                  iPhone (Coming soon)
+                  <small>Store-Link folgt zum Release</small>
+                </button>
+                <button class="store-btn" type="button" disabled aria-disabled="true">
+                  Android (Coming soon)
+                  <small>Store-Link folgt zum Release</small>
+                </button>
+              </div>
+            </div>
+
+            <div class="status-card reveal" style="--d: 100ms">
+              <div class="status-label">Desktop-Version (macOS / Windows / Linux) in Planung</div>
+              <p style="margin-top: 0.55rem;">
+                Desktop ist vorgesehen, wird hier aber ausdrücklich nicht als veröffentlicht dargestellt. Fokus und Reihenfolge bleiben transparent kommuniziert.
+              </p>
+              <div class="store-grid" aria-label="Desktop-Platzhalter">
+                <button class="store-btn" type="button" disabled aria-disabled="true">
+                  Desktop (Coming soon)
+                  <small>macOS / Windows / Linux · geplant</small>
+                </button>
+              </div>
+              <div class="subpanel" style="margin-top: 0.85rem;">
+                <h3>Weitere Grundlagen im System</h3>
+                <p>
+                  In-App Hilfe / FAQ, Datenschutz &amp; Nutzungsbedingungen sowie lokal kontrollierbare Daten- und Sicherheitsfunktionen sind Teil des Produktrahmens.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA / NEWSLETTER / KONTAKT -->
+      <section class="section cta-section" id="newsletter" aria-labelledby="cta-title">
+        <div class="container">
+          <div class="cta-wrap reveal">
+            <div>
+              <p class="eyebrow">CTA / Newsletter / Kontakt</p>
+              <h2 id="cta-title">Launch-Infos erhalten und Frühzugang im Blick behalten</h2>
+              <p class="lead" style="margin-top: 0.85rem;">
+                Wenn du Updates zum Produkt, zum Launch und zu den nächsten Schritten erhalten möchtest, kannst du hier deine E-Mail eintragen. Das Formular ist aktuell eine UI-Vorschau ohne Backend.
+              </p>
+
+              <div class="contact-points" aria-label="Kontaktinformationen">
+                <p><strong>E-Mail:</strong> <a href="mailto:support@sphaera.app">support@sphaera.app</a></p>
+                <p><strong>Domain:</strong> <a href="https://sphaera.app" target="_blank" rel="noopener noreferrer">sphaera.app</a></p>
+              </div>
+
+              <div class="cta-secondary" aria-labelledby="cta-secondary-title">
+                <h3 id="cta-secondary-title">Zusätzliche Aktionen</h3>
+                <p class="muted-note">
+                  Platzhalter für spätere Flows rund um Warteliste, Beta und Launch-Benachrichtigungen.
+                </p>
+                <div class="cta-secondary-actions">
+                  <a class="button button-primary" href="#newsletter">Frühzugang / Beta</a>
+                  <a class="button button-ghost" href="#newsletter">Benachrichtige mich zum Launch</a>
+                </div>
+                <div class="subpanel" role="note" aria-label="Warum Mobile-first zuerst?">
+                  <h3 style="margin-bottom: 0.35rem;">Warum Mobile-first zuerst?</h3>
+                  <p>
+                    Ein Mobile-first Ansatz stellt sicher, dass Sphaera im wichtigsten Nutzungskontext sofort klar, schnell und zuverlässig funktioniert. Was mobil präzise gestaltet ist, lässt sich anschließend sauber auf größere Geräte übertragen.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" style="padding: 1rem;">
+              <form class="cta-form" id="launch-form" aria-label="Launch-Infos Formular (UI ohne Backend)" novalidate>
+                <div class="form-field">
+                  <label for="launch-email">E-Mail für Produkt-Updates &amp; Launch-Infos</label>
+                  <div class="input-wrap">
+                    <input
+                      id="launch-email"
+                      name="email"
+                      type="email"
+                      inputmode="email"
+                      autocomplete="email"
+                      placeholder="du@beispiel.de"
+                      aria-describedby="launch-fineprint launch-form-status"
+                      required
+                    />
+                    <button class="button button-primary" type="submit">Launch-Infos erhalten</button>
+                  </div>
+                </div>
+
+                <p class="fineprint" id="launch-fineprint">Kein Spam. Nur Produkt-Updates und Launch-Infos.</p>
+                <p class="form-status" id="launch-form-status" role="status" aria-live="polite"></p>
+
+                <div class="subpanel" aria-label="Hinweis zum Formular">
+                  <h3 style="margin-bottom: 0.35rem;">Hinweis</h3>
+                  <p>
+                    Dieses Formular ist aktuell nur UI. Es sendet noch keine Daten an einen Server und dient als Platzhalter für das spätere Newsletter-/Waitlist-Setup.
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer aria-labelledby="footer-title">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <h2 id="footer-title" style="font-size: 1.1rem;">Sphaera</h2>
+          <p class="muted-note">
+            Durchdachtes, sicheres, visuell geführtes Planungssystem für Zeit, Energie, Aufgaben und zyklische Orientierung.
+          </p>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 0.55rem;">Rechtliches &amp; Hilfe</h3>
+          <ul class="footer-links">
+            <li><a href="#" aria-label="Datenschutz (Platzhalter-Link)">Datenschutz</a></li>
+            <li><a href="#" aria-label="Nutzungsbedingungen (Platzhalter-Link)">Nutzungsbedingungen</a></li>
+            <li><a href="#faq" aria-label="Hilfe und FAQ">Hilfe / FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-meta">
+          <p><strong>Kontakt:</strong> <a href="mailto:support@sphaera.app">support@sphaera.app</a></p>
+          <p><strong>Domain:</strong> <a href="https://sphaera.app" target="_blank" rel="noopener noreferrer">sphaera.app</a></p>
+          <p>© <span id="year"></span> Sphaera</p>
+          <p>
+            Sphaera ist ein Planungswerkzeug und bietet keine medizinische, psychologische, finanzielle oder rechtliche Beratung.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (() => {
+        const yearEl = document.getElementById("year");
+        if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const revealItems = Array.from(document.querySelectorAll(".reveal"));
+
+        if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+          revealItems.forEach((el) => el.classList.add("is-visible"));
+        } else {
+          const observer = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add("is-visible");
+                obs.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+          );
+
+          revealItems.forEach((el) => observer.observe(el));
+        }
+
+        document.querySelectorAll("[data-shot-frame] img").forEach((img) => {
+          const frame = img.closest("[data-shot-frame]");
+          if (!frame) return;
+
+          const markLoaded = () => frame.classList.add("is-loaded");
+          const markMissing = () => frame.classList.add("is-missing");
+
+          if (img.complete) {
+            if (img.naturalWidth > 0) markLoaded();
+            else markMissing();
+          }
+
+          img.addEventListener("load", markLoaded, { once: true });
+          img.addEventListener("error", markMissing, { once: true });
+        });
+
+        const form = document.getElementById("launch-form");
+        const emailInput = document.getElementById("launch-email");
+        const status = document.getElementById("launch-form-status");
+
+        if (form && emailInput && status) {
+          form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            status.removeAttribute("data-state");
+
+            if (!emailInput.value || !emailInput.checkValidity()) {
+              status.textContent = "Bitte gib eine gültige E-Mail-Adresse ein. (Demo-Formular ohne Versand)";
+              status.dataset.state = "error";
+              emailInput.focus();
+              return;
+            }
+
+            status.textContent = "Danke. Aktuell ist dies eine UI-Vorschau ohne Backend. Es wurde nichts versendet.";
+            status.dataset.state = "success";
+          });
+        }
+      })();
+    </script>
+  </body>
 </html>
