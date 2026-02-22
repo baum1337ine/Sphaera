@@ -1351,6 +1351,43 @@
         color: rgba(172, 184, 200, 0.7);
       }
 
+      .hidden-field {
+        display: none;
+      }
+
+      .consent-field {
+        display: grid;
+        gap: 0.45rem;
+        padding: 0.75rem;
+        border-radius: 0.8rem;
+        border: 1px solid rgba(201, 218, 239, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .consent-check {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.6rem;
+        align-items: start;
+      }
+
+      .consent-check input[type="checkbox"] {
+        width: 1rem;
+        height: 1rem;
+        margin: 0.2rem 0 0;
+        accent-color: var(--accent);
+      }
+
+      .consent-check span {
+        color: var(--text-soft);
+        font-size: 0.9rem;
+      }
+
+      .consent-note {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
       .fineprint {
         color: var(--muted);
         font-size: 0.84rem;
@@ -1670,7 +1707,13 @@
           </div>
         </div>
 
-        <a class="button button-primary button-small header-cta" href="#newsletter" data-i18n="hero.cta.primary">
+        <a
+          class="button button-primary button-small header-cta"
+          href="#newsletter"
+          data-i18n="hero.cta.primary"
+          data-waitlist-interest="launch"
+          data-waitlist-source="header_cta"
+        >
           Launch-Infos erhalten
         </a>
       </div>
@@ -1696,7 +1739,13 @@
             </ul>
 
             <div class="hero-actions" aria-label="Primäre Aktionen">
-              <a class="button button-primary" href="#newsletter" data-i18n="hero.cta.primary">Launch-Infos erhalten</a>
+              <a
+                class="button button-primary"
+                href="#newsletter"
+                data-i18n="hero.cta.primary"
+                data-waitlist-interest="launch"
+                data-waitlist-source="hero_cta"
+              >Launch-Infos erhalten</a>
               <a class="button button-secondary" href="#visuelles-system" data-i18n="hero.cta.secondary">Funktionen ansehen</a>
             </div>
 
@@ -2369,7 +2418,7 @@
               <p class="eyebrow" data-i18n="cta.eyebrow">CTA / Newsletter / Kontakt</p>
               <h2 id="cta-title" data-i18n="cta.title">Launch-Infos erhalten und Frühzugang im Blick behalten</h2>
               <p class="lead" style="margin-top: 0.85rem;" data-i18n="cta.lead">
-                Wenn du Updates zum Produkt, zum Launch und zu den nächsten Schritten erhalten möchtest, kannst du hier deine E-Mail eintragen. Das Formular ist aktuell eine UI-Vorschau ohne Backend.
+                Wenn du Updates zum Produkt, zum Launch und zu den nächsten Schritten erhalten möchtest, kannst du hier deine E-Mail eintragen. Das Formular kann für Beta- oder Launch-Infos genutzt werden.
               </p>
 
               <div class="contact-points" aria-label="Kontaktinformationen">
@@ -2383,8 +2432,20 @@
                   Platzhalter für spätere Flows rund um Warteliste, Beta und Launch-Benachrichtigungen.
                 </p>
                 <div class="cta-secondary-actions">
-                  <a class="button button-primary" href="#newsletter" data-i18n="cta.beta">Frühzugang / Beta</a>
-                  <a class="button button-ghost" href="#newsletter" data-i18n="cta.notify">Benachrichtige mich zum Launch</a>
+                  <a
+                    class="button button-primary"
+                    href="#newsletter"
+                    data-i18n="cta.beta"
+                    data-waitlist-interest="beta"
+                    data-waitlist-source="footer_beta_cta"
+                  >Frühzugang / Beta</a>
+                  <a
+                    class="button button-ghost"
+                    href="#newsletter"
+                    data-i18n="cta.notify"
+                    data-waitlist-interest="launch"
+                    data-waitlist-source="footer_launch_cta"
+                  >Benachrichtige mich zum Launch</a>
                 </div>
                 <div class="subpanel" role="note" aria-label="Warum Mobile-first zuerst?">
                   <h3 style="margin-bottom: 0.35rem;" data-i18n="cta.mobileFirst.title">Warum Mobile-first zuerst?</h3>
@@ -2396,7 +2457,11 @@
             </div>
 
             <div class="panel" style="padding: 1rem;">
-              <form class="cta-form" id="launch-form" aria-label="Launch-Infos Formular (UI ohne Backend)" novalidate>
+              <form class="cta-form" id="launch-form" aria-label="Launch-Infos Formular" novalidate>
+                <input class="hidden-field" id="launch-interest-type" name="interest_type" type="hidden" value="launch" />
+                <input class="hidden-field" id="launch-entry-source" name="entry_source" type="hidden" value="direct_form" />
+                <input class="hidden-field" id="launch-form-location" name="form_location" type="hidden" value="newsletter_cta" />
+
                 <div class="form-field">
                   <label for="launch-email" data-i18n="cta.form.label">E-Mail für Produkt-Updates &amp; Launch-Infos</label>
                   <div class="input-wrap">
@@ -2415,13 +2480,25 @@
                   </div>
                 </div>
 
+                <div class="consent-field">
+                  <label class="consent-check" for="launch-consent">
+                    <input id="launch-consent" name="consent_updates" type="checkbox" required />
+                    <span data-i18n="cta.form.consent">
+                      Ich möchte Produkt-Updates und Launch-Infos per E-Mail erhalten.
+                    </span>
+                  </label>
+                  <p class="consent-note" data-i18n="cta.form.consentNote">
+                    Die Eintragung dient der Beta-/Launch-Kommunikation. Du kannst dich später wieder abmelden.
+                  </p>
+                </div>
+
                 <p class="fineprint" id="launch-fineprint" data-i18n="cta.form.fineprint">Kein Spam. Nur Produkt-Updates und Launch-Infos.</p>
                 <p class="form-status" id="launch-form-status" role="status" aria-live="polite"></p>
 
                 <div class="subpanel" aria-label="Hinweis zum Formular">
                   <h3 style="margin-bottom: 0.35rem;" data-i18n="cta.form.hintTitle">Hinweis</h3>
                   <p data-i18n="cta.form.hintBody">
-                    Dieses Formular ist aktuell nur UI. Es sendet noch keine Daten an einen Server und dient als Platzhalter für das spätere Newsletter-/Waitlist-Setup.
+                    Das Formular kann mit Supabase als Waitlist-/Launch-Liste verbunden werden. Für produktiven Einsatz sollten Tabelle, RLS und Einwilligungstext sauber eingerichtet sein.
                   </p>
                 </div>
               </form>
@@ -4142,12 +4219,128 @@
           }
         };
 
+        const waitlistTranslations = {
+          de: {
+            "cta.lead":
+              "Wenn du Updates zum Produkt, zum Launch und zu den nächsten Schritten erhalten möchtest, kannst du hier deine E-Mail eintragen. Das Formular kann für Beta- oder Launch-Infos genutzt werden.",
+            "cta.form.consent":
+              "Ich möchte Produkt-Updates und Launch-Infos per E-Mail erhalten.",
+            "cta.form.consentNote":
+              "Die Eintragung dient der Beta-/Launch-Kommunikation. Du kannst dich später wieder abmelden.",
+            "cta.form.hintBody":
+              "Das Formular kann mit Supabase als Waitlist-/Launch-Liste verbunden werden. Für produktiven Einsatz sollten Tabelle, RLS und Einwilligungstext sauber eingerichtet sein.",
+            "form.status.errorEmail": "Bitte gib eine gültige E-Mail-Adresse ein.",
+            "form.status.errorConsent":
+              "Bitte bestätige die Einwilligung für Produkt-Updates und Launch-Infos.",
+            "form.status.submitting": "Eintrag wird gespeichert ...",
+            "form.status.successLive":
+              "Danke! Deine Eintragung wurde gespeichert.",
+            "form.status.errorNetwork":
+              "Eintrag aktuell nicht möglich. Bitte versuche es später erneut."
+          },
+          en: {
+            "cta.lead":
+              "If you want updates about the product, launch, and next steps, you can enter your email here. The form can be used for beta or launch updates.",
+            "cta.form.consent":
+              "I want to receive product updates and launch information by email.",
+            "cta.form.consentNote":
+              "This signup is used for beta/launch communication. You can unsubscribe later.",
+            "cta.form.hintBody":
+              "This form can be connected to Supabase as a waitlist/launch list. For production use, table setup, RLS and consent copy should be configured properly.",
+            "form.status.errorEmail": "Please enter a valid email address.",
+            "form.status.errorConsent":
+              "Please confirm consent for product updates and launch information.",
+            "form.status.submitting": "Saving your signup ...",
+            "form.status.successLive":
+              "Thanks! Your signup has been saved.",
+            "form.status.errorNetwork":
+              "Signup is not available right now. Please try again later."
+          },
+          ka: {
+            "cta.lead":
+              "თუ გსურთ პროდუქტის განახლებები, launch-ის ინფორმაცია და შემდეგი ნაბიჯები, შეგიძლიათ აქ შეიყვანოთ თქვენი ელფოსტა. ფორმა გამოიყენება ბეტა ან launch-ინფორმაციებისთვის.",
+            "cta.form.consent":
+              "მსურს ელფოსტით მივიღო პროდუქტის განახლებები და launch-ინფორმაცია.",
+            "cta.form.consentNote":
+              "რეგისტრაცია გამოიყენება ბეტა/launch კომუნიკაციისთვის. მოგვიანებით შეძლებთ გამოწერის გაუქმებას.",
+            "cta.form.hintBody":
+              "ფორმა შეიძლება Supabase-თან იყოს დაკავშირებული waitlist/launch სიად. პროდუქტიულ გამოყენებამდე სწორად დააყენეთ ცხრილი, RLS და თანხმობის ტექსტი.",
+            "form.status.errorEmail": "გთხოვთ შეიყვანოთ სწორი ელფოსტა.",
+            "form.status.errorConsent":
+              "გთხოვთ დაადასტუროთ თანხმობა პროდუქტის განახლებებისა და launch-ინფორმაციისთვის.",
+            "form.status.submitting": "რეგისტრაცია ინახება ...",
+            "form.status.successLive":
+              "გმადლობთ! თქვენი რეგისტრაცია შენახულია.",
+            "form.status.errorNetwork":
+              "რეგისტრაცია ახლა ვერ მოხერხდა. სცადეთ მოგვიანებით."
+          },
+          es: {
+            "cta.lead":
+              "Si quieres recibir actualizaciones del producto, del lanzamiento y de los próximos pasos, puedes dejar aquí tu correo. El formulario sirve para beta o avisos de lanzamiento.",
+            "cta.form.consent":
+              "Quiero recibir por correo actualizaciones del producto e información de lanzamiento.",
+            "cta.form.consentNote":
+              "Este registro se usa para comunicación de beta/lanzamiento. Podrás darte de baja más adelante.",
+            "cta.form.hintBody":
+              "Este formulario puede conectarse a Supabase como lista de espera/lanzamiento. Para uso en producción, configura correctamente tabla, RLS y texto de consentimiento.",
+            "form.status.errorEmail": "Introduce un correo electrónico válido.",
+            "form.status.errorConsent":
+              "Confirma el consentimiento para actualizaciones del producto e información de lanzamiento.",
+            "form.status.submitting": "Guardando tu registro ...",
+            "form.status.successLive":
+              "Gracias. Tu registro se ha guardado.",
+            "form.status.errorNetwork":
+              "Ahora mismo no es posible registrarse. Inténtalo de nuevo más tarde."
+          },
+          fr: {
+            "cta.lead":
+              "Si vous souhaitez recevoir des mises à jour produit, des infos de lancement et les prochaines étapes, vous pouvez saisir votre e-mail ici. Le formulaire peut servir pour la bêta ou le lancement.",
+            "cta.form.consent":
+              "Je souhaite recevoir par e-mail les mises à jour produit et les informations de lancement.",
+            "cta.form.consentNote":
+              "Cette inscription sert à la communication bêta/lancement. Vous pourrez vous désinscrire plus tard.",
+            "cta.form.hintBody":
+              "Ce formulaire peut être connecté à Supabase comme liste d'attente / lancement. En production, configurez correctement la table, la RLS et le texte de consentement.",
+            "form.status.errorEmail": "Veuillez saisir une adresse e-mail valide.",
+            "form.status.errorConsent":
+              "Veuillez confirmer votre consentement pour les mises à jour produit et les informations de lancement.",
+            "form.status.submitting": "Enregistrement de votre inscription ...",
+            "form.status.successLive":
+              "Merci. Votre inscription a bien été enregistrée.",
+            "form.status.errorNetwork":
+              "L'inscription est momentanément indisponible. Réessayez plus tard."
+          },
+          pt: {
+            "cta.lead":
+              "Se você quiser receber atualizações do produto, do lançamento e dos próximos passos, pode deixar seu e-mail aqui. O formulário pode ser usado para beta ou avisos de lançamento.",
+            "cta.form.consent":
+              "Quero receber por e-mail atualizações do produto e informações de lançamento.",
+            "cta.form.consentNote":
+              "Este cadastro é usado para comunicação de beta/lançamento. Você pode cancelar depois.",
+            "cta.form.hintBody":
+              "Este formulário pode ser conectado ao Supabase como lista de espera/lançamento. Em produção, configure corretamente tabela, RLS e texto de consentimento.",
+            "form.status.errorEmail": "Por favor, informe um e-mail válido.",
+            "form.status.errorConsent":
+              "Confirme o consentimento para atualizações do produto e informações de lançamento.",
+            "form.status.submitting": "Salvando seu cadastro ...",
+            "form.status.successLive":
+              "Obrigado! Seu cadastro foi salvo.",
+            "form.status.errorNetwork":
+              "Não foi possível concluir o cadastro agora. Tente novamente mais tarde."
+          }
+        };
+
         Object.keys(extendedTranslations).forEach((lang) => {
           translations[lang] = Object.assign({}, translations[lang] || {}, extendedTranslations[lang]);
+        });
+        Object.keys(waitlistTranslations).forEach((lang) => {
+          translations[lang] = Object.assign({}, translations[lang] || {}, waitlistTranslations[lang]);
         });
 
         const supportedLanguages = ["de", "en", "ka", "es", "fr", "pt"];
         const storageKey = "sphaera-site-language";
+        const SUPABASE_URL = "https://vizjbgtnfmmggpshtczo.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_LlmRfIP3axSbklXJ86wmhw_srg5w1rp";
 
         const normalizeLanguage = (value) => {
           if (!value || typeof value !== "string") return "de";
@@ -4156,6 +4349,7 @@
         };
 
         const getText = (lang, key) => translations[lang]?.[key] ?? translations.de[key] ?? "";
+        const normalizeInterest = (value) => (value === "beta" ? "beta" : "launch");
 
         const languageSelect = document.getElementById("site-language");
         const metaDescription = document.querySelector('meta[name="description"]');
@@ -4262,22 +4456,101 @@
 
         const form = document.getElementById("launch-form");
         const emailInput = document.getElementById("launch-email");
+        const consentInput = document.getElementById("launch-consent");
+        const interestInput = document.getElementById("launch-interest-type");
+        const sourceInput = document.getElementById("launch-entry-source");
+        const formLocationInput = document.getElementById("launch-form-location");
+        const submitButton = form?.querySelector('button[type="submit"]');
         const status = document.getElementById("launch-form-status");
+        const waitlistTriggers = Array.from(
+          document.querySelectorAll("[data-waitlist-interest][data-waitlist-source]")
+        );
 
-        if (form && emailInput && status) {
-          form.addEventListener("submit", (event) => {
+        waitlistTriggers.forEach((trigger) => {
+          trigger.addEventListener("click", () => {
+            if (interestInput) interestInput.value = normalizeInterest(trigger.dataset.waitlistInterest);
+            if (sourceInput) sourceInput.value = (trigger.dataset.waitlistSource || "direct_form").trim();
+          });
+        });
+
+        if (form && emailInput && status && consentInput && interestInput && sourceInput) {
+          form.addEventListener("submit", async (event) => {
             event.preventDefault();
             status.removeAttribute("data-state");
 
             if (!emailInput.value || !emailInput.checkValidity()) {
-              status.textContent = getText(currentLanguage, "form.status.error");
+              status.textContent = getText(currentLanguage, "form.status.errorEmail");
               status.dataset.state = "error";
               emailInput.focus();
               return;
             }
 
-            status.textContent = getText(currentLanguage, "form.status.success");
-            status.dataset.state = "success";
+            if (!consentInput.checked) {
+              status.textContent = getText(currentLanguage, "form.status.errorConsent");
+              status.dataset.state = "error";
+              consentInput.focus();
+              return;
+            }
+
+            const email = emailInput.value.trim().toLowerCase();
+            const payload = {
+              email,
+              interest_type: normalizeInterest(interestInput.value),
+              language_code: normalizeLanguage(
+                document.documentElement.dataset.locale || document.documentElement.lang || currentLanguage
+              ),
+              entry_source: (sourceInput.value || "direct_form").trim(),
+              form_location: (formLocationInput?.value || "newsletter_cta").trim(),
+              page_path: window.location.pathname,
+              page_url: window.location.href,
+              consent_updates: true
+            };
+
+            status.textContent = getText(currentLanguage, "form.status.submitting");
+            if (submitButton) submitButton.disabled = true;
+
+            try {
+              const response = await fetch(
+                `${SUPABASE_URL}/rest/v1/waitlist_signups?on_conflict=email,interest_type`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    Prefer: "resolution=merge-duplicates,return=minimal"
+                  },
+                  body: JSON.stringify(payload)
+                }
+              );
+
+              if (!response.ok) {
+                throw new Error(`Supabase request failed with status ${response.status}`);
+              }
+
+              status.textContent = getText(currentLanguage, "form.status.successLive");
+              status.dataset.state = "success";
+
+              if (window.umami?.track) {
+                window.umami.track("waitlist_signup", {
+                  interest_type: payload.interest_type,
+                  language_code: payload.language_code,
+                  entry_source: payload.entry_source,
+                  form_location: payload.form_location
+                });
+              }
+
+              form.reset();
+              interestInput.value = "launch";
+              sourceInput.value = "direct_form";
+              if (formLocationInput) formLocationInput.value = "newsletter_cta";
+            } catch (error) {
+              console.error(error);
+              status.textContent = getText(currentLanguage, "form.status.errorNetwork");
+              status.dataset.state = "error";
+            } finally {
+              if (submitButton) submitButton.disabled = false;
+            }
           });
         }
       })();
