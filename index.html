@@ -4510,22 +4510,37 @@
             if (submitButton) submitButton.disabled = true;
 
             try {
+              const requestHeaders = {
+                "Content-Type": "application/json",
+                apikey: SUPABASE_ANON_KEY,
+                // With insert-only RLS this avoids needing an UPDATE policy on duplicates.
+                Prefer: "resolution=ignore-duplicates,return=minimal"
+              };
+
+              // `sb_publishable_*` keys are not JWTs and should not be sent as Bearer tokens.
+              if (!String(SUPABASE_ANON_KEY).startsWith("sb_publishable_")) {
+                requestHeaders.Authorization = `Bearer ${SUPABASE_ANON_KEY}`;
+              }
+
               const response = await fetch(
                 `${SUPABASE_URL}/rest/v1/waitlist_signups?on_conflict=email,interest_type`,
                 {
                   method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    apikey: SUPABASE_ANON_KEY,
-                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                    Prefer: "resolution=merge-duplicates,return=minimal"
-                  },
+                  headers: requestHeaders,
                   body: JSON.stringify(payload)
                 }
               );
 
               if (!response.ok) {
-                throw new Error(`Supabase request failed with status ${response.status}`);
+                let responseText = "";
+                try {
+                  responseText = await response.text();
+                } catch {
+                  // Ignore body parse failures for debugging text.
+                }
+                throw new Error(
+                  `Supabase request failed with status ${response.status}${responseText ? `: ${responseText}` : ""}`
+                );
               }
 
               status.textContent = getText(currentLanguage, "form.status.successLive");
