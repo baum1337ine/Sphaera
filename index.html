@@ -4238,6 +4238,8 @@
             "form.status.submitting": "Eintrag wird gespeichert ...",
             "form.status.successLive":
               "Danke! Deine Eintragung wurde gespeichert.",
+            "form.status.duplicate":
+              "Diese E-Mail ist für diesen Eintrag bereits gespeichert.",
             "form.status.errorNetwork":
               "Eintrag aktuell nicht möglich. Bitte versuche es später erneut."
           },
@@ -4259,6 +4261,8 @@
             "form.status.submitting": "Saving your signup ...",
             "form.status.successLive":
               "Thanks! Your signup has been saved.",
+            "form.status.duplicate":
+              "This email is already registered for this signup.",
             "form.status.errorNetwork":
               "Signup is not available right now. Please try again later."
           },
@@ -4280,6 +4284,8 @@
             "form.status.submitting": "რეგისტრაცია ინახება ...",
             "form.status.successLive":
               "გმადლობთ! თქვენი რეგისტრაცია შენახულია.",
+            "form.status.duplicate":
+              "ეს ელფოსტა ამ ტიპის რეგისტრაციისთვის უკვე შენახულია.",
             "form.status.errorNetwork":
               "რეგისტრაცია ახლა ვერ მოხერხდა. სცადეთ მოგვიანებით."
           },
@@ -4301,6 +4307,8 @@
             "form.status.submitting": "Guardando tu registro ...",
             "form.status.successLive":
               "Gracias. Tu registro se ha guardado.",
+            "form.status.duplicate":
+              "Este correo ya está registrado para este tipo de aviso.",
             "form.status.errorNetwork":
               "Ahora mismo no es posible registrarse. Inténtalo de nuevo más tarde."
           },
@@ -4322,6 +4330,8 @@
             "form.status.submitting": "Enregistrement de votre inscription ...",
             "form.status.successLive":
               "Merci. Votre inscription a bien été enregistrée.",
+            "form.status.duplicate":
+              "Cet e-mail est déjà enregistré pour cette inscription.",
             "form.status.errorNetwork":
               "L'inscription est momentanément indisponible. Réessayez plus tard."
           },
@@ -4343,6 +4353,8 @@
             "form.status.submitting": "Salvando seu cadastro ...",
             "form.status.successLive":
               "Obrigado! Seu cadastro foi salvo.",
+            "form.status.duplicate":
+              "Este e-mail já está cadastrado para este tipo de aviso.",
             "form.status.errorNetwork":
               "Não foi possível concluir o cadastro agora. Tente novamente mais tarde."
           }
@@ -4534,34 +4546,24 @@
             if (submitButton) submitButton.disabled = true;
 
             try {
-              const isPublishableKey = String(SUPABASE_ANON_KEY).startsWith("sb_publishable_");
-              const endpoint = `${SUPABASE_URL}/rest/v1/waitlist_signups?on_conflict=email,interest_type`;
-
-              const buildHeaders = (includeAuthorization) => {
-                const headers = {
-                  "Content-Type": "application/json",
-                  apikey: SUPABASE_ANON_KEY,
-                  // With insert-only RLS this avoids needing an UPDATE policy on duplicates.
-                  Prefer: "resolution=ignore-duplicates,return=minimal"
-                };
-                if (includeAuthorization) {
-                  headers.Authorization = `Bearer ${SUPABASE_ANON_KEY}`;
-                }
-                return headers;
+              const endpoint = `${SUPABASE_URL}/rest/v1/waitlist_signups`;
+              const requestHeaders = {
+                "Content-Type": "application/json",
+                apikey: SUPABASE_ANON_KEY,
+                Prefer: "return=minimal"
               };
 
-              const sendRequest = (includeAuthorization) =>
-                fetch(endpoint, {
+              const response = await fetch(endpoint, {
                   method: "POST",
-                  headers: buildHeaders(includeAuthorization),
+                  headers: requestHeaders,
                   body: JSON.stringify(payload)
                 });
 
-              let response = await sendRequest(!isPublishableKey);
-
-              // Some Supabase setups expect the publishable key in Authorization as well.
-              if (!response.ok && isPublishableKey && (response.status === 401 || response.status === 403)) {
-                response = await sendRequest(true);
+              if (response.status === 409) {
+                status.textContent = getText(currentLanguage, "form.status.duplicate");
+                status.dataset.state = "success";
+                if (submitButton) submitButton.disabled = false;
+                return;
               }
 
               if (!response.ok) {
@@ -4594,7 +4596,7 @@
               if (formLocationInput) formLocationInput.value = "newsletter_cta";
             } catch (error) {
               console.error(error);
-              status.textContent = getText(currentLanguage, "form.status.errorNetwork");
+              status.textContent = `${getText(currentLanguage, "form.status.errorNetwork")} (${error?.message || "unknown"})`;
               status.dataset.state = "error";
             } finally {
               if (submitButton) submitButton.disabled = false;
