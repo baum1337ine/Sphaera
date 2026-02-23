@@ -1419,6 +1419,155 @@
         gap: 0.55rem;
       }
 
+      .legal-grid {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .legal-card {
+        padding: 1rem;
+      }
+
+      .legal-card h3 {
+        margin-bottom: 0.45rem;
+      }
+
+      .legal-card p + p {
+        margin-top: 0.55rem;
+      }
+
+      .legal-list {
+        list-style: none;
+        margin: 0.75rem 0 0;
+        padding: 0;
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .legal-list li {
+        display: grid;
+        grid-template-columns: 0.8rem 1fr;
+        gap: 0.55rem;
+        align-items: start;
+        color: var(--muted);
+      }
+
+      .legal-list li::before {
+        content: "";
+        width: 0.45rem;
+        height: 0.45rem;
+        margin-top: 0.38rem;
+        border-radius: 50%;
+        background: rgba(208, 176, 122, 0.85);
+        box-shadow: 0 0 0 4px rgba(208, 176, 122, 0.08);
+      }
+
+      .legal-meta {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .legal-modal {
+        width: min(980px, calc(100% - 1rem));
+        max-width: 980px;
+        max-height: 88svh;
+        margin: auto;
+        padding: 0;
+        border: 1px solid rgba(201, 218, 239, 0.14);
+        border-radius: calc(var(--radius-xl) + 0.1rem);
+        background:
+          radial-gradient(circle at 90% 10%, rgba(208, 176, 122, 0.1), transparent 42%),
+          linear-gradient(180deg, rgba(10, 17, 29, 0.98), rgba(7, 12, 21, 0.98));
+        color: var(--text);
+        box-shadow: var(--shadow-lg);
+        transform-origin: center 42%;
+      }
+
+      .legal-modal::backdrop {
+        background: rgba(4, 8, 15, 0.72);
+        backdrop-filter: blur(6px);
+      }
+
+      .legal-modal-shell {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        max-height: inherit;
+      }
+
+      .legal-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.9rem 0.95rem;
+        border-bottom: 1px solid rgba(201, 218, 239, 0.1);
+        background: rgba(6, 11, 20, 0.75);
+        position: sticky;
+        top: 0;
+        z-index: 2;
+      }
+
+      .legal-modal-title {
+        margin: 0;
+        font-size: clamp(1.1rem, 2vw, 1.35rem);
+      }
+
+      .legal-modal-close-btn {
+        width: 2.35rem;
+        min-width: 2.35rem;
+        height: 2.35rem;
+        min-height: 2.35rem;
+        padding: 0;
+        border-radius: 999px;
+        border: 1px solid rgba(201, 218, 239, 0.18);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-soft);
+        display: inline-grid;
+        place-items: center;
+        cursor: pointer;
+        transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+      }
+
+      .legal-modal-close-btn:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(201, 218, 239, 0.28);
+        transform: translateY(-1px);
+      }
+
+      .legal-modal-close-btn:active {
+        transform: translateY(0);
+      }
+
+      .legal-modal-close-icon {
+        font-size: 1.25rem;
+        line-height: 1;
+        color: var(--text);
+        transform: translateY(-1px);
+      }
+
+      .legal-modal-content {
+        min-height: 0;
+        overflow: auto;
+        padding: 0.95rem;
+      }
+
+      .legal-modal-inner {
+        width: 100%;
+        margin: 0;
+      }
+
+      .legal-modal-inner .section-head {
+        margin-bottom: 1rem;
+      }
+
+      .legal-modal-inner .subpanel {
+        margin-top: 0.9rem;
+      }
+
+      body.modal-open {
+        overflow: hidden;
+      }
+
       footer {
         border-top: 1px solid rgba(201, 218, 239, 0.08);
         padding-block: 1.4rem 2.2rem;
@@ -1471,6 +1620,14 @@
       }
 
       @media (prefers-reduced-motion: no-preference) {
+        .legal-modal[open] {
+          animation: legalModalIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .legal-modal[open]::backdrop {
+          animation: legalBackdropIn 180ms ease-out;
+        }
+
         .reveal {
           opacity: 0;
           transform: translateY(18px);
@@ -1517,6 +1674,30 @@
 
         to {
           transform: rotate(360deg);
+        }
+      }
+
+      @keyframes legalModalIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.985);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes legalBackdropIn {
+        from {
+          background: rgba(4, 8, 15, 0);
+          backdrop-filter: blur(0px);
+        }
+
+        to {
+          background: rgba(4, 8, 15, 0.72);
+          backdrop-filter: blur(6px);
         }
       }
 
@@ -1651,6 +1832,10 @@
           grid-template-columns: 1.05fr 0.95fr;
           gap: 1rem;
           align-items: start;
+        }
+
+        .legal-grid {
+          grid-template-columns: 1fr 1fr;
         }
       }
 
@@ -2209,6 +2394,47 @@
             </div>
 
             <div class="security-specs reveal" style="--d: 100ms" aria-label="Technische Sicherheitsparameter">
+              <h3 data-i18n="security.techTeaser.title">Technische Sicherheit auf einen Blick</h3>
+              <p class="muted-note" data-i18n="security.techTeaser.body">
+                Die wichtigsten Sicherheitsparameter sind klar definiert und auf lokale Kontrolle ausgerichtet. Die vollständigen technischen Angaben kannst du im Detail-Popup ansehen.
+              </p>
+              <ul class="check-list" style="margin-top: 0.8rem;">
+                <li data-i18n="security.techTeaser.item1">Lokale Datenverschlüsselung und verschlüsselte Backups mit AES-256-GCM</li>
+                <li data-i18n="security.techTeaser.item2">PBKDF2-HMAC-SHA512 mit 600.000 Iterationen für passwortbasierte Schlüsselableitung</li>
+                <li data-i18n="security.techTeaser.item3">Lokale Datenhoheit, optionaler App-Lock und biometrische Entsperrung (geräteseitig)</li>
+              </ul>
+              <div style="margin-top: 0.9rem;">
+                <a
+                  class="button button-ghost"
+                  href="#technische-details"
+                  data-legal-open="technische-details"
+                  aria-haspopup="dialog"
+                  data-i18n="security.techTeaser.button"
+                >Technische Details öffnen</a>
+              </div>
+              <p class="muted-note" style="margin-top: 0.75rem;" data-i18n="security.specs.note">
+                Die Angaben beschreiben Sicherheitsmechanismen und keinen Garantie- oder Rechtsberatungsersatz.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TECHNICAL DETAILS -->
+      <section class="section legal-source" id="technische-details" aria-labelledby="tech-details-title" hidden>
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow" data-i18n="security.techModal.eyebrow">Technische Details</p>
+              <h2 id="tech-details-title" data-i18n="security.techModal.title">Technische Sicherheitsparameter von Sphaera</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms" data-i18n="security.techModal.lead">
+              Diese Übersicht bündelt die derzeit kommunizierten Sicherheits- und Datenschutzparameter der App. Sie beschreibt den vorgesehenen technischen Rahmen und keine rechtsverbindliche Garantie.
+            </p>
+          </div>
+
+          <div class="legal-grid">
+            <div class="security-specs reveal" style="--d: 20ms" aria-label="Technische Sicherheitsparameter im Detail">
               <h3 data-i18n="security.specs.title">Technische Sicherheitsparameter (klar formuliert)</h3>
               <div class="spec-grid">
                 <div class="spec-item">
@@ -2240,6 +2466,70 @@
                 Die Angaben beschreiben Sicherheitsmechanismen und keinen Garantie- oder Rechtsberatungsersatz.
               </p>
             </div>
+
+            <div class="panel legal-card reveal" style="--d: 80ms">
+              <h3 data-i18n="security.techModal.card.title">Einordnung für Website-Besucher</h3>
+              <p data-i18n="security.techModal.card.body1">
+                Die technischen Angaben dienen der transparenten Einordnung des Sicherheitsansatzes von Sphaera vor dem Release. Sie helfen bei der Bewertung von Datenschutzfokus, lokaler Datenhaltung und Schutzmechanismen.
+              </p>
+              <p data-i18n="security.techModal.card.body2">
+                Je nach Plattform, Geräteunterstützung und finalem Release-Stand können sich Implementierungsdetails ändern. Maßgeblich sind die zum Release veröffentlichten Informationen in App, Hilfe und Nutzungsunterlagen.
+              </p>
+              <ul class="legal-list">
+                <li><span data-i18n="security.techModal.card.item1">Primärer Fokus: lokale Kontrolle und nachvollziehbare Sicherheitsmechanismen</span></li>
+                <li><span data-i18n="security.techModal.card.item2">Keine standardmäßige externe Analytics für die App-Datenverarbeitung</span></li>
+                <li><span data-i18n="security.techModal.card.item3">Technische Details werden im Produktkontext weiter konkretisiert</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- IMPRESSUM -->
+      <section class="section legal-source" id="impressum" aria-labelledby="impressum-title" hidden>
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Impressum</p>
+              <h2 id="impressum-title">Angaben gemäß § 5 DDG</h2>
+            </div>
+            <p class="lead">
+              Diese Angaben betreffen den Betreiber der Website sphaera.app. Je nach Tätigkeit, Rechtsform oder regulatorischem Kontext können ergänzende Pflichtangaben erforderlich sein.
+            </p>
+          </div>
+
+          <div class="legal-grid">
+            <article class="panel legal-card">
+              <h3>Betreiber / Anbieter</h3>
+              <p>Dominik Schuller</p>
+              <p>Unternehmens-/Statusangabe (nach eigener Angabe): I/E</p>
+              <p class="legal-meta">Bitte die genaue offizielle Rechtsformbezeichnung bei Bedarf ergänzen/anpassen.</p>
+            </article>
+
+            <article class="panel legal-card">
+              <h3>Ladungsfähige Anschrift</h3>
+              <p>Todugari Settlement 76</p>
+              <p>6000 Batumi</p>
+              <p>Georgien</p>
+            </article>
+
+            <article class="panel legal-card">
+              <h3>Kontakt</h3>
+              <p>
+                E-Mail:
+                <a href="mailto:support@sphaera.app">support@sphaera.app</a>
+              </p>
+            </article>
+
+            <article class="panel legal-card">
+              <h3>Vertretung / inhaltliche Verantwortung</h3>
+              <p>Vertretungsberechtigte Person: Dominik Schuller</p>
+              <p>Inhaltlich verantwortlich (soweit gesetzlich erforderlich): Dominik Schuller</p>
+              <p class="legal-meta">Anschrift wie oben</p>
+              <p class="legal-meta">
+                Hinweis: Vor breiter Bewerbung rechtlich prüfen und ggf. um weitere Pflichtangaben ergänzen (z. B. Registerangaben, USt-IdNr., weitere Kontaktangaben), sofern anwendbar.
+              </p>
+            </article>
           </div>
         </div>
       </section>
@@ -2506,6 +2796,155 @@
           </div>
         </div>
       </section>
+
+      <!-- PRIVACY -->
+      <section class="section legal-source" id="datenschutz" aria-labelledby="privacy-title" hidden>
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow" data-i18n="privacy.eyebrow">Datenschutz</p>
+              <h2 id="privacy-title" data-i18n="privacy.title">Datenschutzinformationen zur Website und Warteliste</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms" data-i18n="privacy.lead">
+              Diese Informationen beschreiben die Verarbeitung im Zusammenhang mit der Sphaera-Website, dem Beta-/Launch-Formular und den zugehörigen Produkt-Updates. Bitte prüfe die Inhalte vor dem finalen Live-Betrieb rechtlich für dein konkretes Setup.
+            </p>
+          </div>
+
+          <div class="legal-grid">
+            <article class="panel legal-card reveal">
+              <h3 data-i18n="privacy.card1.title">Verantwortliche Stelle & Kontakt</h3>
+              <p data-i18n="privacy.card1.body">
+                Verantwortlich für diese Website und die hier erfassten Wartelisten-Daten ist Sphaera. Für Datenschutzanfragen, Auskunft oder Löschung kannst du den Kontakt unten verwenden.
+              </p>
+              <ul class="legal-list">
+                <li><span data-i18n="privacy.card1.item1">E-Mail: support@sphaera.app</span></li>
+                <li><span data-i18n="privacy.card1.item2">Website: sphaera.app</span></li>
+                <li><span data-i18n="privacy.card1.item3">Zweck: Produkt-Updates, Beta- und Launch-Kommunikation</span></li>
+              </ul>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 80ms">
+              <h3 data-i18n="privacy.card2.title">Welche Daten auf dieser Website verarbeitet werden</h3>
+              <p data-i18n="privacy.card2.body">
+                Je nach Nutzung dieser Website können technische Verbindungsdaten, Formulareingaben und Spracheinstellungen verarbeitet werden.
+              </p>
+              <ul class="legal-list">
+                <li><span data-i18n="privacy.card2.item1">Server-/Verbindungsdaten (z. B. Zeitpunkt, IP-Adresse, User-Agent), soweit durch Hosting technisch erforderlich</span></li>
+                <li><span data-i18n="privacy.card2.item2">E-Mail-Adresse, gewählter Eintragstyp (Beta/Launch), Sprache und Formularquelle bei Eintragung in die Warteliste</span></li>
+                <li><span data-i18n="privacy.card2.item3">Sprachauswahl der Website (lokal im Browser gespeichert, z. B. via Local Storage)</span></li>
+                <li><span data-i18n="privacy.card2.item4">Nutzungsmetriken über Umami (wenn aktiviert), ohne Google Analytics</span></li>
+              </ul>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 120ms">
+              <h3 data-i18n="privacy.card3.title">Zwecke, Rechtsgrundlagen und eingesetzte Dienste</h3>
+              <p data-i18n="privacy.card3.body1">
+                Formulareinträge werden verwendet, um gewünschte Produkt-Updates, Beta-Informationen oder Launch-Benachrichtigungen zu senden.
+              </p>
+              <p data-i18n="privacy.card3.body2">
+                Soweit anwendbar erfolgt die Verarbeitung für Produkt-Updates auf Grundlage deiner Einwilligung. Technisch notwendige Verarbeitung kann zusätzlich für Betrieb, Sicherheit und Missbrauchsschutz erforderlich sein.
+              </p>
+              <ul class="legal-list">
+                <li><span data-i18n="privacy.card3.item1">Wartelisten-Speicherung über Supabase (Datenbank/API)</span></li>
+                <li><span data-i18n="privacy.card3.item2">Datenschutzfreundliche Webanalyse über Umami (ohne Google)</span></li>
+                <li><span data-i18n="privacy.card3.item3">Produktkommunikation nur im Rahmen des angegebenen Zwecks</span></li>
+              </ul>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 160ms">
+              <h3 data-i18n="privacy.card4.title">Speicherung, Löschung und deine Rechte</h3>
+              <p data-i18n="privacy.card4.body1">
+                Wartelisten-Einträge werden so lange gespeichert, wie sie für Beta-/Launch-Kommunikation benötigt werden oder bis du eine Löschung bzw. Abmeldung verlangst.
+              </p>
+              <p data-i18n="privacy.card4.body2">
+                Du kannst im Rahmen der anwendbaren gesetzlichen Regelungen Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung anfragen.
+              </p>
+              <ul class="legal-list">
+                <li><span data-i18n="privacy.card4.item1">Anfragen an: support@sphaera.app</span></li>
+                <li><span data-i18n="privacy.card4.item2">Bitte möglichst die verwendete E-Mail-Adresse angeben</span></li>
+                <li><span data-i18n="privacy.card4.item3">Abmeldung von Produkt-Updates ist für spätere Kommunikation vorzusehen</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="subpanel reveal" style="margin-top: 0.9rem;" role="note">
+            <h3 data-i18n="privacy.note.title">Stand & Hinweis</h3>
+            <p data-i18n="privacy.note.body">
+              Stand: 22. Februar 2026. Diese Datenschutzinformationen sind eine strukturierte Basis für die Website und sollten vor dem finalen Produktivbetrieb rechtlich geprüft und an Hosting, Versanddienst, Analytics-Setup und Unternehmensdaten angepasst werden.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TERMS -->
+      <section class="section legal-source" id="nutzungsbedingungen" aria-labelledby="terms-title" hidden>
+        <div class="container">
+          <div class="section-head">
+            <div class="reveal">
+              <p class="eyebrow" data-i18n="terms.eyebrow">Nutzungsbedingungen</p>
+              <h2 id="terms-title" data-i18n="terms.title">Nutzungsbedingungen für Website und Informationen zu Sphaera</h2>
+            </div>
+            <p class="lead reveal" style="--d: 80ms" data-i18n="terms.lead">
+              Diese Nutzungsbedingungen regeln die Nutzung der Website sphaera.app und der dort bereitgestellten Informationen, Formulare und Inhalte. Sie beschreiben keinen veröffentlichten Funktionsumfang, der noch nicht live ist.
+            </p>
+          </div>
+
+          <div class="legal-grid">
+            <article class="panel legal-card reveal">
+              <h3 data-i18n="terms.card1.title">Geltungsbereich</h3>
+              <p data-i18n="terms.card1.body">
+                Diese Bedingungen gelten für den Besuch und die Nutzung dieser Website, einschließlich der Kontakt- und Wartelistenfunktionen. Für die spätere Nutzung der App können ergänzende oder separate Bedingungen gelten.
+              </p>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 80ms">
+              <h3 data-i18n="terms.card2.title">Leistungsbeschreibung & Verfügbarkeit</h3>
+              <p data-i18n="terms.card2.body1">
+                Die Website informiert über Sphaera und ermöglicht Eintragungen für Produkt-Updates, Beta- oder Launch-Benachrichtigungen.
+              </p>
+              <p data-i18n="terms.card2.body2">
+                Inhalte, Funktionen, Zeitpläne und Plattformverfügbarkeit können sich ändern. Desktop ist geplant, aber nicht als bereits verfügbar zu verstehen.
+              </p>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 120ms">
+              <h3 data-i18n="terms.card3.title">Kein Fachrat / kein Versprechen spezieller Ergebnisse</h3>
+              <p data-i18n="terms.card3.body">
+                Sphaera ist ein Planungswerkzeug. Inhalte auf dieser Website stellen keine medizinische, psychologische, finanzielle oder rechtliche Beratung dar und enthalten keine Heilversprechen.
+              </p>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 160ms">
+              <h3 data-i18n="terms.card4.title">Nutzung der Website und Formulare</h3>
+              <p data-i18n="terms.card4.body">
+                Die Website und Formulare dürfen nur rechtmäßig und ohne Missbrauch genutzt werden. Unzulässig sind insbesondere automatisierte Massenanfragen, falsche Angaben oder technische Angriffe auf Verfügbarkeit und Sicherheit.
+              </p>
+              <ul class="legal-list">
+                <li><span data-i18n="terms.card4.item1">Nur eigene bzw. berechtigte E-Mail-Adressen verwenden</span></li>
+                <li><span data-i18n="terms.card4.item2">Keine irreführenden oder schädlichen Eingaben</span></li>
+                <li><span data-i18n="terms.card4.item3">Keine Umgehung von Schutzmaßnahmen</span></li>
+              </ul>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 200ms">
+              <h3 data-i18n="terms.card5.title">Inhalte, Rechte, Änderungen & Kontakt</h3>
+              <p data-i18n="terms.card5.body1">
+                Texte, Gestaltung, Marken und Inhalte dieser Website sind geschützt, soweit rechtlich anwendbar. Eine Nutzung außerhalb der üblichen Seitenverwendung bedarf einer Erlaubnis.
+              </p>
+              <p data-i18n="terms.card5.body2">
+                Sphaera kann diese Website und diese Bedingungen anpassen, insbesondere bei Produktfortschritt, neuen Funktionen oder rechtlichen Anforderungen. Fragen zu diesen Bedingungen können an support@sphaera.app gerichtet werden.
+              </p>
+            </article>
+
+            <article class="panel legal-card reveal" style="--d: 240ms">
+              <h3 data-i18n="terms.card6.title">Stand & rechtlicher Hinweis</h3>
+              <p data-i18n="terms.card6.body">
+                Stand: 22. Februar 2026. Diese Nutzungsbedingungen sind eine strukturierte Basis für die Website und sollten vor dem finalen Produktivbetrieb rechtlich geprüft und an das tatsächliche Geschäftsmodell angepasst werden.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- FOOTER -->
@@ -2521,8 +2960,9 @@
         <div>
           <h3 style="margin-bottom: 0.55rem;" data-i18n="footer.legalTitle">Rechtliches &amp; Hilfe</h3>
           <ul class="footer-links">
-            <li><a href="#" aria-label="Datenschutz (Platzhalter-Link)" data-i18n="footer.link.privacy">Datenschutz</a></li>
-            <li><a href="#" aria-label="Nutzungsbedingungen (Platzhalter-Link)" data-i18n="footer.link.terms">Nutzungsbedingungen</a></li>
+            <li data-visible-langs="de"><a href="#impressum" aria-label="Impressum" data-legal-open="impressum" aria-haspopup="dialog">Impressum</a></li>
+            <li><a href="#datenschutz" aria-label="Datenschutz" data-i18n="footer.link.privacy" data-legal-open="datenschutz" aria-haspopup="dialog">Datenschutz</a></li>
+            <li><a href="#nutzungsbedingungen" aria-label="Nutzungsbedingungen" data-i18n="footer.link.terms" data-legal-open="nutzungsbedingungen" aria-haspopup="dialog">Nutzungsbedingungen</a></li>
             <li><a href="#faq" aria-label="Hilfe und FAQ" data-i18n="footer.link.help">Hilfe / FAQ</a></li>
           </ul>
         </div>
@@ -2537,6 +2977,19 @@
         </div>
       </div>
     </footer>
+
+    <dialog class="legal-modal" id="legal-modal" aria-labelledby="legal-modal-title">
+      <div class="legal-modal-shell">
+        <div class="legal-modal-header">
+          <h2 class="legal-modal-title" id="legal-modal-title"></h2>
+          <button class="legal-modal-close-btn" id="legal-modal-close" type="button">
+            <span class="legal-modal-close-icon" aria-hidden="true">×</span>
+            <span class="sr-only" data-i18n="legal.modal.close">Schließen</span>
+          </button>
+        </div>
+        <div class="legal-modal-content" id="legal-modal-content"></div>
+      </div>
+    </dialog>
 
     <script>
       (() => {
@@ -4360,11 +4813,644 @@
           }
         };
 
+        const legalTranslations = {
+          de: {
+            "legal.modal.close": "Schließen",
+            "privacy.eyebrow": "Datenschutz",
+            "privacy.title": "Datenschutzinformationen zur Website und Warteliste",
+            "privacy.lead":
+              "Diese Informationen beschreiben die Verarbeitung im Zusammenhang mit der Sphaera-Website, dem Beta-/Launch-Formular und den zugehörigen Produkt-Updates. Bitte prüfe die Inhalte vor dem finalen Live-Betrieb rechtlich für dein konkretes Setup.",
+            "privacy.card1.title": "Verantwortliche Stelle & Kontakt",
+            "privacy.card1.body":
+              "Verantwortlich für diese Website und die hier erfassten Wartelisten-Daten ist Sphaera. Für Datenschutzanfragen, Auskunft oder Löschung kannst du den Kontakt unten verwenden.",
+            "privacy.card1.item1": "E-Mail: support@sphaera.app",
+            "privacy.card1.item2": "Website: sphaera.app",
+            "privacy.card1.item3": "Zweck: Produkt-Updates, Beta- und Launch-Kommunikation",
+            "privacy.card2.title": "Welche Daten auf dieser Website verarbeitet werden",
+            "privacy.card2.body":
+              "Je nach Nutzung dieser Website können technische Verbindungsdaten, Formulareingaben und Spracheinstellungen verarbeitet werden.",
+            "privacy.card2.item1":
+              "Server-/Verbindungsdaten (z. B. Zeitpunkt, IP-Adresse, User-Agent), soweit durch Hosting technisch erforderlich",
+            "privacy.card2.item2":
+              "E-Mail-Adresse, gewählter Eintragstyp (Beta/Launch), Sprache und Formularquelle bei Eintragung in die Warteliste",
+            "privacy.card2.item3":
+              "Sprachauswahl der Website (lokal im Browser gespeichert, z. B. via Local Storage)",
+            "privacy.card2.item4":
+              "Nutzungsmetriken über Umami (wenn aktiviert), ohne Google Analytics",
+            "privacy.card3.title": "Zwecke, Rechtsgrundlagen und eingesetzte Dienste",
+            "privacy.card3.body1":
+              "Formulareinträge werden verwendet, um gewünschte Produkt-Updates, Beta-Informationen oder Launch-Benachrichtigungen zu senden.",
+            "privacy.card3.body2":
+              "Soweit anwendbar erfolgt die Verarbeitung für Produkt-Updates auf Grundlage deiner Einwilligung. Technisch notwendige Verarbeitung kann zusätzlich für Betrieb, Sicherheit und Missbrauchsschutz erforderlich sein.",
+            "privacy.card3.item1": "Wartelisten-Speicherung über Supabase (Datenbank/API)",
+            "privacy.card3.item2": "Datenschutzfreundliche Webanalyse über Umami (ohne Google)",
+            "privacy.card3.item3":
+              "Produktkommunikation nur im Rahmen des angegebenen Zwecks",
+            "privacy.card4.title": "Speicherung, Löschung und deine Rechte",
+            "privacy.card4.body1":
+              "Wartelisten-Einträge werden so lange gespeichert, wie sie für Beta-/Launch-Kommunikation benötigt werden oder bis du eine Löschung bzw. Abmeldung verlangst.",
+            "privacy.card4.body2":
+              "Du kannst im Rahmen der anwendbaren gesetzlichen Regelungen Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung anfragen.",
+            "privacy.card4.item1": "Anfragen an: support@sphaera.app",
+            "privacy.card4.item2":
+              "Bitte möglichst die verwendete E-Mail-Adresse angeben",
+            "privacy.card4.item3":
+              "Abmeldung von Produkt-Updates ist für spätere Kommunikation vorzusehen",
+            "privacy.note.title": "Stand & Hinweis",
+            "privacy.note.body":
+              "Stand: 22. Februar 2026. Diese Datenschutzinformationen sind eine strukturierte Basis für die Website und sollten vor dem finalen Produktivbetrieb rechtlich geprüft und an Hosting, Versanddienst, Analytics-Setup und Unternehmensdaten angepasst werden.",
+            "terms.eyebrow": "Nutzungsbedingungen",
+            "terms.title": "Nutzungsbedingungen für Website und Informationen zu Sphaera",
+            "terms.lead":
+              "Diese Nutzungsbedingungen regeln die Nutzung der Website sphaera.app und der dort bereitgestellten Informationen, Formulare und Inhalte. Sie beschreiben keinen veröffentlichten Funktionsumfang, der noch nicht live ist.",
+            "terms.card1.title": "Geltungsbereich",
+            "terms.card1.body":
+              "Diese Bedingungen gelten für den Besuch und die Nutzung dieser Website, einschließlich der Kontakt- und Wartelistenfunktionen. Für die spätere Nutzung der App können ergänzende oder separate Bedingungen gelten.",
+            "terms.card2.title": "Leistungsbeschreibung & Verfügbarkeit",
+            "terms.card2.body1":
+              "Die Website informiert über Sphaera und ermöglicht Eintragungen für Produkt-Updates, Beta- oder Launch-Benachrichtigungen.",
+            "terms.card2.body2":
+              "Inhalte, Funktionen, Zeitpläne und Plattformverfügbarkeit können sich ändern. Desktop ist geplant, aber nicht als bereits verfügbar zu verstehen.",
+            "terms.card3.title":
+              "Kein Fachrat / kein Versprechen spezieller Ergebnisse",
+            "terms.card3.body":
+              "Sphaera ist ein Planungswerkzeug. Inhalte auf dieser Website stellen keine medizinische, psychologische, finanzielle oder rechtliche Beratung dar und enthalten keine Heilversprechen.",
+            "terms.card4.title": "Nutzung der Website und Formulare",
+            "terms.card4.body":
+              "Die Website und Formulare dürfen nur rechtmäßig und ohne Missbrauch genutzt werden. Unzulässig sind insbesondere automatisierte Massenanfragen, falsche Angaben oder technische Angriffe auf Verfügbarkeit und Sicherheit.",
+            "terms.card4.item1":
+              "Nur eigene bzw. berechtigte E-Mail-Adressen verwenden",
+            "terms.card4.item2":
+              "Keine irreführenden oder schädlichen Eingaben",
+            "terms.card4.item3":
+              "Keine Umgehung von Schutzmaßnahmen",
+            "terms.card5.title": "Inhalte, Rechte, Änderungen & Kontakt",
+            "terms.card5.body1":
+              "Texte, Gestaltung, Marken und Inhalte dieser Website sind geschützt, soweit rechtlich anwendbar. Eine Nutzung außerhalb der üblichen Seitenverwendung bedarf einer Erlaubnis.",
+            "terms.card5.body2":
+              "Sphaera kann diese Website und diese Bedingungen anpassen, insbesondere bei Produktfortschritt, neuen Funktionen oder rechtlichen Anforderungen. Fragen zu diesen Bedingungen können an support@sphaera.app gerichtet werden.",
+            "terms.card6.title": "Stand & rechtlicher Hinweis",
+            "terms.card6.body":
+              "Stand: 22. Februar 2026. Diese Nutzungsbedingungen sind eine strukturierte Basis für die Website und sollten vor dem finalen Produktivbetrieb rechtlich geprüft und an das tatsächliche Geschäftsmodell angepasst werden."
+          },
+          en: {
+            "legal.modal.close": "Close",
+            "privacy.eyebrow": "Privacy",
+            "privacy.title": "Privacy information for the website and waitlist",
+            "privacy.lead":
+              "This information describes processing related to the Sphaera website, the beta/launch signup form and related product updates. Please review and adapt it legally for your exact setup before final production use.",
+            "privacy.card1.title": "Controller and contact",
+            "privacy.card1.body":
+              "Sphaera is responsible for this website and the waitlist data collected here. For privacy requests, access or deletion inquiries, please use the contact details below.",
+            "privacy.card1.item1": "Email: support@sphaera.app",
+            "privacy.card1.item2": "Website: sphaera.app",
+            "privacy.card1.item3": "Purpose: product updates, beta and launch communication",
+            "privacy.card2.title": "What data may be processed on this website",
+            "privacy.card2.body":
+              "Depending on how you use this website, technical connection data, form entries and language preferences may be processed.",
+            "privacy.card2.item1":
+              "Server/connection data such as timestamp, IP address and user agent where technically required by hosting",
+            "privacy.card2.item2":
+              "Email address, selected signup type (beta/launch), language and form source when joining the waitlist",
+            "privacy.card2.item3":
+              "Website language preference stored locally in the browser, for example via local storage",
+            "privacy.card2.item4":
+              "Usage metrics via Umami when enabled, without Google Analytics",
+            "privacy.card3.title": "Purposes, legal bases and services used",
+            "privacy.card3.body1":
+              "Form entries are used to send requested product updates, beta information or launch notifications.",
+            "privacy.card3.body2":
+              "Where applicable, product update communication is processed based on your consent. Additional technically necessary processing may occur for operation, security and abuse prevention.",
+            "privacy.card3.item1": "Waitlist storage via Supabase (database/API)",
+            "privacy.card3.item2": "Privacy-friendly web analytics via Umami (without Google)",
+            "privacy.card3.item3":
+              "Product communication limited to the stated purpose",
+            "privacy.card4.title": "Storage, deletion and your rights",
+            "privacy.card4.body1":
+              "Waitlist entries are stored as long as needed for beta/launch communication or until you request deletion or unsubscribe.",
+            "privacy.card4.body2":
+              "Subject to applicable law, you may request access, correction, deletion or restriction of processing.",
+            "privacy.card4.item1": "Requests to: support@sphaera.app",
+            "privacy.card4.item2":
+              "Please include the email address used for signup if possible",
+            "privacy.card4.item3":
+              "An unsubscribe option should be provided for future product emails",
+            "privacy.note.title": "Version and note",
+            "privacy.note.body":
+              "Version date: February 22, 2026. This privacy text is a structured basis for the website and should be legally reviewed and adapted to your hosting, email provider, analytics setup and company details before production use.",
+            "terms.eyebrow": "Terms of use",
+            "terms.title": "Terms of use for the website and information about Sphaera",
+            "terms.lead":
+              "These terms govern the use of sphaera.app and the information, forms and content provided there. They do not describe any unpublished feature set as already available.",
+            "terms.card1.title": "Scope",
+            "terms.card1.body":
+              "These terms apply to visiting and using this website, including contact and waitlist features. Additional or separate terms may apply to future app use.",
+            "terms.card2.title": "Service description and availability",
+            "terms.card2.body1":
+              "This website provides information about Sphaera and allows signup for product updates, beta access or launch notifications.",
+            "terms.card2.body2":
+              "Content, features, timelines and platform availability may change. Desktop is planned and must not be understood as already available.",
+            "terms.card3.title":
+              "No professional advice and no promise of specific outcomes",
+            "terms.card3.body":
+              "Sphaera is a planning tool. Content on this website does not constitute medical, psychological, financial or legal advice and does not include healing claims.",
+            "terms.card4.title": "Use of the website and forms",
+            "terms.card4.body":
+              "The website and forms may only be used lawfully and without abuse. In particular, automated mass requests, false information or technical attacks on availability and security are prohibited.",
+            "terms.card4.item1":
+              "Use only your own or authorized email addresses",
+            "terms.card4.item2":
+              "Do not submit misleading or harmful input",
+            "terms.card4.item3":
+              "Do not bypass protective measures",
+            "terms.card5.title": "Content, rights, changes and contact",
+            "terms.card5.body1":
+              "Texts, design, trademarks and other website content are protected where legally applicable. Use beyond normal website viewing requires permission.",
+            "terms.card5.body2":
+              "Sphaera may update this website and these terms, especially due to product progress, new features or legal requirements. Questions can be sent to support@sphaera.app.",
+            "terms.card6.title": "Version and legal note",
+            "terms.card6.body":
+              "Version date: February 22, 2026. These terms are a structured basis for the website and should be legally reviewed and adapted to the actual business model before final production use."
+          },
+          ka: {
+            "legal.modal.close": "დახურვა",
+            "privacy.eyebrow": "კონფიდენციალურობა",
+            "privacy.title": "კონფიდენციალურობის ინფორმაცია ვებსაიტსა და waitlist-ზე",
+            "privacy.lead":
+              "ეს ინფორმაცია აღწერს მონაცემთა დამუშავებას Sphaera-ს ვებსაიტთან, beta/launch ფორმასთან და შესაბამის პროდუქტის განახლებებთან დაკავშირებით. საბოლოო გაშვებამდე გთხოვთ იურიდიულად გადაამოწმოთ და მოარგოთ თქვენს რეალურ კონფიგურაციას.",
+            "privacy.card1.title": "პასუხისმგებელი პირი და კონტაქტი",
+            "privacy.card1.body":
+              "ამ ვებსაიტსა და აქ შეგროვებულ waitlist მონაცემებზე პასუხისმგებელია Sphaera. კონფიდენციალურობის მოთხოვნებისთვის, წვდომის ან წაშლის საკითხებზე გამოიყენეთ ქვემოთ მოცემული კონტაქტი.",
+            "privacy.card1.item1": "ელფოსტა: support@sphaera.app",
+            "privacy.card1.item2": "ვებსაიტი: sphaera.app",
+            "privacy.card1.item3": "მიზანი: პროდუქტის განახლებები, ბეტა და launch კომუნიკაცია",
+            "privacy.card2.title": "რა მონაცემები შეიძლება დამუშავდეს ამ ვებსაიტზე",
+            "privacy.card2.body":
+              "ვებსაიტის გამოყენების მიხედვით შეიძლება დამუშავდეს ტექნიკური კავშირის მონაცემები, ფორმის ჩანაწერები და ენის პარამეტრები.",
+            "privacy.card2.item1":
+              "სერვერის/კავშირის მონაცემები, მაგალითად დრო, IP მისამართი და user agent, როცა ჰოსტინგისთვის ტექნიკურად საჭიროა",
+            "privacy.card2.item2":
+              "ელფოსტა, არჩეული ტიპი (beta/launch), ენა და ფორმის წყარო waitlist-ში რეგისტრაციისას",
+            "privacy.card2.item3":
+              "ვებსაიტის ენის არჩევანი, ლოკალურად ბრაუზერში შენახული, მაგალითად local storage-ით",
+            "privacy.card2.item4":
+              "გამოყენების მეტრიკები Umami-ით (თუ ჩართულია), Google Analytics-ის გარეშე",
+            "privacy.card3.title": "მიზნები, საფუძვლები და გამოყენებული სერვისები",
+            "privacy.card3.body1":
+              "ფორმის ჩანაწერები გამოიყენება მოთხოვნილი პროდუქტის განახლებების, ბეტა ინფორმაციის ან launch შეტყობინებების გასაგზავნად.",
+            "privacy.card3.body2":
+              "სადაც გამოიყენება, პროდუქტის განახლებების გაგზავნა ეფუძნება თქვენს თანხმობას. ტექნიკურად აუცილებელი დამუშავება შეიძლება ასევე იყოს საჭირო მუშაობისთვის, უსაფრთხოებისა და ბოროტად გამოყენების პრევენციისთვის.",
+            "privacy.card3.item1": "Waitlist-ის შენახვა Supabase-ის საშუალებით (database/API)",
+            "privacy.card3.item2": "კონფიდენციალურობაზე ორიენტირებული ვებ ანალიტიკა Umami-ით (Google-ის გარეშე)",
+            "privacy.card3.item3": "პროდუქტის კომუნიკაცია მხოლოდ მითითებული მიზნის ფარგლებში",
+            "privacy.card4.title": "შენახვა, წაშლა და თქვენი უფლებები",
+            "privacy.card4.body1":
+              "Waitlist ჩანაწერები ინახება იმდენხანს, რამდენიც საჭიროა beta/launch კომუნიკაციისთვის ან სანამ არ მოითხოვთ წაშლას/გამოწერის გაუქმებას.",
+            "privacy.card4.body2":
+              "მოქმედი კანონმდებლობის ფარგლებში შეგიძლიათ მოითხოვოთ წვდომა, შესწორება, წაშლა ან დამუშავების შეზღუდვა.",
+            "privacy.card4.item1": "მოთხოვნები: support@sphaera.app",
+            "privacy.card4.item2": "თუ შეიძლება, მიუთითეთ რეგისტრაციისას გამოყენებული ელფოსტა",
+            "privacy.card4.item3": "პროდუქტის წერილებისთვის გათვალისწინებული უნდა იყოს გამოწერის გაუქმება",
+            "privacy.note.title": "ვერსია და შენიშვნა",
+            "privacy.note.body":
+              "ვერსია: 22 თებერვალი 2026. ეს ტექსტი არის ვებსაიტის სტრუქტურირებული ბაზა და პროდუქტიულ გამოყენებამდე უნდა გადამოწმდეს იურიდიულად და მოერგოს ჰოსტინგს, საფოსტო სერვისს, ანალიტიკას და კომპანიის მონაცემებს.",
+            "terms.eyebrow": "გამოყენების პირობები",
+            "terms.title": "გამოყენების პირობები ვებსაიტისთვის და Sphaera-ს შესახებ ინფორმაციისთვის",
+            "terms.lead":
+              "ეს პირობები არეგულირებს sphaera.app-ის და მასზე განთავსებული ინფორმაციის, ფორმებისა და კონტენტის გამოყენებას. აქ არ არის წარმოდგენილი ჯერ არ გამოქვეყნებული ფუნქციები როგორც უკვე ხელმისაწვდომი.",
+            "terms.card1.title": "გამოყენების სფერო",
+            "terms.card1.body":
+              "ეს პირობები ვრცელდება ამ ვებსაიტის მონახულებასა და გამოყენებაზე, მათ შორის საკონტაქტო და waitlist ფუნქციებზე. აპის მომავალი გამოყენებისთვის შეიძლება მოქმედებდეს დამატებითი ან ცალკე პირობები.",
+            "terms.card2.title": "სერვისის აღწერა და ხელმისაწვდომობა",
+            "terms.card2.body1":
+              "ვებსაიტი გვაწვდის ინფორმაციას Sphaera-ზე და იძლევა პროდუქტის განახლებების, ბეტა წვდომის ან launch შეტყობინებების რეგისტრაციის შესაძლებლობას.",
+            "terms.card2.body2":
+              "კონტენტი, ფუნქციები, დროის გეგმა და პლატფორმების ხელმისაწვდომობა შეიძლება შეიცვალოს. Desktop დაგეგმილია და არ უნდა ჩაითვალოს უკვე ხელმისაწვდომად.",
+            "terms.card3.title": "არ არის პროფესიული რჩევა და შედეგის გარანტია",
+            "terms.card3.body":
+              "Sphaera არის დაგეგმვის ინსტრუმენტი. ამ ვებსაიტზე არსებული ინფორმაცია არ წარმოადგენს სამედიცინო, ფსიქოლოგიურ, ფინანსურ ან იურიდიულ რჩევას და არ შეიცავს სამკურნალო დაპირებებს.",
+            "terms.card4.title": "ვებსაიტისა და ფორმების გამოყენება",
+            "terms.card4.body":
+              "ვებსაიტი და ფორმები უნდა გამოიყენოთ მხოლოდ კანონიერად და ბოროტად გამოყენების გარეშე. აკრძალულია ავტომატური მასობრივი მოთხოვნები, ცრუ ინფორმაცია ან ტექნიკური შეტევები ხელმისაწვდომობასა და უსაფრთხოებაზე.",
+            "terms.card4.item1": "გამოიყენეთ მხოლოდ საკუთარი ან უფლებამოსილი ელფოსტა",
+            "terms.card4.item2": "არ შეიყვანოთ შეცდომაში შემყვანი ან მავნე ინფორმაცია",
+            "terms.card4.item3": "არ სცადოთ დაცვის მექანიზმების გვერდის ავლა",
+            "terms.card5.title": "კონტენტი, უფლებები, ცვლილებები და კონტაქტი",
+            "terms.card5.body1":
+              "ტექსტები, დიზაინი, ნიშნები და სხვა კონტენტი დაცულია, სადაც ეს სამართლებრივად გამოიყენება. ჩვეულებრივი ნახვის ფარგლებს გარეთ გამოყენება საჭიროებს ნებართვას.",
+            "terms.card5.body2":
+              "Sphaera-ს შეუძლია შეცვალოს ვებსაიტი და ეს პირობები, განსაკუთრებით პროდუქტის განვითარებასთან, ახალ ფუნქციებთან ან სამართლებრივ მოთხოვნებთან დაკავშირებით. შეკითხვები შეგიძლიათ გაგზავნოთ support@sphaera.app-ზე.",
+            "terms.card6.title": "ვერსია და იურიდიული შენიშვნა",
+            "terms.card6.body":
+              "ვერსია: 22 თებერვალი 2026. ეს პირობები არის ვებსაიტის სტრუქტურირებული ბაზა და საბოლოო პროდუქტიულ გამოყენებამდე უნდა გადამოწმდეს იურიდიულად და მოერგოს რეალურ ბიზნეს მოდელს."
+          },
+          es: {
+            "legal.modal.close": "Cerrar",
+            "privacy.eyebrow": "Privacidad",
+            "privacy.title": "Información de privacidad para el sitio web y la lista de espera",
+            "privacy.lead":
+              "Esta información describe el tratamiento relacionado con el sitio web de Sphaera, el formulario de beta/lanzamiento y las actualizaciones del producto asociadas. Antes del uso final en producción, revísala y adáptala legalmente a tu configuración real.",
+            "privacy.card1.title": "Responsable y contacto",
+            "privacy.card1.body":
+              "Sphaera es responsable de este sitio web y de los datos de la lista de espera recogidos aquí. Para solicitudes de privacidad, acceso o eliminación, utiliza los datos de contacto indicados abajo.",
+            "privacy.card1.item1": "Correo: support@sphaera.app",
+            "privacy.card1.item2": "Sitio web: sphaera.app",
+            "privacy.card1.item3": "Finalidad: actualizaciones del producto, comunicación de beta y lanzamiento",
+            "privacy.card2.title": "Qué datos pueden tratarse en este sitio web",
+            "privacy.card2.body":
+              "Según el uso que hagas de este sitio web, pueden tratarse datos técnicos de conexión, envíos de formularios y preferencias de idioma.",
+            "privacy.card2.item1":
+              "Datos de servidor/conexión como fecha y hora, IP y user agent, cuando el hosting lo requiera técnicamente",
+            "privacy.card2.item2":
+              "Correo electrónico, tipo de registro elegido (beta/lanzamiento), idioma y origen del formulario al apuntarte a la lista de espera",
+            "privacy.card2.item3":
+              "Preferencia de idioma del sitio web guardada localmente en el navegador, por ejemplo mediante local storage",
+            "privacy.card2.item4":
+              "Métricas de uso con Umami (si está activado), sin Google Analytics",
+            "privacy.card3.title": "Finalidades, bases y servicios utilizados",
+            "privacy.card3.body1":
+              "Los datos del formulario se usan para enviar actualizaciones del producto, información de beta o avisos de lanzamiento solicitados.",
+            "privacy.card3.body2":
+              "Cuando corresponda, la comunicación de actualizaciones se basa en tu consentimiento. También puede existir tratamiento técnicamente necesario para operación, seguridad y prevención de abusos.",
+            "privacy.card3.item1": "Almacenamiento de la lista de espera con Supabase (base de datos/API)",
+            "privacy.card3.item2": "Analítica web respetuosa con la privacidad con Umami (sin Google)",
+            "privacy.card3.item3": "Comunicación del producto limitada a la finalidad indicada",
+            "privacy.card4.title": "Conservación, eliminación y tus derechos",
+            "privacy.card4.body1":
+              "Los registros de la lista de espera se conservan mientras sean necesarios para la comunicación de beta/lanzamiento o hasta que solicites su eliminación o baja.",
+            "privacy.card4.body2":
+              "Conforme a la normativa aplicable, puedes solicitar acceso, rectificación, eliminación o limitación del tratamiento.",
+            "privacy.card4.item1": "Solicitudes a: support@sphaera.app",
+            "privacy.card4.item2": "Si es posible, indica el correo usado en el registro",
+            "privacy.card4.item3": "Debe preverse una opción de baja para correos futuros del producto",
+            "privacy.note.title": "Versión y aviso",
+            "privacy.note.body":
+              "Fecha de versión: 22 de febrero de 2026. Este texto de privacidad es una base estructurada para el sitio web y debe revisarse legalmente y adaptarse al hosting, proveedor de correo, analítica y datos de empresa antes de producción.",
+            "terms.eyebrow": "Términos de uso",
+            "terms.title": "Términos de uso del sitio web e información sobre Sphaera",
+            "terms.lead":
+              "Estos términos regulan el uso de sphaera.app y de la información, formularios y contenidos disponibles allí. No describen funcionalidades no publicadas como si ya estuvieran disponibles.",
+            "terms.card1.title": "Ámbito de aplicación",
+            "terms.card1.body":
+              "Estos términos se aplican a la visita y uso de este sitio web, incluidas las funciones de contacto y lista de espera. Para el uso futuro de la app pueden aplicarse términos adicionales o separados.",
+            "terms.card2.title": "Descripción del servicio y disponibilidad",
+            "terms.card2.body1":
+              "Este sitio web informa sobre Sphaera y permite registrarse para actualizaciones del producto, acceso beta o avisos de lanzamiento.",
+            "terms.card2.body2":
+              "El contenido, las funciones, los plazos y la disponibilidad por plataforma pueden cambiar. La versión de escritorio está planificada y no debe entenderse como ya disponible.",
+            "terms.card3.title":
+              "Sin asesoramiento profesional ni promesa de resultados concretos",
+            "terms.card3.body":
+              "Sphaera es una herramienta de planificación. El contenido de este sitio web no constituye asesoramiento médico, psicológico, financiero ni jurídico y no incluye promesas de curación.",
+            "terms.card4.title": "Uso del sitio web y de los formularios",
+            "terms.card4.body":
+              "El sitio web y los formularios solo pueden usarse de forma legal y sin abuso. Se prohíben, en particular, solicitudes masivas automatizadas, datos falsos o ataques técnicos contra la disponibilidad y seguridad.",
+            "terms.card4.item1": "Usar solo correos propios o autorizados",
+            "terms.card4.item2": "No enviar datos engañosos o dañinos",
+            "terms.card4.item3": "No eludir medidas de protección",
+            "terms.card5.title": "Contenidos, derechos, cambios y contacto",
+            "terms.card5.body1":
+              "Los textos, el diseño, las marcas y otros contenidos del sitio están protegidos cuando sea legalmente aplicable. El uso más allá de la visualización normal requiere permiso.",
+            "terms.card5.body2":
+              "Sphaera puede actualizar este sitio web y estos términos, especialmente por progreso del producto, nuevas funciones o requisitos legales. Las preguntas pueden enviarse a support@sphaera.app.",
+            "terms.card6.title": "Versión y aviso legal",
+            "terms.card6.body":
+              "Fecha de versión: 22 de febrero de 2026. Estos términos son una base estructurada para el sitio web y deben revisarse legalmente y adaptarse al modelo real antes del uso final en producción."
+          },
+          fr: {
+            "legal.modal.close": "Fermer",
+            "privacy.eyebrow": "Confidentialité",
+            "privacy.title": "Informations de confidentialité pour le site web et la liste d'attente",
+            "privacy.lead":
+              "Ces informations décrivent les traitements liés au site Sphaera, au formulaire bêta/lancement et aux mises à jour produit associées. Avant la mise en production finale, elles doivent être vérifiées et adaptées juridiquement à votre configuration réelle.",
+            "privacy.card1.title": "Responsable du traitement et contact",
+            "privacy.card1.body":
+              "Sphaera est responsable de ce site web et des données de liste d'attente collectées ici. Pour les demandes de confidentialité, d'accès ou de suppression, utilisez le contact ci-dessous.",
+            "privacy.card1.item1": "E-mail : support@sphaera.app",
+            "privacy.card1.item2": "Site web : sphaera.app",
+            "privacy.card1.item3": "Finalité : mises à jour produit, communication bêta et lancement",
+            "privacy.card2.title": "Quelles données peuvent être traitées sur ce site",
+            "privacy.card2.body":
+              "Selon votre usage du site, des données techniques de connexion, des données de formulaire et des préférences de langue peuvent être traitées.",
+            "privacy.card2.item1":
+              "Données serveur/connexion telles que date, IP et user agent lorsque cela est techniquement nécessaire à l'hébergement",
+            "privacy.card2.item2":
+              "Adresse e-mail, type d'inscription choisi (bêta/lancement), langue et source du formulaire lors de l'inscription",
+            "privacy.card2.item3":
+              "Préférence de langue du site stockée localement dans le navigateur, par exemple via local storage",
+            "privacy.card2.item4":
+              "Mesures d'usage via Umami (si activé), sans Google Analytics",
+            "privacy.card3.title": "Finalités, bases et services utilisés",
+            "privacy.card3.body1":
+              "Les données de formulaire sont utilisées pour envoyer les mises à jour produit, informations bêta ou notifications de lancement demandées.",
+            "privacy.card3.body2":
+              "Le cas échéant, la communication produit repose sur votre consentement. Des traitements techniquement nécessaires peuvent aussi être effectués pour l'exploitation, la sécurité et la prévention des abus.",
+            "privacy.card3.item1": "Stockage de la liste d'attente via Supabase (base de données/API)",
+            "privacy.card3.item2": "Analyse web respectueuse de la confidentialité via Umami (sans Google)",
+            "privacy.card3.item3": "Communication produit limitée à la finalité indiquée",
+            "privacy.card4.title": "Conservation, suppression et vos droits",
+            "privacy.card4.body1":
+              "Les inscriptions à la liste d'attente sont conservées aussi longtemps que nécessaire pour la communication bêta/lancement ou jusqu'à une demande de suppression ou de désinscription.",
+            "privacy.card4.body2":
+              "Selon le droit applicable, vous pouvez demander l'accès, la rectification, la suppression ou la limitation du traitement.",
+            "privacy.card4.item1": "Demandes à : support@sphaera.app",
+            "privacy.card4.item2":
+              "Merci d'indiquer si possible l'adresse e-mail utilisée pour l'inscription",
+            "privacy.card4.item3":
+              "Une option de désinscription doit être prévue pour les futurs e-mails produit",
+            "privacy.note.title": "Version et note",
+            "privacy.note.body":
+              "Date de version : 22 février 2026. Ce texte de confidentialité est une base structurée pour le site web et doit être relu juridiquement et adapté à l'hébergement, au service e-mail, à l'analytics et aux informations de l'entreprise avant la production.",
+            "terms.eyebrow": "Conditions d'utilisation",
+            "terms.title": "Conditions d'utilisation du site web et des informations sur Sphaera",
+            "terms.lead":
+              "Ces conditions régissent l'utilisation de sphaera.app ainsi que des informations, formulaires et contenus qui y sont proposés. Elles ne présentent pas de fonctionnalités non publiées comme déjà disponibles.",
+            "terms.card1.title": "Champ d'application",
+            "terms.card1.body":
+              "Ces conditions s'appliquent à la visite et à l'utilisation de ce site web, y compris les fonctions de contact et de liste d'attente. Des conditions supplémentaires ou séparées peuvent s'appliquer à l'usage futur de l'application.",
+            "terms.card2.title": "Description du service et disponibilité",
+            "terms.card2.body1":
+              "Le site web présente Sphaera et permet de s'inscrire aux mises à jour produit, à la bêta ou aux notifications de lancement.",
+            "terms.card2.body2":
+              "Le contenu, les fonctions, les délais et la disponibilité des plateformes peuvent évoluer. La version desktop est prévue mais ne doit pas être considérée comme déjà disponible.",
+            "terms.card3.title":
+              "Pas de conseil professionnel et pas de promesse de résultats spécifiques",
+            "terms.card3.body":
+              "Sphaera est un outil de planification. Le contenu de ce site ne constitue pas un conseil médical, psychologique, financier ou juridique et ne contient aucune promesse de guérison.",
+            "terms.card4.title": "Utilisation du site web et des formulaires",
+            "terms.card4.body":
+              "Le site et les formulaires doivent être utilisés de manière légale et sans abus. Sont notamment interdits les envois massifs automatisés, les informations fausses et les attaques techniques contre la disponibilité ou la sécurité.",
+            "terms.card4.item1":
+              "Utiliser uniquement vos propres adresses e-mail ou des adresses autorisées",
+            "terms.card4.item2":
+              "Ne pas soumettre de contenu trompeur ou nuisible",
+            "terms.card4.item3":
+              "Ne pas contourner les mesures de protection",
+            "terms.card5.title": "Contenus, droits, modifications et contact",
+            "terms.card5.body1":
+              "Les textes, le design, les marques et autres contenus du site sont protégés lorsque le droit applicable le prévoit. Toute utilisation au-delà de la consultation normale nécessite une autorisation.",
+            "terms.card5.body2":
+              "Sphaera peut modifier ce site et ces conditions, notamment en raison de l'évolution du produit, de nouvelles fonctions ou d'exigences légales. Les questions peuvent être envoyées à support@sphaera.app.",
+            "terms.card6.title": "Version et note juridique",
+            "terms.card6.body":
+              "Date de version : 22 février 2026. Ces conditions constituent une base structurée pour le site web et doivent être relues juridiquement et adaptées au modèle réel avant la mise en production finale."
+          },
+          pt: {
+            "legal.modal.close": "Fechar",
+            "privacy.eyebrow": "Privacidade",
+            "privacy.title": "Informações de privacidade para o site e a lista de espera",
+            "privacy.lead":
+              "Estas informações descrevem o tratamento relacionado ao site da Sphaera, ao formulário de beta/lançamento e às atualizações de produto associadas. Antes do uso final em produção, revise e adapte juridicamente ao seu setup real.",
+            "privacy.card1.title": "Controlador e contato",
+            "privacy.card1.body":
+              "A Sphaera é responsável por este site e pelos dados de lista de espera coletados aqui. Para solicitações de privacidade, acesso ou exclusão, use os contatos abaixo.",
+            "privacy.card1.item1": "Email: support@sphaera.app",
+            "privacy.card1.item2": "Site: sphaera.app",
+            "privacy.card1.item3": "Finalidade: atualizações do produto, comunicação de beta e lançamento",
+            "privacy.card2.title": "Quais dados podem ser tratados neste site",
+            "privacy.card2.body":
+              "Dependendo de como você usa este site, dados técnicos de conexão, envios de formulário e preferências de idioma podem ser tratados.",
+            "privacy.card2.item1":
+              "Dados de servidor/conexão, como data e hora, IP e user agent, quando tecnicamente necessários para a hospedagem",
+            "privacy.card2.item2":
+              "Email, tipo de cadastro escolhido (beta/lançamento), idioma e origem do formulário ao entrar na lista de espera",
+            "privacy.card2.item3":
+              "Preferência de idioma do site salva localmente no navegador, por exemplo via local storage",
+            "privacy.card2.item4":
+              "Métricas de uso via Umami (quando ativado), sem Google Analytics",
+            "privacy.card3.title": "Finalidades, bases e serviços usados",
+            "privacy.card3.body1":
+              "Os dados do formulário são usados para enviar atualizações de produto, informações de beta ou avisos de lançamento solicitados.",
+            "privacy.card3.body2":
+              "Quando aplicável, a comunicação de atualizações de produto é processada com base no seu consentimento. Processamento tecnicamente necessário também pode ocorrer para operação, segurança e prevenção de abuso.",
+            "privacy.card3.item1": "Armazenamento da lista de espera via Supabase (banco/API)",
+            "privacy.card3.item2": "Analytics web com foco em privacidade via Umami (sem Google)",
+            "privacy.card3.item3": "Comunicação de produto limitada à finalidade informada",
+            "privacy.card4.title": "Armazenamento, exclusão e seus direitos",
+            "privacy.card4.body1":
+              "Entradas da lista de espera são armazenadas enquanto forem necessárias para comunicação de beta/lançamento ou até você solicitar exclusão ou cancelamento.",
+            "privacy.card4.body2":
+              "Conforme a legislação aplicável, você pode solicitar acesso, correção, exclusão ou restrição do tratamento.",
+            "privacy.card4.item1": "Solicitações para: support@sphaera.app",
+            "privacy.card4.item2":
+              "Se possível, informe o email usado no cadastro",
+            "privacy.card4.item3":
+              "Uma opção de descadastro deve existir para futuros emails do produto",
+            "privacy.note.title": "Versão e aviso",
+            "privacy.note.body":
+              "Data da versão: 22 de fevereiro de 2026. Este texto de privacidade é uma base estruturada para o site e deve ser revisado juridicamente e adaptado à hospedagem, serviço de email, analytics e dados da empresa antes da produção.",
+            "terms.eyebrow": "Termos de uso",
+            "terms.title": "Termos de uso do site e das informações sobre Sphaera",
+            "terms.lead":
+              "Estes termos regulam o uso de sphaera.app e das informações, formulários e conteúdos disponibilizados ali. Eles não apresentam funcionalidades ainda não publicadas como se já estivessem disponíveis.",
+            "terms.card1.title": "Escopo",
+            "terms.card1.body":
+              "Estes termos se aplicam à visita e ao uso deste site, incluindo funções de contato e lista de espera. Termos adicionais ou separados podem se aplicar ao uso futuro do app.",
+            "terms.card2.title": "Descrição do serviço e disponibilidade",
+            "terms.card2.body1":
+              "Este site apresenta a Sphaera e permite cadastro para atualizações do produto, beta ou notificações de lançamento.",
+            "terms.card2.body2":
+              "Conteúdo, funções, prazos e disponibilidade por plataforma podem mudar. Desktop está planejado e não deve ser entendido como já disponível.",
+            "terms.card3.title":
+              "Sem aconselhamento profissional e sem promessa de resultados específicos",
+            "terms.card3.body":
+              "Sphaera é uma ferramenta de planejamento. O conteúdo deste site não constitui aconselhamento médico, psicológico, financeiro ou jurídico e não inclui promessas de cura.",
+            "terms.card4.title": "Uso do site e dos formulários",
+            "terms.card4.body":
+              "O site e os formulários só podem ser usados legalmente e sem abuso. São proibidos, em especial, envios automatizados em massa, informações falsas ou ataques técnicos contra disponibilidade e segurança.",
+            "terms.card4.item1":
+              "Use apenas emails próprios ou autorizados",
+            "terms.card4.item2":
+              "Não envie conteúdo enganoso ou nocivo",
+            "terms.card4.item3":
+              "Não contorne medidas de proteção",
+            "terms.card5.title": "Conteúdo, direitos, alterações e contato",
+            "terms.card5.body1":
+              "Textos, design, marcas e outros conteúdos do site são protegidos quando legalmente aplicável. Uso além da visualização normal do site exige permissão.",
+            "terms.card5.body2":
+              "A Sphaera pode atualizar este site e estes termos, especialmente devido ao progresso do produto, novas funções ou exigências legais. Dúvidas podem ser enviadas para support@sphaera.app.",
+            "terms.card6.title": "Versão e aviso jurídico",
+            "terms.card6.body":
+              "Data da versão: 22 de fevereiro de 2026. Estes termos são uma base estruturada para o site e devem ser revisados juridicamente e adaptados ao modelo real antes do uso final em produção."
+          }
+        };
+
+        const techPopupTranslations = {
+          de: {
+            "security.techTeaser.title": "Technische Sicherheit auf einen Blick",
+            "security.techTeaser.body":
+              "Die wichtigsten Sicherheitsparameter sind klar definiert und auf lokale Kontrolle ausgerichtet. Die vollständigen technischen Angaben kannst du im Detail-Popup ansehen.",
+            "security.techTeaser.item1":
+              "Lokale Datenverschlüsselung und verschlüsselte Backups mit AES-256-GCM",
+            "security.techTeaser.item2":
+              "PBKDF2-HMAC-SHA512 mit 600.000 Iterationen für passwortbasierte Schlüsselableitung",
+            "security.techTeaser.item3":
+              "Lokale Datenhoheit, optionaler App-Lock und biometrische Entsperrung (geräteseitig)",
+            "security.techTeaser.button": "Technische Details öffnen",
+            "security.techModal.eyebrow": "Technische Details",
+            "security.techModal.title": "Technische Sicherheitsparameter von Sphaera",
+            "security.techModal.lead":
+              "Diese Übersicht bündelt die derzeit kommunizierten Sicherheits- und Datenschutzparameter der App. Sie beschreibt den vorgesehenen technischen Rahmen und keine rechtsverbindliche Garantie.",
+            "security.techModal.card.title": "Einordnung für Website-Besucher",
+            "security.techModal.card.body1":
+              "Die technischen Angaben dienen der transparenten Einordnung des Sicherheitsansatzes von Sphaera vor dem Release. Sie helfen bei der Bewertung von Datenschutzfokus, lokaler Datenhaltung und Schutzmechanismen.",
+            "security.techModal.card.body2":
+              "Je nach Plattform, Geräteunterstützung und finalem Release-Stand können sich Implementierungsdetails ändern. Maßgeblich sind die zum Release veröffentlichten Informationen in App, Hilfe und Nutzungsunterlagen.",
+            "security.techModal.card.item1":
+              "Primärer Fokus: lokale Kontrolle und nachvollziehbare Sicherheitsmechanismen",
+            "security.techModal.card.item2":
+              "Keine standardmäßige externe Analytics für die App-Datenverarbeitung",
+            "security.techModal.card.item3":
+              "Technische Details werden im Produktkontext weiter konkretisiert"
+          },
+          en: {
+            "security.techTeaser.title": "Technical security at a glance",
+            "security.techTeaser.body":
+              "The most important security parameters are clearly defined and designed for local control. You can view the full technical details in the popup.",
+            "security.techTeaser.item1":
+              "Local data encryption and encrypted backups with AES-256-GCM",
+            "security.techTeaser.item2":
+              "PBKDF2-HMAC-SHA512 with 600,000 iterations for password-based key derivation",
+            "security.techTeaser.item3":
+              "Local data ownership, optional app lock and biometric unlock (device-supported)",
+            "security.techTeaser.button": "Open technical details",
+            "security.techModal.eyebrow": "Technical details",
+            "security.techModal.title": "Sphaera technical security parameters",
+            "security.techModal.lead":
+              "This overview summarizes the currently communicated security and privacy parameters of the app. It describes the intended technical framework and does not constitute a legally binding guarantee.",
+            "security.techModal.card.title": "Context for website visitors",
+            "security.techModal.card.body1":
+              "These technical details are provided to transparently outline Sphaera's security approach before release. They help evaluate the privacy focus, local storage model and protection mechanisms.",
+            "security.techModal.card.body2":
+              "Implementation details may change depending on platform, device support and final release status. The authoritative information will be the details published at release in the app, help and product documents.",
+            "security.techModal.card.item1":
+              "Primary focus: local control and understandable security mechanisms",
+            "security.techModal.card.item2":
+              "No external analytics by default for app data processing",
+            "security.techModal.card.item3":
+              "Technical details will be further refined in the product context"
+          },
+          ka: {
+            "security.techTeaser.title": "ტექნიკური უსაფრთხოება მოკლედ",
+            "security.techTeaser.body":
+              "უსაფრთხოების ყველაზე მნიშვნელოვანი პარამეტრები მკაფიოდ არის განსაზღვრული და ორიენტირებულია ლოკალურ კონტროლზე. სრული ტექნიკური დეტალები შეგიძლიათ ნახოთ popup-ში.",
+            "security.techTeaser.item1":
+              "ლოკალური მონაცემების დაშიფვრა და დაშიფრული backup-ები AES-256-GCM-ით",
+            "security.techTeaser.item2":
+              "PBKDF2-HMAC-SHA512 600,000 იტერაციით პაროლზე დაფუძნებული გასაღების წარმოებისთვის",
+            "security.techTeaser.item3":
+              "ლოკალური მონაცემების კონტროლი, optional app-lock და ბიომეტრიული გახსნა (მოწყობილობის მხარდაჭერით)",
+            "security.techTeaser.button": "ტექნიკური დეტალების გახსნა",
+            "security.techModal.eyebrow": "ტექნიკური დეტალები",
+            "security.techModal.title": "Sphaera-ს ტექნიკური უსაფრთხოების პარამეტრები",
+            "security.techModal.lead":
+              "ეს მიმოხილვა აჯამებს აპის ამჟამად კომუნიცირებულ უსაფრთხოებისა და კონფიდენციალურობის პარამეტრებს. ის აღწერს დაგეგმილ ტექნიკურ ჩარჩოს და არ წარმოადგენს სამართლებრივ გარანტიას.",
+            "security.techModal.card.title": "განმარტება ვებსაიტის ვიზიტორებისთვის",
+            "security.techModal.card.body1":
+              "ეს ტექნიკური ინფორმაცია გამოიყენება Sphaera-ს უსაფრთხოების მიდგომის გამჭვირვალედ წარმოსაჩენად release-მდე. ის ეხმარება კონფიდენციალურობის ფოკუსის, ლოკალური შენახვისა და დაცვის მექანიზმების შეფასებას.",
+            "security.techModal.card.body2":
+              "პლატფორმის, მოწყობილობის მხარდაჭერისა და საბოლოო release-ის მიხედვით იმპლემენტაციის დეტალები შეიძლება შეიცვალოს. საბოლოო წყარო იქნება release-ის დროს გამოქვეყნებული ინფორმაცია აპში, დახმარებაში და დოკუმენტებში.",
+            "security.techModal.card.item1":
+              "მთავარი ფოკუსი: ლოკალური კონტროლი და გასაგები უსაფრთხოების მექანიზმები",
+            "security.techModal.card.item2":
+              "აპის მონაცემებისთვის სტანდარტულად გარეშე analytics არ გამოიყენება",
+            "security.techModal.card.item3":
+              "ტექნიკური დეტალები პროდუქტის განვითარებასთან ერთად დაზუსტდება"
+          },
+          es: {
+            "security.techTeaser.title": "Seguridad técnica de un vistazo",
+            "security.techTeaser.body":
+              "Los parámetros de seguridad más importantes están claramente definidos y orientados al control local. Puedes ver los detalles técnicos completos en el popup.",
+            "security.techTeaser.item1":
+              "Cifrado local de datos y copias cifradas con AES-256-GCM",
+            "security.techTeaser.item2":
+              "PBKDF2-HMAC-SHA512 con 600.000 iteraciones para derivación de claves basada en contraseña",
+            "security.techTeaser.item3":
+              "Control local de datos, bloqueo opcional de la app y desbloqueo biométrico (según dispositivo)",
+            "security.techTeaser.button": "Abrir detalles técnicos",
+            "security.techModal.eyebrow": "Detalles técnicos",
+            "security.techModal.title": "Parámetros técnicos de seguridad de Sphaera",
+            "security.techModal.lead":
+              "Este resumen reúne los parámetros de seguridad y privacidad comunicados actualmente para la app. Describe el marco técnico previsto y no constituye una garantía jurídicamente vinculante.",
+            "security.techModal.card.title": "Contexto para visitantes del sitio",
+            "security.techModal.card.body1":
+              "Estos datos técnicos se muestran para explicar de forma transparente el enfoque de seguridad de Sphaera antes del lanzamiento. Ayudan a evaluar el enfoque de privacidad, el modelo local y los mecanismos de protección.",
+            "security.techModal.card.body2":
+              "Los detalles de implementación pueden cambiar según plataforma, soporte del dispositivo y estado final del lanzamiento. La información de referencia será la publicada al lanzamiento en la app, ayuda y documentación.",
+            "security.techModal.card.item1":
+              "Foco principal: control local y mecanismos de seguridad comprensibles",
+            "security.techModal.card.item2":
+              "Sin analítica externa por defecto para el tratamiento de datos de la app",
+            "security.techModal.card.item3":
+              "Los detalles técnicos se concretarán más dentro del contexto del producto"
+          },
+          fr: {
+            "security.techTeaser.title": "Sécurité technique en bref",
+            "security.techTeaser.body":
+              "Les paramètres de sécurité les plus importants sont clairement définis et orientés vers le contrôle local. Les détails techniques complets sont disponibles dans le popup.",
+            "security.techTeaser.item1":
+              "Chiffrement local des données et sauvegardes chiffrées avec AES-256-GCM",
+            "security.techTeaser.item2":
+              "PBKDF2-HMAC-SHA512 avec 600 000 itérations pour la dérivation de clé basée sur mot de passe",
+            "security.techTeaser.item3":
+              "Contrôle local des données, verrouillage optionnel de l'app et déverrouillage biométrique (selon appareil)",
+            "security.techTeaser.button": "Ouvrir les détails techniques",
+            "security.techModal.eyebrow": "Détails techniques",
+            "security.techModal.title": "Paramètres techniques de sécurité de Sphaera",
+            "security.techModal.lead":
+              "Cette vue d'ensemble regroupe les paramètres de sécurité et de confidentialité actuellement communiqués pour l'application. Elle décrit le cadre technique prévu et ne constitue pas une garantie juridiquement contraignante.",
+            "security.techModal.card.title": "Contexte pour les visiteurs du site",
+            "security.techModal.card.body1":
+              "Ces informations techniques sont présentées pour expliquer de manière transparente l'approche sécurité de Sphaera avant la sortie. Elles aident à évaluer le focus confidentialité, le modèle local et les mécanismes de protection.",
+            "security.techModal.card.body2":
+              "Les détails d'implémentation peuvent évoluer selon la plateforme, le support appareil et l'état final de sortie. Les informations de référence seront celles publiées au lancement dans l'app, l'aide et la documentation.",
+            "security.techModal.card.item1":
+              "Focus principal : contrôle local et mécanismes de sécurité compréhensibles",
+            "security.techModal.card.item2":
+              "Pas d'analytics externe par défaut pour le traitement des données de l'app",
+            "security.techModal.card.item3":
+              "Les détails techniques seront précisés davantage dans le contexte du produit"
+          },
+          pt: {
+            "security.techTeaser.title": "Segurança técnica em resumo",
+            "security.techTeaser.body":
+              "Os parâmetros de segurança mais importantes são claramente definidos e orientados ao controle local. Os detalhes técnicos completos podem ser vistos no popup.",
+            "security.techTeaser.item1":
+              "Criptografia local de dados e backups criptografados com AES-256-GCM",
+            "security.techTeaser.item2":
+              "PBKDF2-HMAC-SHA512 com 600.000 iterações para derivação de chave por senha",
+            "security.techTeaser.item3":
+              "Controle local dos dados, bloqueio opcional do app e desbloqueio biométrico (conforme dispositivo)",
+            "security.techTeaser.button": "Abrir detalhes técnicos",
+            "security.techModal.eyebrow": "Detalhes técnicos",
+            "security.techModal.title": "Parâmetros técnicos de segurança da Sphaera",
+            "security.techModal.lead":
+              "Esta visão geral reúne os parâmetros de segurança e privacidade atualmente comunicados para o app. Ela descreve o quadro técnico pretendido e não constitui garantia juridicamente vinculante.",
+            "security.techModal.card.title": "Contexto para visitantes do site",
+            "security.techModal.card.body1":
+              "Essas informações técnicas são apresentadas para explicar de forma transparente a abordagem de segurança da Sphaera antes do lançamento. Elas ajudam a avaliar foco em privacidade, modelo local e mecanismos de proteção.",
+            "security.techModal.card.body2":
+              "Detalhes de implementação podem mudar conforme plataforma, suporte do dispositivo e status final de lançamento. As informações de referência serão as publicadas no lançamento no app, ajuda e documentação.",
+            "security.techModal.card.item1":
+              "Foco principal: controle local e mecanismos de segurança compreensíveis",
+            "security.techModal.card.item2":
+              "Sem analytics externo por padrão para processamento de dados do app",
+            "security.techModal.card.item3":
+              "Detalhes técnicos serão refinados no contexto do produto"
+          }
+        };
+
         Object.keys(extendedTranslations).forEach((lang) => {
           translations[lang] = Object.assign({}, translations[lang] || {}, extendedTranslations[lang]);
         });
         Object.keys(waitlistTranslations).forEach((lang) => {
           translations[lang] = Object.assign({}, translations[lang] || {}, waitlistTranslations[lang]);
+        });
+        Object.keys(legalTranslations).forEach((lang) => {
+          translations[lang] = Object.assign({}, translations[lang] || {}, legalTranslations[lang]);
+        });
+        Object.keys(techPopupTranslations).forEach((lang) => {
+          translations[lang] = Object.assign({}, translations[lang] || {}, techPopupTranslations[lang]);
         });
 
         const supportedLanguages = ["de", "en", "ka", "es", "fr", "pt"];
@@ -4383,12 +5469,76 @@
 
         const languageSelect = document.getElementById("site-language");
         const metaDescription = document.querySelector('meta[name="description"]');
+        const localeVisibilityTargets = Array.from(document.querySelectorAll("[data-visible-langs]"));
+        const legalModal = document.getElementById("legal-modal");
+        const legalModalTitle = document.getElementById("legal-modal-title");
+        const legalModalContent = document.getElementById("legal-modal-content");
+        const legalModalClose = document.getElementById("legal-modal-close");
+        const legalTriggers = Array.from(document.querySelectorAll("[data-legal-open]"));
+        let activeLegalModalSourceId = "";
         let currentLanguage = "de";
+
+        const renderLegalModal = (sourceId) => {
+          if (!legalModalContent || !legalModalTitle) return;
+          const sourceSection = document.getElementById(sourceId);
+          const sourceContainer = sourceSection?.querySelector(".container");
+          const sourceHeading = sourceSection?.querySelector("h2");
+
+          if (!sourceSection || !sourceContainer || !sourceHeading) return;
+
+          const clone = sourceContainer.cloneNode(true);
+          clone.classList.remove("container");
+          clone.classList.add("legal-modal-inner");
+          clone.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
+          clone.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
+
+          legalModalTitle.textContent = sourceHeading.textContent || "";
+          legalModalContent.replaceChildren(clone);
+        };
+
+        const openLegalModal = (sourceId) => {
+          if (!legalModal || !sourceId) return;
+          activeLegalModalSourceId = sourceId;
+          renderLegalModal(sourceId);
+          document.body.classList.add("modal-open");
+          if (typeof legalModal.showModal === "function" && !legalModal.open) {
+            legalModal.showModal();
+          } else {
+            legalModal.setAttribute("open", "");
+          }
+        };
+
+        const closeLegalModal = () => {
+          if (!legalModal) return;
+          if (typeof legalModal.close === "function" && legalModal.open) {
+            legalModal.close();
+          } else {
+            legalModal.removeAttribute("open");
+          }
+          document.body.classList.remove("modal-open");
+          activeLegalModalSourceId = "";
+          if (legalModalContent) legalModalContent.replaceChildren();
+        };
+
+        const applyLocaleVisibility = (lang) => {
+          localeVisibilityTargets.forEach((el) => {
+            const allowed = String(el.dataset.visibleLangs || "")
+              .split(",")
+              .map((v) => v.trim())
+              .filter(Boolean);
+            if (!allowed.length) {
+              el.hidden = false;
+              return;
+            }
+            el.hidden = !allowed.includes(lang);
+          });
+        };
 
         const applyTranslations = (lang) => {
           currentLanguage = normalizeLanguage(lang);
           document.documentElement.lang = currentLanguage;
           document.documentElement.dataset.locale = currentLanguage;
+          applyLocaleVisibility(currentLanguage);
 
           document.title = getText(currentLanguage, "meta.title");
           if (metaDescription) {
@@ -4418,6 +5568,10 @@
             if (!key) return;
             el.setAttribute("alt", getText(currentLanguage, key));
           });
+
+          if (activeLegalModalSourceId && legalModal?.open) {
+            renderLegalModal(activeLegalModalSourceId);
+          }
         };
 
         try {
@@ -4442,6 +5596,36 @@
             } catch {
               // Ignore storage errors (private mode / blocked storage).
             }
+          });
+        }
+
+        legalTriggers.forEach((trigger) => {
+          trigger.addEventListener("click", (event) => {
+            event.preventDefault();
+            const sourceId = (trigger.dataset.legalOpen || "").trim();
+            openLegalModal(sourceId);
+          });
+        });
+
+        if (legalModalClose) {
+          legalModalClose.addEventListener("click", closeLegalModal);
+        }
+
+        if (legalModal) {
+          legalModal.addEventListener("close", () => {
+            document.body.classList.remove("modal-open");
+            activeLegalModalSourceId = "";
+            if (legalModalContent) legalModalContent.replaceChildren();
+          });
+
+          legalModal.addEventListener("click", (event) => {
+            const rect = legalModal.getBoundingClientRect();
+            const isBackdropClick =
+              event.clientX < rect.left ||
+              event.clientX > rect.right ||
+              event.clientY < rect.top ||
+              event.clientY > rect.bottom;
+            if (isBackdropClick) closeLegalModal();
           });
         }
 
