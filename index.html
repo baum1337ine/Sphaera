@@ -36,6 +36,14 @@
         --accent-strong: #e2c48f;
         --accent-soft: rgba(208, 176, 122, 0.14);
         --accent-ink: #1a1308;
+        --violet-deep: #140f22;
+        --violet-mid: #231738;
+        --violet-glow: #6d4aa7;
+        --violet-line: rgba(149, 113, 214, 0.2);
+        --violet-line-strong: rgba(170, 138, 231, 0.3);
+        --violet-fog: rgba(109, 74, 167, 0.08);
+        --violet-fog-strong: rgba(109, 74, 167, 0.13);
+        --violet-gold: rgba(214, 189, 138, 0.2);
         --focus: #f6d59c;
         --success: #98d7be;
         --danger: #f1b4b0;
@@ -246,6 +254,11 @@
         flex-shrink: 0;
       }
 
+      .header-lang {
+        justify-self: end;
+        z-index: 103;
+      }
+
       .lang-switch::after {
         content: "▾";
         position: absolute;
@@ -337,6 +350,85 @@
 
       .header-cta {
         display: none;
+      }
+
+      .brand {
+        position: relative;
+        z-index: 102;
+      }
+
+      .brand::after {
+        content: "▾";
+        margin-left: 0.2rem;
+        color: var(--muted);
+        font-size: 0.72rem;
+        line-height: 1;
+        opacity: 0.85;
+        transition: transform 180ms ease, color 180ms ease;
+      }
+
+      .site-header.is-mobile-nav-open .brand::after {
+        transform: rotate(180deg);
+        color: var(--text-soft);
+      }
+
+      .nav-wrap {
+        display: none;
+      }
+
+      .site-header.is-mobile-nav-open .nav-wrap {
+        position: absolute;
+        top: calc(100% + 0.45rem);
+        left: 0.7rem;
+        right: 0.7rem;
+        z-index: 101;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+        padding: 0.65rem;
+        border-radius: 0.95rem;
+        border: 1px solid rgba(201, 218, 239, 0.14);
+        background:
+          radial-gradient(circle at 88% 14%, rgba(109, 74, 167, 0.08), transparent 40%),
+          radial-gradient(circle at 16% 82%, rgba(208, 176, 122, 0.05), transparent 46%),
+          rgba(7, 12, 21, 0.92);
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
+        backdrop-filter: blur(14px) saturate(125%);
+      }
+
+      .site-header.is-mobile-nav-open .site-nav {
+        min-width: 0;
+      }
+
+      .site-header.is-mobile-nav-open .site-nav ul {
+        display: grid;
+        gap: 0.25rem;
+        overflow: visible;
+      }
+
+      .site-header.is-mobile-nav-open .site-nav a {
+        min-height: 2.35rem;
+        width: 100%;
+        border-radius: 0.75rem;
+        padding: 0.55rem 0.7rem;
+        background: rgba(255, 255, 255, 0.015);
+        border: 1px solid rgba(201, 218, 239, 0.05);
+      }
+
+      .site-header.is-mobile-nav-open .site-nav a:hover {
+        background: rgba(255, 255, 255, 0.035);
+        border-color: rgba(201, 218, 239, 0.1);
+      }
+
+      .site-header.is-mobile-nav-open .nav-wrap .lang-switch {
+        width: 100%;
+      }
+
+      .site-header.is-mobile-nav-open .nav-wrap .lang-select {
+        width: 100%;
+        min-height: 2.35rem;
+        border-radius: 0.75rem;
+        padding-left: 0.7rem;
       }
 
       main {
@@ -512,6 +604,469 @@
         margin-top: 0.9rem;
         color: rgba(215, 223, 234, 0.78);
         font-size: 0.87rem;
+      }
+
+      .section-violet {
+        position: relative;
+        isolation: isolate;
+      }
+
+      .section-violet::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.9;
+        background:
+          radial-gradient(circle at 9% 18%, var(--violet-fog), transparent 36%),
+          radial-gradient(circle at 91% 28%, rgba(125, 86, 186, 0.07), transparent 34%),
+          radial-gradient(circle at 84% 84%, rgba(125, 86, 186, 0.04), transparent 42%),
+          linear-gradient(135deg, rgba(20, 15, 34, 0.02), rgba(255, 255, 255, 0));
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+      }
+
+      .section-violet::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.42;
+        background-image:
+          radial-gradient(circle at 18% 24%, rgba(210, 191, 149, 0.24) 0 1px, transparent 1.2px),
+          radial-gradient(circle at 76% 18%, rgba(170, 138, 231, 0.24) 0 1px, transparent 1.2px),
+          radial-gradient(circle at 84% 72%, rgba(170, 138, 231, 0.18) 0 1px, transparent 1.2px),
+          radial-gradient(circle at 28% 82%, rgba(210, 191, 149, 0.16) 0 1px, transparent 1.2px);
+        background-size: 210px 210px, 260px 260px, 300px 300px, 340px 340px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.2) 75%, transparent);
+      }
+
+      .section-violet > .container {
+        position: relative;
+        z-index: 1;
+      }
+
+      .motif-row {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin-top: 0.85rem;
+        margin-bottom: 0.2rem;
+        color: var(--violet-line-strong);
+        pointer-events: none;
+        opacity: 0.92;
+      }
+
+      .motif-row.is-subtle {
+        margin-top: 0.65rem;
+        margin-bottom: 0.55rem;
+        color: var(--violet-line);
+      }
+
+      .motif-row .motif-line {
+        height: 1px;
+        flex: 1;
+        background:
+          linear-gradient(90deg, transparent, rgba(155, 119, 221, 0.14) 18%, rgba(214, 189, 138, 0.12) 40%, rgba(155, 119, 221, 0.26) 62%, transparent);
+      }
+
+      .motif-glyph {
+        width: 1.78rem;
+        height: 1.78rem;
+        border-radius: 999px;
+        display: inline-grid;
+        place-items: center;
+        border: 1px solid rgba(155, 119, 221, 0.18);
+        background:
+          radial-gradient(circle at 35% 32%, rgba(190, 166, 238, 0.08), transparent 58%),
+          radial-gradient(circle at 70% 75%, rgba(212, 188, 141, 0.04), transparent 65%),
+          linear-gradient(180deg, rgba(26, 18, 42, 0.35), rgba(12, 10, 20, 0.25));
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.015), 0 6px 14px rgba(8, 10, 16, 0.16);
+        backdrop-filter: blur(2px);
+        position: relative;
+      }
+
+      .motif-row.is-subtle .motif-glyph {
+        width: 1.62rem;
+        height: 1.62rem;
+      }
+
+      .motif-glyph::before {
+        content: "";
+        position: absolute;
+        inset: 0.16rem;
+        border-radius: inherit;
+        border: 1px solid rgba(214, 189, 138, 0.05);
+        pointer-events: none;
+      }
+
+      .motif-glyph svg {
+        width: 0.96rem;
+        height: 0.96rem;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.45;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.95;
+      }
+
+      .motif-glyph.g-planet {
+        color: rgba(184, 156, 236, 0.52);
+      }
+
+      .motif-glyph.g-geometry {
+        color: rgba(168, 137, 226, 0.44);
+      }
+
+      .motif-glyph.g-star {
+        color: rgba(206, 187, 250, 0.4);
+      }
+
+      .hero-panel-ornate {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-panel-ornate::before,
+      .hero-panel-ornate::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .hero-panel-ornate > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-panel-ornate::before {
+        inset: auto -8% 18% 44%;
+        height: 9rem;
+        border-radius: 999px;
+        background:
+          radial-gradient(circle, rgba(109, 74, 167, 0.11), transparent 68%),
+          radial-gradient(circle at 42% 40%, rgba(214, 189, 138, 0.03), transparent 65%);
+        filter: blur(18px);
+        opacity: 0.9;
+      }
+
+      .hero-panel-ornate::after {
+        top: 0.75rem;
+        right: 0.7rem;
+        width: 6.8rem;
+        height: 6.8rem;
+        border-radius: 50%;
+        border: 1px solid rgba(155, 119, 221, 0.12);
+        background:
+          radial-gradient(circle at 50% 50%, transparent 58%, rgba(155, 119, 221, 0.05) 59%, transparent 63%),
+          conic-gradient(from 18deg, rgba(214, 189, 138, 0.08), transparent 28%, rgba(155, 119, 221, 0.08) 54%, transparent 82%);
+        box-shadow:
+          inset 0 0 0 1px rgba(155, 119, 221, 0.05),
+          0 0 0 10px rgba(155, 119, 221, 0.016);
+        opacity: 0.7;
+      }
+
+      .hero-panel-ornate .motif-row {
+        margin-top: 0.8rem;
+      }
+
+      .visual-panel-ornate .orbital::after {
+        content: "";
+        position: absolute;
+        inset: -16%;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          conic-gradient(from 24deg at 52% 48%, rgba(125, 86, 186, 0.1), transparent 20%, rgba(214, 189, 138, 0.04) 34%, rgba(125, 86, 186, 0.05) 44%, transparent 70%),
+          radial-gradient(circle at 62% 38%, rgba(125, 86, 186, 0.065), transparent 54%);
+        filter: blur(4px);
+        opacity: 0.8;
+      }
+
+      .visual-panel-ornate .orbital > * {
+        z-index: 1;
+      }
+
+      .orbital-violet-ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid var(--violet-line);
+        box-shadow: inset 0 0 18px rgba(125, 86, 186, 0.035), 0 0 18px rgba(125, 86, 186, 0.025);
+        pointer-events: none;
+      }
+
+      .orbital-violet-ring.v1 {
+        inset: 22%;
+        border-style: dashed;
+        border-width: 1px;
+        opacity: 0.6;
+      }
+
+      .orbital-violet-ring.v2 {
+        inset: 5%;
+        opacity: 0.35;
+      }
+
+      .orbital-planet-marker {
+        position: absolute;
+        width: 0.65rem;
+        height: 0.65rem;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, rgba(233, 220, 255, 0.95), rgba(125, 86, 186, 0.7) 55%, rgba(73, 43, 120, 0.55) 100%);
+        box-shadow: 0 0 0 4px rgba(125, 86, 186, 0.055), 0 0 14px rgba(125, 86, 186, 0.09), 0 0 24px rgba(214, 189, 138, 0.03);
+        pointer-events: none;
+      }
+
+      .orbital-planet-marker::after {
+        content: "";
+        position: absolute;
+        inset: -0.38rem;
+        border-radius: 50%;
+        border: 1px solid rgba(155, 119, 221, 0.16);
+      }
+
+      .orbital-planet-marker.p1 {
+        top: 14%;
+        left: 24%;
+      }
+
+      .orbital-planet-marker.p2 {
+        bottom: 18%;
+        right: 26%;
+        width: 0.52rem;
+        height: 0.52rem;
+      }
+
+      .security-panel-ornate,
+      .security-specs-ornate,
+      .cta-form-panel {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .security-panel-ornate::before {
+        content: "";
+        position: absolute;
+        inset: -6rem auto auto 58%;
+        width: 14rem;
+        height: 14rem;
+        border-radius: 50%;
+        border: 1px solid rgba(155, 119, 221, 0.08);
+        background:
+          radial-gradient(circle at 50% 50%, transparent 34%, rgba(155, 119, 221, 0.05) 35%, transparent 36%),
+          radial-gradient(circle at 50% 50%, transparent 48%, rgba(214, 189, 138, 0.03) 49%, transparent 50%),
+          radial-gradient(circle at 50% 50%, transparent 62%, rgba(155, 119, 221, 0.03) 63%, transparent 64%);
+        box-shadow:
+          0 0 0 16px rgba(155, 119, 221, 0.024),
+          0 0 0 34px rgba(155, 119, 221, 0.012);
+        opacity: 0.78;
+        pointer-events: none;
+      }
+
+      .security-panel-ornate::after {
+        content: "";
+        position: absolute;
+        right: 0.55rem;
+        top: 0.55rem;
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0.52;
+        background-image:
+          radial-gradient(circle at center, transparent 0 13px, rgba(155, 119, 221, 0.12) 13px 14px, transparent 14px),
+          radial-gradient(circle at center, transparent 0 23px, rgba(214, 189, 138, 0.08) 23px 24px, transparent 24px),
+          radial-gradient(circle at center, transparent 0 31px, rgba(155, 119, 221, 0.06) 31px 32px, transparent 32px);
+        filter: drop-shadow(0 0 8px rgba(109, 74, 167, 0.06));
+      }
+
+      .security-panel-ornate > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .security-specs-ornate::before {
+        content: "";
+        position: absolute;
+        inset: -18% -14% auto auto;
+        width: 12rem;
+        height: 12rem;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(125, 86, 186, 0.12), rgba(125, 86, 186, 0.03) 42%, transparent 70%),
+          conic-gradient(from 10deg, rgba(155, 119, 221, 0.08), transparent 20%, rgba(214, 189, 138, 0.05) 36%, rgba(155, 119, 221, 0.04) 46%, transparent 78%);
+        border: 1px solid rgba(155, 119, 221, 0.12);
+        opacity: 0.74;
+        pointer-events: none;
+      }
+
+      .security-specs-ornate > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .faq-section .faq-list {
+        position: relative;
+        z-index: 1;
+      }
+
+      .faq-section .faq-list::before {
+        content: "";
+        position: absolute;
+        inset: -0.65rem -0.4rem;
+        pointer-events: none;
+        z-index: -1;
+        border-radius: calc(var(--radius-lg) + 0.4rem);
+        background:
+          radial-gradient(circle at 88% 8%, rgba(125, 86, 186, 0.07), transparent 36%),
+          radial-gradient(circle at 12% 94%, rgba(125, 86, 186, 0.04), transparent 34%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.005), rgba(255, 255, 255, 0));
+        opacity: 0.92;
+      }
+
+      .faq-item {
+        position: relative;
+        border-color: rgba(201, 218, 239, 0.12);
+        background:
+          radial-gradient(circle at 92% 8%, rgba(109, 74, 167, 0.04), transparent 42%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.008));
+      }
+
+      .faq-item::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        border: 1px solid transparent;
+        background: linear-gradient(180deg, rgba(214, 189, 138, 0.05), rgba(155, 119, 221, 0.05)) border-box;
+        -webkit-mask:
+          linear-gradient(#fff 0 0) padding-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0.25;
+      }
+
+      .faq-item[open] {
+        border-color: rgba(155, 119, 221, 0.2);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(155, 119, 221, 0.05);
+        background:
+          radial-gradient(circle at 92% 8%, rgba(109, 74, 167, 0.07), transparent 45%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.024), rgba(255, 255, 255, 0.01));
+      }
+
+      .faq-divider-glyphs {
+        margin-top: 0.25rem;
+        margin-bottom: 0.95rem;
+      }
+
+      .cta-wrap-ornate {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-wrap-ornate::before,
+      .cta-wrap-ornate::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        border-radius: 50%;
+      }
+
+      .cta-wrap-ornate::before {
+        width: 24rem;
+        height: 24rem;
+        right: -11rem;
+        top: -12rem;
+        border: 1px solid rgba(155, 119, 221, 0.1);
+        background:
+          radial-gradient(circle at 50% 50%, transparent 63%, rgba(155, 119, 221, 0.04) 64%, transparent 66%),
+          conic-gradient(from 12deg, rgba(214, 189, 138, 0.05), transparent 32%, rgba(155, 119, 221, 0.06) 54%, transparent 80%);
+        box-shadow:
+          0 0 0 18px rgba(155, 119, 221, 0.028),
+          0 0 0 38px rgba(155, 119, 221, 0.014);
+        opacity: 0.78;
+      }
+
+      .cta-wrap-ornate::after {
+        width: 17rem;
+        height: 17rem;
+        left: -7rem;
+        bottom: -9rem;
+        background:
+          radial-gradient(circle, rgba(125, 86, 186, 0.1), transparent 68%),
+          radial-gradient(circle at 35% 35%, rgba(214, 189, 138, 0.04), transparent 58%);
+        filter: blur(12px);
+        opacity: 0.78;
+      }
+
+      .cta-wrap-ornate > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .cta-form-panel::before {
+        content: "";
+        position: absolute;
+        inset: -16% auto auto -10%;
+        width: 10.5rem;
+        height: 10.5rem;
+        border-radius: 50%;
+        border: 1px solid rgba(155, 119, 221, 0.1);
+        background:
+          radial-gradient(circle at center, transparent 0 26%, rgba(155, 119, 221, 0.05) 27%, transparent 31%),
+          radial-gradient(circle at center, transparent 0 42%, rgba(214, 189, 138, 0.03) 43%, transparent 46%);
+        box-shadow:
+          0 0 0 10px rgba(155, 119, 221, 0.024),
+          0 0 0 22px rgba(155, 119, 221, 0.012);
+        pointer-events: none;
+        opacity: 0.72;
+      }
+
+      .cta-form-panel::after {
+        content: "";
+        position: absolute;
+        right: -0.6rem;
+        bottom: -0.6rem;
+        width: 6.6rem;
+        height: 6.6rem;
+        border-radius: 50%;
+        border: 1px solid rgba(155, 119, 221, 0.07);
+        background-image:
+          radial-gradient(circle at center, transparent 0 14px, rgba(155, 119, 221, 0.08) 14px 15px, transparent 15px),
+          radial-gradient(circle at center, transparent 0 25px, rgba(214, 189, 138, 0.04) 25px 26px, transparent 26px);
+        opacity: 0.65;
+        pointer-events: none;
+      }
+
+      .cta-form-panel > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      @media (max-width: 560px) {
+        .motif-row {
+          gap: 0.35rem;
+        }
+
+        .motif-row .motif-line {
+          display: none;
+        }
+
+        .hero-panel-ornate::after {
+          width: 5.4rem;
+          height: 5.4rem;
+          opacity: 0.45;
+        }
+
+        .security-panel-ornate::after,
+        .legal-modal-header::before {
+          opacity: 0.36;
+        }
       }
 
       .visual-panel {
@@ -1081,12 +1636,18 @@
       .moon-visual {
         border-radius: var(--radius-lg);
         border: 1px solid rgba(201, 218, 239, 0.12);
-        background: radial-gradient(circle at 50% 50%, rgba(208, 176, 122, 0.08), transparent 62%), rgba(255, 255, 255, 0.01);
+        background:
+          radial-gradient(circle at 50% 50%, rgba(208, 176, 122, 0.08), transparent 62%),
+          radial-gradient(circle at 68% 34%, rgba(109, 74, 167, 0.06), transparent 52%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.006));
         min-height: 15rem;
         display: grid;
         place-items: center;
         position: relative;
         overflow: hidden;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 255, 255, 0.01),
+          inset 0 -20px 36px rgba(0, 0, 0, 0.12);
       }
 
       .moon-visual::before,
@@ -1094,19 +1655,28 @@
         content: "";
         position: absolute;
         border-radius: 50%;
-        border: 1px solid rgba(201, 218, 239, 0.08);
+        border: 1px solid rgba(201, 218, 239, 0.07);
+        pointer-events: none;
       }
 
       .moon-visual::before {
         width: 12.5rem;
         height: 12.5rem;
-        opacity: 0.8;
+        opacity: 0.72;
+        border-color: rgba(170, 138, 231, 0.14);
+        box-shadow:
+          0 0 0 1px rgba(170, 138, 231, 0.03),
+          0 0 22px rgba(109, 74, 167, 0.05);
       }
 
       .moon-visual::after {
         width: 8.8rem;
         height: 8.8rem;
-        opacity: 0.55;
+        opacity: 0.58;
+        border-color: rgba(214, 189, 138, 0.1);
+        box-shadow:
+          0 0 0 1px rgba(214, 189, 138, 0.02),
+          inset 0 0 20px rgba(109, 74, 167, 0.025);
       }
 
       .moon-disc {
@@ -1114,11 +1684,31 @@
         aspect-ratio: 1;
         border-radius: 50%;
         background:
-          radial-gradient(circle at 35% 32%, rgba(255, 245, 215, 0.95), rgba(212, 191, 147, 0.88) 55%, rgba(150, 128, 94, 0.72) 100%);
-        box-shadow: 0 0 28px rgba(208, 176, 122, 0.16);
+          radial-gradient(circle at 34% 28%, rgba(255, 251, 236, 0.98), rgba(233, 214, 176, 0.9) 36%, rgba(207, 183, 135, 0.9) 58%, rgba(148, 125, 90, 0.76) 100%);
+        box-shadow:
+          0 0 22px rgba(214, 189, 138, 0.16),
+          0 0 42px rgba(109, 74, 167, 0.08),
+          inset 0 0 20px rgba(255, 248, 225, 0.06);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(208, 176, 122, 0.35);
+        border: 1px solid rgba(214, 189, 138, 0.42);
+        z-index: 1;
+      }
+
+      .moon-disc::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.26), transparent 34%),
+          radial-gradient(circle at 46% 44%, rgba(255, 238, 203, 0.08) 0 16%, transparent 17%),
+          radial-gradient(circle at 56% 60%, rgba(153, 123, 89, 0.12) 0 10%, transparent 11%),
+          radial-gradient(circle at 39% 68%, rgba(164, 135, 99, 0.09) 0 8%, transparent 9%);
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 248, 227, 0.07),
+          inset -8px -10px 14px rgba(93, 74, 47, 0.1);
+        pointer-events: none;
       }
 
       .moon-disc::after {
@@ -1127,8 +1717,12 @@
         inset: 0;
         border-radius: 50%;
         transform: translateX(28%);
-        background: rgba(7, 11, 18, 0.76);
-        box-shadow: -12px 0 20px rgba(7, 11, 18, 0.45);
+        background:
+          radial-gradient(circle at 10% 50%, rgba(10, 16, 28, 0.12), transparent 34%),
+          rgba(7, 11, 18, 0.76);
+        box-shadow:
+          -12px 0 20px rgba(7, 11, 18, 0.45),
+          -4px 0 10px rgba(214, 189, 138, 0.04);
       }
 
       .moon-caption {
@@ -1355,6 +1949,23 @@
         display: none;
       }
 
+      .honeypot-field {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .honeypot-field input {
+        min-height: 0;
+        padding: 0;
+        border: 0;
+      }
+
       .consent-field {
         display: grid;
         gap: 0.45rem;
@@ -1476,8 +2087,9 @@
         border: 1px solid rgba(201, 218, 239, 0.14);
         border-radius: calc(var(--radius-xl) + 0.1rem);
         background:
-          radial-gradient(circle at 90% 10%, rgba(208, 176, 122, 0.1), transparent 42%),
-          linear-gradient(180deg, rgba(10, 17, 29, 0.98), rgba(7, 12, 21, 0.98));
+          radial-gradient(circle at 90% 10%, rgba(208, 176, 122, 0.08), transparent 42%),
+          radial-gradient(circle at 14% 12%, rgba(109, 74, 167, 0.06), transparent 34%),
+          linear-gradient(180deg, rgba(10, 17, 29, 0.98), rgba(7, 12, 21, 0.985));
         color: var(--text);
         box-shadow: var(--shadow-lg);
         transform-origin: center 42%;
@@ -1505,6 +2117,29 @@
         position: sticky;
         top: 0;
         z-index: 2;
+        overflow: hidden;
+      }
+
+      .legal-modal-header::before {
+        content: "";
+        position: absolute;
+        right: 3.2rem;
+        top: -1.15rem;
+        width: 5.25rem;
+        height: 5.25rem;
+        border-radius: 50%;
+        border: 1px solid rgba(155, 119, 221, 0.08);
+        background-image:
+          radial-gradient(circle at center, transparent 0 12px, rgba(155, 119, 221, 0.1) 12px 13px, transparent 13px),
+          radial-gradient(circle at center, transparent 0 22px, rgba(214, 189, 138, 0.05) 22px 23px, transparent 23px),
+          radial-gradient(circle at center, transparent 0 31px, rgba(155, 119, 221, 0.05) 31px 32px, transparent 32px);
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      .legal-modal-header > * {
+        position: relative;
+        z-index: 1;
       }
 
       .legal-modal-title {
@@ -1529,8 +2164,10 @@
       }
 
       .legal-modal-close-btn:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(201, 218, 239, 0.28);
+        background:
+          radial-gradient(circle at 35% 35%, rgba(109, 74, 167, 0.12), transparent 70%),
+          rgba(255, 255, 255, 0.04);
+        border-color: rgba(155, 119, 221, 0.22);
         transform: translateY(-1px);
       }
 
@@ -1653,6 +2290,34 @@
         .orbital-ring.r3 {
           animation: spin 76s linear infinite;
         }
+
+        .orbital-violet-ring.v1 {
+          animation: spin 96s linear infinite reverse;
+        }
+
+        .orbital-violet-ring.v2 {
+          animation: spin 132s linear infinite;
+        }
+
+        .orbital-planet-marker.p1 {
+          animation: violetPulse 6.8s ease-in-out infinite;
+        }
+
+        .orbital-planet-marker.p2 {
+          animation: violetPulse 8.4s ease-in-out infinite -1.8s;
+        }
+
+        .moon-visual::before {
+          animation: moonHaloPulse 10.5s ease-in-out infinite;
+        }
+
+        .moon-visual::after {
+          animation: moonHaloPulse 13.5s ease-in-out infinite -2.2s;
+        }
+
+        .moon-disc {
+          animation: moonDiscGlow 8.8s ease-in-out infinite;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -1674,6 +2339,45 @@
 
         to {
           transform: rotate(360deg);
+        }
+      }
+
+      @keyframes violetPulse {
+        0%,
+        100% {
+          opacity: 0.72;
+          transform: scale(1);
+        }
+
+        50% {
+          opacity: 1;
+          transform: scale(1.12);
+        }
+      }
+
+      @keyframes moonHaloPulse {
+        0%,
+        100% {
+          opacity: 0.56;
+          transform: scale(1);
+        }
+
+        50% {
+          opacity: 0.8;
+          transform: scale(1.018);
+        }
+      }
+
+      @keyframes moonDiscGlow {
+        0%,
+        100% {
+          filter: saturate(1) brightness(1);
+          transform: translateY(0);
+        }
+
+        50% {
+          filter: saturate(1.03) brightness(1.02);
+          transform: translateY(-1px);
         }
       }
 
@@ -1753,8 +2457,27 @@
       }
 
       @media (min-width: 860px) {
+        .brand::after {
+          display: none;
+        }
+
+        .nav-wrap {
+          display: flex;
+          position: static;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 0.5rem;
+          min-width: 0;
+          padding: 0;
+          border: 0;
+          border-radius: 0;
+          background: none;
+          box-shadow: none;
+          backdrop-filter: none;
+        }
+
         .header-inner {
-          grid-template-columns: auto 1fr auto;
+          grid-template-columns: auto 1fr auto auto;
           gap: 0.8rem;
         }
 
@@ -1859,12 +2582,20 @@
 
     <header class="site-header" id="seitenanfang">
       <div class="container header-inner">
-        <a class="brand" href="#seitenanfang" aria-label="Sphaera Startseite">
+        <a
+          class="brand"
+          id="header-brand-toggle"
+          href="#seitenanfang"
+          aria-label="Sphaera Startseite"
+          aria-controls="header-mobile-menu"
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
           <span class="brand-mark" aria-hidden="true"></span>
           <span>Sphaera</span>
         </a>
 
-        <div class="nav-wrap">
+        <div class="nav-wrap" id="header-mobile-menu">
           <nav class="site-nav" aria-label="Hauptnavigation">
             <ul>
               <li><a href="#warum" data-i18n="nav.why">Warum Sphaera</a></li>
@@ -1878,18 +2609,18 @@
               <li><a href="#newsletter" data-i18n="nav.contact">Kontakt</a></li>
             </ul>
           </nav>
+        </div>
 
-          <div class="lang-switch">
-            <label class="sr-only" for="site-language" data-i18n="lang.label">Sprache auswählen</label>
-            <select id="site-language" class="lang-select" aria-label="Sprache wechseln">
-              <option value="de">🇩🇪 Deutsch (DE)</option>
-              <option value="en">🇬🇧 English (EN)</option>
-              <option value="ka">🇬🇪 ქართული (KA)</option>
-              <option value="es">🇪🇸 Español (ES)</option>
-              <option value="fr">🇫🇷 Français (FR)</option>
-              <option value="pt">🇵🇹 Português (PT)</option>
-            </select>
-          </div>
+        <div class="lang-switch header-lang">
+          <label class="sr-only" for="site-language" data-i18n="lang.label">Sprache auswählen</label>
+          <select id="site-language" class="lang-select" aria-label="Sprache wechseln">
+            <option value="de">🇩🇪 Deutsch (DE)</option>
+            <option value="en">🇬🇧 English (EN)</option>
+            <option value="ka">🇬🇪 ქართული (KA)</option>
+            <option value="es">🇪🇸 Español (ES)</option>
+            <option value="fr">🇫🇷 Français (FR)</option>
+            <option value="pt">🇵🇹 Português (PT)</option>
+          </select>
         </div>
 
         <a
@@ -1906,9 +2637,9 @@
 
     <main id="main-content">
       <!-- HERO -->
-      <section class="section hero" aria-labelledby="hero-title">
+      <section class="section hero section-violet hero-section" aria-labelledby="hero-title">
         <div class="container hero-grid">
-          <div class="hero-panel reveal">
+          <div class="hero-panel hero-panel-ornate reveal">
             <p class="eyebrow" data-i18n="hero.eyebrow">Visuelle Planung mit Rhythmus</p>
             <h1 id="hero-title" data-i18n="hero.title">
               Plane im Einklang mit Zeit, Energie und Rhythmus.
@@ -1916,6 +2647,37 @@
             <p class="hero-subline" data-i18n="hero.subline">
               Ein zyklusorientierter Planer für Menschen, die ihren Alltag ganzheitlich strukturieren wollen – mit Tages-, Wochen-, Monats- und Jahresrad, Energie-Tracking, Aufgabenmanagement, integriertem Mondkalender und starkem Datenschutz.
             </p>
+            <div class="motif-row" aria-hidden="true">
+              <span class="motif-line"></span>
+              <span class="motif-glyph g-planet">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="10" cy="12" r="3.6"></circle>
+                  <ellipse cx="10" cy="12" rx="7.2" ry="2.4" transform="rotate(-16 10 12)"></ellipse>
+                  <circle cx="18.3" cy="7.3" r="1"></circle>
+                </svg>
+              </span>
+              <span class="motif-glyph g-geometry">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="2.2"></circle>
+                  <circle cx="12" cy="7.1" r="2.2"></circle>
+                  <circle cx="16.2" cy="9.55" r="2.2"></circle>
+                  <circle cx="16.2" cy="14.45" r="2.2"></circle>
+                  <circle cx="12" cy="16.9" r="2.2"></circle>
+                  <circle cx="7.8" cy="14.45" r="2.2"></circle>
+                  <circle cx="7.8" cy="9.55" r="2.2"></circle>
+                </svg>
+              </span>
+              <span class="motif-glyph g-star">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3.8v16.4"></path>
+                  <path d="M3.8 12h16.4"></path>
+                  <path d="M6.2 6.2l11.6 11.6"></path>
+                  <path d="M17.8 6.2L6.2 17.8"></path>
+                  <circle cx="12" cy="12" r="2.1"></circle>
+                </svg>
+              </span>
+              <span class="motif-line"></span>
+            </div>
 
             <ul class="hero-list" aria-label="Kernversprechen von Sphaera">
               <li data-i18n="hero.list.visual">Sphaera verbindet Fokus, Aufgaben, Energie und Mondkalender in einer visuellen Planung.</li>
@@ -1945,12 +2707,16 @@
             </p>
           </div>
 
-          <div class="visual-panel reveal" style="--d: 80ms" aria-label="Visuelle Vorschau des Planungssystems">
+          <div class="visual-panel visual-panel-ornate reveal" style="--d: 80ms" aria-label="Visuelle Vorschau des Planungssystems">
             <div class="orbital" aria-hidden="true">
               <div class="orbital-grid"></div>
               <div class="orbital-ring r1"></div>
               <div class="orbital-ring r2"></div>
               <div class="orbital-ring r3"></div>
+              <div class="orbital-violet-ring v1"></div>
+              <div class="orbital-violet-ring v2"></div>
+              <span class="orbital-planet-marker p1"></span>
+              <span class="orbital-planet-marker p2"></span>
 
               <div class="orbital-center">
                 <div>
@@ -2358,7 +3124,7 @@
       </section>
 
       <!-- SECURITY -->
-      <section class="section" id="sicherheit" aria-labelledby="sicherheit-title">
+      <section class="section section-violet security-section" id="sicherheit" aria-labelledby="sicherheit-title">
         <div class="container">
           <div class="section-head">
             <div class="reveal">
@@ -2371,8 +3137,26 @@
           </div>
 
           <div class="security-layout">
-            <div class="panel reveal">
+            <div class="panel security-panel-ornate reveal">
               <h3 data-i18n="security.panel.title">Datenschutz praktisch gedacht</h3>
+              <div class="motif-row is-subtle" aria-hidden="true">
+                <span class="motif-line"></span>
+                <span class="motif-glyph g-geometry">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 4.5 18.5 8.25v7.5L12 19.5l-6.5-3.75v-7.5Z"></path>
+                    <path d="M12 4.5v15"></path>
+                    <path d="M5.5 8.25l13 7.5"></path>
+                    <path d="M18.5 8.25l-13 7.5"></path>
+                  </svg>
+                </span>
+                <span class="motif-glyph g-planet">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3.8"></circle>
+                    <ellipse cx="12" cy="12" rx="8" ry="2.6" transform="rotate(13 12 12)"></ellipse>
+                  </svg>
+                </span>
+                <span class="motif-line"></span>
+              </div>
               <ul class="check-list" style="margin-top: 0.75rem;">
                 <li data-i18n="security.list1">Lokale Speicherung als Primärmodell für persönliche Planungsdaten.</li>
                 <li data-i18n="security.list2">Keine externe Analytics standardmäßig.</li>
@@ -2393,7 +3177,26 @@
               </div>
             </div>
 
-            <div class="security-specs reveal" style="--d: 100ms" aria-label="Technische Sicherheitsparameter">
+            <div class="security-specs security-specs-ornate reveal" style="--d: 100ms" aria-label="Technische Sicherheitsparameter">
+              <div class="motif-row is-subtle" aria-hidden="true">
+                <span class="motif-glyph g-star">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 4.5 15 9l5 .7-3.6 3.5.85 5-4.25-2.25L9.75 18.2l.85-5L7 9.7 12 9z"></path>
+                    <circle cx="12" cy="12" r="1.2"></circle>
+                  </svg>
+                </span>
+                <span class="motif-line"></span>
+                <span class="motif-glyph g-geometry">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="2.2"></circle>
+                    <circle cx="12" cy="7.1" r="2.2"></circle>
+                    <circle cx="16.2" cy="9.55" r="2.2"></circle>
+                    <circle cx="12" cy="16.9" r="2.2"></circle>
+                    <circle cx="7.8" cy="14.45" r="2.2"></circle>
+                    <circle cx="7.8" cy="9.55" r="2.2"></circle>
+                  </svg>
+                </span>
+              </div>
               <h3 data-i18n="security.techTeaser.title">Technische Sicherheit auf einen Blick</h3>
               <p class="muted-note" data-i18n="security.techTeaser.body">
                 Die wichtigsten Sicherheitsparameter sind klar definiert und auf lokale Kontrolle ausgerichtet. Die vollständigen technischen Angaben kannst du im Detail-Popup ansehen.
@@ -2616,7 +3419,7 @@
       </section>
 
       <!-- FAQ -->
-      <section class="section" id="faq" aria-labelledby="faq-title">
+      <section class="section section-violet faq-section" id="faq" aria-labelledby="faq-title">
         <div class="container">
           <div class="section-head">
             <div class="reveal">
@@ -2626,6 +3429,33 @@
             <p class="lead reveal" style="--d: 80ms" data-i18n="faq.lead">
               Kurz, sachlich und hilfreich: Die Antworten beschreiben den Ansatz von Sphaera ohne Funktionen als veröffentlicht darzustellen, wenn sie noch in Planung sind.
             </p>
+          </div>
+
+          <div class="motif-row faq-divider-glyphs is-subtle" aria-hidden="true">
+            <span class="motif-line"></span>
+            <span class="motif-glyph g-planet">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11.3" cy="12" r="3.4"></circle>
+                <ellipse cx="11.3" cy="12" rx="7.1" ry="2.2" transform="rotate(-12 11.3 12)"></ellipse>
+                <circle cx="18.6" cy="9.2" r="0.95"></circle>
+              </svg>
+            </span>
+            <span class="motif-glyph g-star">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 4.2v15.6"></path>
+                <path d="M4.2 12h15.6"></path>
+                <circle cx="12" cy="12" r="2.3"></circle>
+              </svg>
+            </span>
+            <span class="motif-glyph g-geometry">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 4.6 18.3 8.2v7.2L12 19l-6.3-3.6V8.2Z"></path>
+                <path d="M12 4.6v14.4"></path>
+                <path d="M5.7 8.2l12.6 7.2"></path>
+                <path d="M18.3 8.2l-12.6 7.2"></path>
+              </svg>
+            </span>
+            <span class="motif-line"></span>
           </div>
 
           <div class="faq-list" role="list">
@@ -2740,15 +3570,43 @@
       </section>
 
       <!-- CTA / NEWSLETTER / KONTAKT -->
-      <section class="section cta-section" id="newsletter" aria-labelledby="cta-title">
+      <section class="section cta-section section-violet cta-section-orbit" id="newsletter" aria-labelledby="cta-title">
         <div class="container">
-          <div class="cta-wrap reveal">
+          <div class="cta-wrap cta-wrap-ornate reveal">
             <div>
               <p class="eyebrow" data-i18n="cta.eyebrow">CTA / Newsletter / Kontakt</p>
               <h2 id="cta-title" data-i18n="cta.title">Launch-Infos erhalten und Frühzugang im Blick behalten</h2>
               <p class="lead" style="margin-top: 0.85rem;" data-i18n="cta.lead">
                 Wenn du Updates zum Produkt, zum Launch und zu den nächsten Schritten erhalten möchtest, kannst du hier deine E-Mail eintragen. Das Formular kann für Beta- oder Launch-Infos genutzt werden.
               </p>
+              <div class="motif-row is-subtle" aria-hidden="true">
+                <span class="motif-glyph g-planet">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3.7"></circle>
+                    <ellipse cx="12" cy="12" rx="7.8" ry="2.4" transform="rotate(17 12 12)"></ellipse>
+                  </svg>
+                </span>
+                <span class="motif-line"></span>
+                <span class="motif-glyph g-geometry">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="2.2"></circle>
+                    <circle cx="12" cy="7.1" r="2.2"></circle>
+                    <circle cx="16.2" cy="9.55" r="2.2"></circle>
+                    <circle cx="16.2" cy="14.45" r="2.2"></circle>
+                    <circle cx="12" cy="16.9" r="2.2"></circle>
+                    <circle cx="7.8" cy="14.45" r="2.2"></circle>
+                    <circle cx="7.8" cy="9.55" r="2.2"></circle>
+                  </svg>
+                </span>
+                <span class="motif-glyph g-star">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 4.2v15.6"></path>
+                    <path d="M4.2 12h15.6"></path>
+                    <path d="M6.3 6.3l11.4 11.4"></path>
+                    <path d="M17.7 6.3 6.3 17.7"></path>
+                  </svg>
+                </span>
+              </div>
 
               <div class="contact-points" aria-label="Kontaktinformationen">
                 <p><strong data-i18n="contact.emailLabel">E-Mail:</strong> <a href="mailto:support@sphaera.app">support@sphaera.app</a></p>
@@ -2785,11 +3643,37 @@
               </div>
             </div>
 
-            <div class="panel" style="padding: 1rem;">
+            <div class="panel cta-form-panel" style="padding: 1rem;">
               <form class="cta-form" id="launch-form" aria-label="Launch-Infos Formular" novalidate>
+                <div class="motif-row is-subtle" aria-hidden="true" style="margin-top: 0; margin-bottom: 0.35rem;">
+                  <span class="motif-line"></span>
+                  <span class="motif-glyph g-star">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 4.5 14.5 9.2l5.2.75-3.75 3.55.9 5.25L12 16.35 7.15 18.8l.9-5.25L4.3 9.95l5.2-.75Z"></path>
+                    </svg>
+                  </span>
+                  <span class="motif-glyph g-planet">
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="10.8" cy="12" r="3.3"></circle>
+                      <ellipse cx="10.8" cy="12" rx="6.9" ry="2.15" transform="rotate(-15 10.8 12)"></ellipse>
+                    </svg>
+                  </span>
+                  <span class="motif-line"></span>
+                </div>
                 <input class="hidden-field" id="launch-interest-type" name="interest_type" type="hidden" value="launch" />
                 <input class="hidden-field" id="launch-entry-source" name="entry_source" type="hidden" value="direct_form" />
                 <input class="hidden-field" id="launch-form-location" name="form_location" type="hidden" value="newsletter_cta" />
+                <div class="honeypot-field" aria-hidden="true">
+                  <label for="launch-website">Website</label>
+                  <input
+                    id="launch-website"
+                    name="website"
+                    type="text"
+                    tabindex="-1"
+                    autocomplete="off"
+                    inputmode="text"
+                  />
+                </div>
 
                 <div class="form-field">
                   <label for="launch-email" data-i18n="cta.form.label">E-Mail für Produkt-Updates &amp; Launch-Infos</label>
@@ -5507,6 +6391,11 @@
         const normalizeInterest = (value) => (value === "beta" ? "beta" : "launch");
 
         const languageSelect = document.getElementById("site-language");
+        const siteHeader = document.querySelector(".site-header");
+        const headerBrandToggle = document.getElementById("header-brand-toggle");
+        const headerMobileMenu = document.getElementById("header-mobile-menu");
+        const headerNavLinks = Array.from(headerMobileMenu?.querySelectorAll(".site-nav a") || []);
+        const desktopHeaderNavMedia = window.matchMedia("(min-width: 860px)");
         const metaDescription = document.querySelector('meta[name="description"]');
         const localeVisibilityTargets = Array.from(document.querySelectorAll("[data-visible-langs]"));
         const legalModal = document.getElementById("legal-modal");
@@ -5516,6 +6405,21 @@
         const legalTriggers = Array.from(document.querySelectorAll("[data-legal-open]"));
         let activeLegalModalSourceId = "";
         let currentLanguage = "de";
+        let isMobileHeaderMenuOpen = false;
+
+        const syncMobileHeaderMenuState = () => {
+          if (!siteHeader || !headerBrandToggle || !headerMobileMenu) return;
+          const desktopActive = desktopHeaderNavMedia.matches;
+          const open = !desktopActive && isMobileHeaderMenuOpen;
+          siteHeader.classList.toggle("is-mobile-nav-open", open);
+          headerBrandToggle.setAttribute("aria-expanded", open ? "true" : "false");
+          headerMobileMenu.hidden = desktopActive ? false : !open;
+        };
+
+        const setMobileHeaderMenuOpen = (nextOpen) => {
+          isMobileHeaderMenuOpen = Boolean(nextOpen) && !desktopHeaderNavMedia.matches;
+          syncMobileHeaderMenuState();
+        };
 
         const renderLegalModal = (sourceId) => {
           if (!legalModalContent || !legalModalTitle) return;
@@ -5624,7 +6528,41 @@
           );
         }
 
+        if (headerBrandToggle && headerMobileMenu && siteHeader) {
+          headerBrandToggle.addEventListener("click", (event) => {
+            if (desktopHeaderNavMedia.matches) return;
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            setMobileHeaderMenuOpen(!isMobileHeaderMenuOpen);
+          });
+
+          headerNavLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+              if (!desktopHeaderNavMedia.matches) setMobileHeaderMenuOpen(false);
+            });
+          });
+
+          document.addEventListener("click", (event) => {
+            if (!isMobileHeaderMenuOpen || desktopHeaderNavMedia.matches) return;
+            if (siteHeader.contains(event.target)) return;
+            setMobileHeaderMenuOpen(false);
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") return;
+            if (!isMobileHeaderMenuOpen || desktopHeaderNavMedia.matches) return;
+            setMobileHeaderMenuOpen(false);
+          });
+
+          if (typeof desktopHeaderNavMedia.addEventListener === "function") {
+            desktopHeaderNavMedia.addEventListener("change", syncMobileHeaderMenuState);
+          } else if (typeof desktopHeaderNavMedia.addListener === "function") {
+            desktopHeaderNavMedia.addListener(syncMobileHeaderMenuState);
+          }
+        }
+
         applyTranslations(currentLanguage);
+        syncMobileHeaderMenuState();
 
         if (languageSelect) {
           languageSelect.addEventListener("change", (event) => {
@@ -5634,6 +6572,9 @@
               localStorage.setItem(storageKey, nextLanguage);
             } catch {
               // Ignore storage errors (private mode / blocked storage).
+            }
+            if (!desktopHeaderNavMedia.matches && isMobileHeaderMenuOpen) {
+              setMobileHeaderMenuOpen(false);
             }
           });
         }
@@ -5713,18 +6654,37 @@
         const interestInput = document.getElementById("launch-interest-type");
         const sourceInput = document.getElementById("launch-entry-source");
         const formLocationInput = document.getElementById("launch-form-location");
+        const honeypotInput = document.getElementById("launch-website");
         const submitButton = form?.querySelector('button[type="submit"]');
         const status = document.getElementById("launch-form-status");
         const waitlistTriggers = Array.from(
           document.querySelectorAll("[data-waitlist-interest][data-waitlist-source]")
         );
+        const waitlistFormLoadedAt = Date.now();
+        let waitlistFirstIntentAt = 0;
+        let waitlistMeaningfulInteractionAt = 0;
+
+        const markWaitlistIntent = () => {
+          if (!waitlistFirstIntentAt) waitlistFirstIntentAt = Date.now();
+        };
+
+        const markWaitlistMeaningfulInteraction = () => {
+          markWaitlistIntent();
+          if (!waitlistMeaningfulInteractionAt) waitlistMeaningfulInteractionAt = Date.now();
+        };
 
         waitlistTriggers.forEach((trigger) => {
           trigger.addEventListener("click", () => {
             if (interestInput) interestInput.value = normalizeInterest(trigger.dataset.waitlistInterest);
             if (sourceInput) sourceInput.value = (trigger.dataset.waitlistSource || "direct_form").trim();
+            markWaitlistIntent();
           });
         });
+
+        form?.addEventListener("focusin", markWaitlistIntent);
+        emailInput?.addEventListener("input", markWaitlistMeaningfulInteraction);
+        emailInput?.addEventListener("change", markWaitlistMeaningfulInteraction);
+        consentInput?.addEventListener("change", markWaitlistMeaningfulInteraction);
 
         if (form && emailInput && status && consentInput && interestInput && sourceInput) {
           form.addEventListener("submit", async (event) => {
@@ -5758,6 +6718,45 @@
               page_url: window.location.href,
               consent_updates: true
             };
+
+            const now = Date.now();
+            const honeypotValue = (honeypotInput?.value || "").trim();
+            const effectiveAttemptStartAt = waitlistFirstIntentAt || waitlistFormLoadedAt;
+            const totalElapsedMs = now - waitlistFormLoadedAt;
+            const attemptElapsedMs = now - effectiveAttemptStartAt;
+            const suspiciousReasons = [];
+
+            if (honeypotValue) suspiciousReasons.push("honeypot_filled");
+            if (totalElapsedMs < 800) suspiciousReasons.push("too_fast_total");
+            if (!waitlistMeaningfulInteractionAt && totalElapsedMs < 8000) suspiciousReasons.push("no_meaningful_interaction");
+            if (waitlistMeaningfulInteractionAt && attemptElapsedMs < 900) suspiciousReasons.push("too_fast_after_intent");
+
+            if (suspiciousReasons.length) {
+              console.info("Silent bot-style waitlist block", {
+                reasons: suspiciousReasons,
+                totalElapsedMs,
+                attemptElapsedMs,
+                entry_source: payload.entry_source
+              });
+
+              status.textContent = getText(currentLanguage, "form.status.successLive");
+              status.dataset.state = "success";
+
+              if (window.umami?.track) {
+                window.umami.track("waitlist_bot_blocked", {
+                  reasons: suspiciousReasons.join(","),
+                  entry_source: payload.entry_source,
+                  form_location: payload.form_location
+                });
+              }
+
+              form.reset();
+              if (honeypotInput) honeypotInput.value = "";
+              interestInput.value = "launch";
+              sourceInput.value = "direct_form";
+              if (formLocationInput) formLocationInput.value = "newsletter_cta";
+              return;
+            }
 
             if (window.location.protocol === "file:") {
               status.textContent = getText(currentLanguage, "form.status.errorLocal");
@@ -5814,6 +6813,7 @@
               }
 
               form.reset();
+              if (honeypotInput) honeypotInput.value = "";
               interestInput.value = "launch";
               sourceInput.value = "direct_form";
               if (formLocationInput) formLocationInput.value = "newsletter_cta";
