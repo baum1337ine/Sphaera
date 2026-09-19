@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /media/meta/
+Allow: /
+Sitemap: https://sphaera.app/sitemap.xml
