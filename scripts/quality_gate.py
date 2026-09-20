@@ -2,7 +2,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
-import sys, re
+import json, sys, re
 BASE = Path(__file__).resolve().parents[1]
 errors=[]
 class P(HTMLParser):
@@ -36,10 +36,45 @@ for html in BASE.glob('*.html'):
             pp=P(); pp.feed(local.read_text(encoding='utf-8'))
             if frag not in pp.ids: errors.append(f'{html.name}: missing fragment {href}')
     if html.name=='index.html':
-        required=['/assets/free/sphaera-rhythmus-kompass.pdf','/datenschutz.html','/impressum.html']
+        required=['/assets/free/sphaera-rhythmus-kompass.pdf','/datenschutz.html','/impressum.html','/assets/icons/sphaera-mark.svg','/favicon.ico','/site.webmanifest']
         for r in required:
             if r not in text: errors.append(f'index.html: missing {r}')
+        forbidden=['Free Produkt','free produkt','Kompass holen']
+        for f in forbidden:
+            if f in text: errors.append(f'index.html: stale public copy {f!r}')
+        if '7‑Tage‑Kompass' not in text: errors.append('index.html: missing 7-Tage-Kompass nav/copy')
         if '/media/meta' in text: errors.append('index.html links hidden media folder')
+asset_expectations = {
+    'assets/free/sphaera-rhythmus-kompass.pdf': 100_000,
+    'assets/img/og-sphaera.png': 30_000,
+    'assets/icons/sphaera-mark.svg': 1_000,
+    'assets/icons/sphaera-mark-16.png': 100,
+    'assets/icons/sphaera-mark-32.png': 200,
+    'assets/icons/sphaera-mark-48.png': 400,
+    'assets/icons/sphaera-mark-96.png': 1_000,
+    'assets/icons/sphaera-mark-180.png': 2_000,
+    'assets/icons/apple-touch-icon.png': 2_000,
+    'assets/icons/sphaera-mark-192.png': 2_000,
+    'assets/icons/sphaera-mark-512.png': 8_000,
+    'favicon.ico': 1_000,
+    'site.webmanifest': 100,
+}
+for rel, min_size in asset_expectations.items():
+    p = BASE / rel
+    if not p.exists():
+        errors.append(f'missing asset {rel}')
+    elif p.stat().st_size < min_size:
+        errors.append(f'asset too small {rel}')
+manifest_path = BASE / 'site.webmanifest'
+if manifest_path.exists():
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+        icon_srcs = {icon.get('src') for icon in manifest.get('icons', [])}
+        for src in ['/assets/icons/sphaera-mark-192.png', '/assets/icons/sphaera-mark-512.png']:
+            if src not in icon_srcs:
+                errors.append(f'site.webmanifest missing icon {src}')
+    except json.JSONDecodeError as exc:
+        errors.append(f'site.webmanifest invalid json: {exc}')
 if not (BASE/'media/meta/.gitkeep').exists(): errors.append('missing hidden media folder')
 robots=(BASE/'robots.txt').read_text(encoding='utf-8') if (BASE/'robots.txt').exists() else ''
 if 'Disallow: /media/meta/' not in robots: errors.append('robots does not hide /media/meta/')
