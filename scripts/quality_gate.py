@@ -55,7 +55,7 @@ asset_expectations = {
     'assets/icons/sphaera-mark-180.png': 2_000,
     'assets/icons/apple-touch-icon.png': 2_000,
     'assets/icons/sphaera-mark-192.png': 2_000,
-    'assets/icons/sphaera-mark-512.png': 8_000,
+    'assets/icons/sphaera-mark-512.png': 6_000,
     'favicon.ico': 1_000,
     'site.webmanifest': 100,
 }
