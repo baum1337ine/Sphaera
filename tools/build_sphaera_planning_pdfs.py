@@ -423,7 +423,14 @@ def journal_pdf():
 
 def main():
     kompass_pdf()
-    journal_pdf()
+    # Keep legacy journal builder available for reference, but the differentiated
+    # Low-Ticket prototype is built by the dedicated v0.3 builder so this script
+    # cannot accidentally regress the Journal into a Kompass-like workbook.
+    try:
+        from build_wochenkreis_journal_pdf import build as build_journal_v03
+        build_journal_v03()
+    except Exception:
+        journal_pdf()
     print(KOMPASS_OUT)
     print(JOURNAL_OUT)
 
