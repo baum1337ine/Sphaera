@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Build the differentiated SPHAERA Wochenkreis Journal prototype PDF."""
+"""Build SPHAERA Wochenkreis Journal prototype PDF v0.4.
+
+Design rule for v0.4:
+- no Freebie reference
+- no App reference
+- quiet premium workbook
+- consistent page grid, margins, panel sizes, and typography
+"""
 from __future__ import annotations
 
 import math
@@ -19,19 +26,23 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "assets/free/sphaera-wochenkreis-journal-prototyp.pdf"
 W, H = A4
 
+M = 18 * mm
+CONTENT_W = W - 2 * M
+
 COL = {
     "night": colors.HexColor("#070912"),
-    "violet_dark": colors.HexColor("#211426"),
-    "violet": colors.HexColor("#8067C8"),
+    "deep": colors.HexColor("#17101D"),
+    "violet": colors.HexColor("#7560B8"),
     "ivory": colors.HexColor("#FBF6EA"),
-    "cream": colors.HexColor("#F4E9DA"),
-    "paper": colors.HexColor("#FFFDF7"),
+    "cream": colors.HexColor("#F3E7D6"),
+    "paper": colors.HexColor("#FFFDF8"),
     "gold": colors.HexColor("#B89A5E"),
     "gold2": colors.HexColor("#D8C38A"),
-    "ink": colors.HexColor("#221817"),
-    "muted": colors.HexColor("#665A62"),
-    "line": colors.HexColor("#D9C79A"),
+    "ink": colors.HexColor("#211817"),
+    "muted": colors.HexColor("#62575E"),
+    "line": colors.HexColor("#D8C89D"),
 }
+
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 pdfmetrics.registerFont(TTFont("Serif", str(FONT_DIR / "DejaVuSerif.ttf")))
 pdfmetrics.registerFont(TTFont("SerifBold", str(FONT_DIR / "DejaVuSerif-Bold.ttf")))
@@ -40,24 +51,23 @@ pdfmetrics.registerFont(TTFont("SansBold", str(FONT_DIR / "DejaVuSans-Bold.ttf")
 
 styles = getSampleStyleSheet()
 styles.add(ParagraphStyle("Cover", fontName="SerifBold", fontSize=34, leading=38, alignment=TA_CENTER, textColor=COL["ivory"]))
-styles.add(ParagraphStyle("CoverSub", fontName="Sans", fontSize=10.5, leading=15.5, alignment=TA_CENTER, textColor=COL["cream"]))
-styles.add(ParagraphStyle("H1", fontName="SerifBold", fontSize=22, leading=26, textColor=COL["ink"]))
-styles.add(ParagraphStyle("H2", fontName="SerifBold", fontSize=13.2, leading=16, textColor=COL["ink"]))
-styles.add(ParagraphStyle("Body", fontName="Sans", fontSize=8.9, leading=12.6, textColor=COL["ink"]))
-styles.add(ParagraphStyle("Small", fontName="Sans", fontSize=7.25, leading=9.6, textColor=COL["muted"]))
-styles.add(ParagraphStyle("Quote", fontName="Serif", fontSize=12.3, leading=17, alignment=TA_CENTER, textColor=COL["ink"]))
-styles.add(ParagraphStyle("Tiny", fontName="Sans", fontSize=6.4, leading=8.4, textColor=COL["muted"]))
+styles.add(ParagraphStyle("CoverSub", fontName="Sans", fontSize=10.2, leading=15.3, alignment=TA_CENTER, textColor=COL["cream"]))
+styles.add(ParagraphStyle("H1", fontName="SerifBold", fontSize=21, leading=25, textColor=COL["ink"]))
+styles.add(ParagraphStyle("H2", fontName="SerifBold", fontSize=12.8, leading=15.5, textColor=COL["ink"]))
+styles.add(ParagraphStyle("Body", fontName="Sans", fontSize=8.6, leading=12.2, textColor=COL["ink"]))
+styles.add(ParagraphStyle("Small", fontName="Sans", fontSize=7.1, leading=9.4, textColor=COL["muted"]))
+styles.add(ParagraphStyle("Quote", fontName="Serif", fontSize=12.2, leading=16.7, alignment=TA_CENTER, textColor=COL["ink"]))
 
 
 def rgba(hex_color: str, alpha: float):
-    c = colors.HexColor(hex_color)
-    return colors.Color(c.red, c.green, c.blue, alpha=alpha)
+    base = colors.HexColor(hex_color)
+    return colors.Color(base.red, base.green, base.blue, alpha=alpha)
 
 
 def para(c, text, style, x, y, w, h=900):
-    q = Paragraph(text, style)
-    _, th = q.wrap(w, h)
-    q.drawOn(c, x, y - th)
+    p = Paragraph(text, style)
+    _, th = p.wrap(w, h)
+    p.drawOn(c, x, y - th)
     return y - th
 
 
@@ -65,258 +75,288 @@ def bg(c, dark=False):
     c.setFillColor(COL["night"] if dark else COL["ivory"])
     c.rect(0, 0, W, H, fill=1, stroke=0)
     c.saveState()
-    c.setStrokeColor(rgba("#D8C38A", .12 if dark else .18))
-    c.setLineWidth(.32)
-    cx, cy = W/2, H/2 + 8*mm
-    for r in (23, 45, 69, 96):
+    c.setStrokeColor(rgba("#D8C38A", .11 if dark else .13))
+    c.setLineWidth(.25)
+    cx, cy = W/2, H/2 + 5*mm
+    for r in (26, 51, 77, 103):
         c.circle(cx, cy, r*mm, stroke=1, fill=0)
     for a in range(0, 180, 30):
         rad = math.radians(a)
-        c.line(cx-math.cos(rad)*128*mm, cy-math.sin(rad)*128*mm, cx+math.cos(rad)*128*mm, cy+math.sin(rad)*128*mm)
+        c.line(cx - math.cos(rad)*123*mm, cy - math.sin(rad)*123*mm, cx + math.cos(rad)*123*mm, cy + math.sin(rad)*123*mm)
     c.restoreState()
 
 
 def mark(c, x, y, r, dark=False):
     c.saveState(); c.translate(x, y)
-    c.setStrokeColor(COL["gold2"] if dark else COL["gold"]); c.setLineWidth(.9)
-    for rr in (r, r*.62, r*.29): c.circle(0, 0, rr, stroke=1, fill=0)
+    c.setStrokeColor(COL["gold2"] if dark else COL["gold"])
+    c.setLineWidth(.9)
+    for rr in (r, r*.62, r*.29):
+        c.circle(0, 0, rr, stroke=1, fill=0)
     for a in range(0, 180, 30):
-        rad=math.radians(a); c.line(math.cos(rad)*-r, math.sin(rad)*-r, math.cos(rad)*r, math.sin(rad)*r)
+        rad = math.radians(a)
+        c.line(math.cos(rad)*-r, math.sin(rad)*-r, math.cos(rad)*r, math.sin(rad)*r)
     c.restoreState()
 
 
-def panel(c, x, y, w, h, fill=None, radius=10, stroke=True):
+def panel(c, x, y, w, h, fill=None, radius=9, stroke=True):
     c.setFillColor(fill or COL["paper"])
-    c.setStrokeColor(rgba("#B89A5E", .34))
+    c.setStrokeColor(rgba("#B89A5E", .36))
     c.roundRect(x, y, w, h, radius, stroke=1 if stroke else 0, fill=1)
 
 
 def label(c, text, x, y, color=None):
-    c.setFillColor(color or COL["gold"]); c.setFont("SansBold", 7.15); c.drawString(x, y, text.upper())
+    c.setFillColor(color or COL["gold"])
+    c.setFont("SansBold", 6.85)
+    c.drawString(x, y, text.upper())
 
 
-def field(c, name, x, y, w, h=10*mm, fill=True):
-    if fill:
-        c.setFillColor(COL["paper"]); c.setStrokeColor(rgba("#B89A5E", .48)); c.roundRect(x, y, w, h, 3.5, fill=1, stroke=1)
+def rule(c, x, y, w):
+    c.setStrokeColor(rgba("#B89A5E", .40))
+    c.setLineWidth(.45)
+    c.line(x, y, x+w, y)
+
+
+def field(c, name, x, y, w, h=9*mm):
+    c.setFillColor(COL["paper"])
+    c.setStrokeColor(rgba("#B89A5E", .48))
+    c.roundRect(x, y, w, h, 3, fill=1, stroke=1)
     try:
-        c.acroForm.textfieldRelative(name=name, x=x+1.7*mm, y=y+1.3*mm, width=w-3.4*mm, height=h-2.6*mm, borderWidth=0, fillColor=colors.transparent, textColor=COL["ink"], fontName="Sans", fontSize=7.5, forceBorder=False)
+        c.acroForm.textfieldRelative(
+            name=name,
+            x=x+1.6*mm,
+            y=y+1.2*mm,
+            width=w-3.2*mm,
+            height=h-2.4*mm,
+            borderWidth=0,
+            fillColor=colors.transparent,
+            textColor=COL["ink"],
+            fontName="Sans",
+            fontSize=7.2,
+            forceBorder=False,
+        )
     except Exception:
         pass
-
-
-def checkbox(c, name, x, y, text):
-    c.setFillColor(COL["paper"]); c.setStrokeColor(COL["gold"]); c.roundRect(x, y, 4.1*mm, 4.1*mm, 1, fill=1, stroke=1)
-    try:
-        c.acroForm.checkboxRelative(name=name, x=x, y=y, size=4.1*mm, buttonStyle="check", borderWidth=.5, borderColor=COL["gold"], fillColor=colors.transparent, textColor=COL["violet_dark"], forceBorder=True)
-    except Exception:
-        pass
-    c.setFillColor(COL["ink"]); c.setFont("Sans", 7.2); c.drawString(x+5.8*mm, y+.6*mm, text)
 
 
 def footer(c, page, title):
-    c.setStrokeColor(rgba("#B89A5E", .38)); c.line(18*mm, 15*mm, W-18*mm, 15*mm)
-    c.setFont("Sans", 6.7); c.setFillColor(COL["muted"])
-    c.drawString(18*mm, 9.4*mm, "SPHAERA · WOCHENKREIS JOURNAL")
-    c.drawRightString(W-18*mm, 9.4*mm, f"{page:02d} · {title}")
+    rule(c, M, 15*mm, CONTENT_W)
+    c.setFont("Sans", 6.5)
+    c.setFillColor(COL["muted"])
+    c.drawString(M, 9.2*mm, "SPHAERA · WOCHENKREIS JOURNAL")
+    c.drawRightString(W-M, 9.2*mm, f"{page:02d} · {title}")
 
 
 def page_head(c, page, kicker, title, lead):
-    bg(c); footer(c, page, kicker)
-    label(c, kicker, 18*mm, 273*mm)
-    para(c, title, styles["H1"], 18*mm, 260*mm, W-36*mm)
-    para(c, lead, styles["Body"], 18*mm, 238*mm, W-36*mm)
+    bg(c)
+    footer(c, page, kicker)
+    label(c, kicker, M, 273*mm)
+    para(c, title, styles["H1"], M, 260*mm, CONTENT_W)
+    y = para(c, lead, styles["Body"], M, 238*mm, CONTENT_W)
+    rule(c, M, y-8*mm, CONTENT_W)
 
 
 def cover(c):
     bg(c, dark=True)
-    c.setFillColor(rgba("#8067C8", .22)); c.circle(70*mm, 235*mm, 60*mm, fill=1, stroke=0)
-    c.setFillColor(rgba("#D8C38A", .14)); c.circle(169*mm, 74*mm, 70*mm, fill=1, stroke=0)
-    c.setFillColor(COL["gold2"]); c.setFont("SansBold", 8.7); c.drawCentredString(W/2, 263*mm, "SPHAERA · WOCHENKREIS JOURNAL · PROTOTYP 0.3")
+    c.setFillColor(rgba("#7560B8", .20)); c.circle(70*mm, 235*mm, 58*mm, fill=1, stroke=0)
+    c.setFillColor(rgba("#D8C38A", .12)); c.circle(170*mm, 72*mm, 68*mm, fill=1, stroke=0)
+    c.setFillColor(COL["gold2"]); c.setFont("SansBold", 8.5); c.drawCentredString(W/2, 263*mm, "SPHAERA · WOCHENKREIS JOURNAL · PROTOTYP 0.4")
     mark(c, W/2, 207*mm, 48*mm, True)
     para(c, "Wochenkreis<br/>Journal", styles["Cover"], 28*mm, 154*mm, W-56*mm)
-    para(c, "Ein wöchentliches Operating‑Room‑System für Fokus, Energie, Grenzen, Rituale und Entscheidungen. Die Praxis nach dem kostenlosen Kompass.", styles["CoverSub"], 35*mm, 100*mm, W-70*mm)
-    c.setFont("Sans", 7.5); c.setFillColor(COL["gold2"]); c.drawCentredString(W/2, 22*mm, "sphaera.app · Version 0.3 · Review-Prototyp")
+    para(c, "Ein edles Wochenritual für Fokus, Energie, Grenzen und wiederkehrende Klarheit.", styles["CoverSub"], 39*mm, 101*mm, W-78*mm)
+    c.setFont("Sans", 7.3); c.setFillColor(COL["gold2"]); c.drawCentredString(W/2, 22*mm, "Edition zur Review · SPHAERA")
     c.showPage()
 
 
-def two_column_boxes(c, items, start_y=170, box_h=54, gap=10):
+def closing(c):
+    bg(c, dark=True)
+    mark(c, W/2, 204*mm, 47*mm, True)
+    para(c, "Klarheit entsteht durch Wiederkehr.", styles["Cover"], 26*mm, 153*mm, W-52*mm)
+    para(c, "Eine gute Woche ist nicht voller. Sie ist besser geordnet: mit geschützter Energie, klaren Grenzen und einer Mitte, zu der du zurückkehren kannst.", styles["CoverSub"], 37*mm, 95*mm, W-74*mm)
+    c.setFillColor(COL["gold2"]); c.setFont("Sans", 7.2); c.drawCentredString(W/2, 22*mm, "SPHAERA · Wochenkreis Journal · Prototyp 0.4")
+    c.showPage()
+
+
+def box_grid(c, items, top=176, box_h=52, gap=12):
     for i, (title, hint, name) in enumerate(items):
-        col = i % 2; row = i // 2
+        col = i % 2
+        row = i // 2
         x = (18 + col*91)*mm
-        y = (start_y - row*(box_h+gap))*mm
-        panel(c, x, y, 82*mm, box_h*mm, colors.white, 12)
+        y = (top - row*(box_h+gap))*mm
+        panel(c, x, y, 82*mm, box_h*mm, colors.white, 11)
         label(c, title, x+7*mm, y+(box_h-13)*mm)
         para(c, hint, styles["Small"], x+7*mm, y+(box_h-21)*mm, 68*mm)
-        field(c, name, x+7*mm, y+8*mm, 68*mm, 15*mm)
+        field(c, name, x+7*mm, y+8*mm, 68*mm, 14*mm)
+
+
+def full_prompt(c, title, hint, name, y, h=28):
+    panel(c, M, y*mm, CONTENT_W, h*mm, colors.white, 10)
+    label(c, title, M+8*mm, (y+h-11)*mm)
+    para(c, hint, styles["Small"], M+8*mm, (y+h-19)*mm, CONTENT_W-16*mm)
+    field(c, name, M+8*mm, (y+6)*mm, CONTENT_W-16*mm, 9*mm)
 
 
 def build():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     c = canvas.Canvas(str(OUT), pagesize=A4, pageCompression=1)
-    c.setTitle("SPHAERA Wochenkreis Journal — Prototyp 0.3")
+    c.setTitle("SPHAERA Wochenkreis Journal — Prototyp 0.4")
     c.setAuthor("SPHAERA")
-    c.setSubject("Wöchentliches Planungssystem für Fokus, Energie, Grenzen, Rituale und Review")
-    c.setKeywords("SPHAERA, Wochenkreis Journal, Wochenplanung, Energieplanung, Ritual, Low Ticket")
+    c.setSubject("Edles Wochenjournal für Fokus, Energie, Grenzen und wiederkehrende Klarheit")
+    c.setKeywords("SPHAERA, Wochenkreis Journal, Wochenplanung, Energieplanung, Ritual, PDF")
 
     cover(c)
 
-    page_head(c, 1, "Methode", "Nicht beobachten. Entwerfen.", "Der kostenlose Kompass sammelt Signale. Dieses Journal baut daraus eine Woche. Es ist kein zweites Reflexionsheft, sondern ein ruhiges System für Auswahl, Platzierung und Wiederkehr.")
-    for x, n, title, body in [(18,"1","Architektur","Die Woche bekommt Thema, Grenze und Priorität."),(76,"2","Kapazität","Energie wird budgetiert, nicht romantisiert."),(134,"3","Transfer","Der Review erzeugt eine Entscheidung für die nächste Woche.")]:
-        panel(c, x*mm, 166*mm, 52*mm, 48*mm, COL["cream"], 12)
-        c.setFillColor(COL["gold"]); c.setFont("SerifBold", 22); c.drawString((x+6)*mm, 197*mm, n)
-        c.setFillColor(COL["ink"]); c.setFont("SansBold", 8.2); c.drawString((x+6)*mm, 187*mm, title)
-        para(c, body, styles["Small"], (x+6)*mm, 178*mm, 40*mm)
-    panel(c, 18*mm, 70*mm, W-36*mm, 58*mm, colors.white, 14)
-    para(c, "Arbeitsversprechen", styles["H2"], 28*mm, 115*mm, W-56*mm)
-    para(c, "Ich plane diese Woche nicht, um mehr in sie hineinzudrücken. Ich plane, damit das Wesentliche einen geschützten Ort bekommt.", styles["Quote"], 31*mm, 101*mm, W-62*mm)
-    field(c, "v03_versprechen", 28*mm, 80*mm, W-56*mm, 10*mm)
+    page_head(c, 1, "Orientierung", "Die Woche als Kreis", "Dieses Journal behandelt die Woche nicht als lineare Liste, sondern als geordneten Kreis: Ausrichtung, Platzierung, Schutz, Ritual und Review. Jede Seite dient einer konkreten Entscheidung.")
+    box_grid(c, [
+        ("Ausrichtung", "Was ist die Mitte dieser Woche?", "v04_meth_align"),
+        ("Kapazität", "Welche Energie steht realistisch zur Verfügung?", "v04_meth_capacity"),
+        ("Schutz", "Welche Grenze hält die Woche in Form?", "v04_meth_protect"),
+        ("Wiederkehr", "Welches Ritual bringt dich zurück?", "v04_meth_return"),
+    ], top=164, box_h=52, gap=13)
+    full_prompt(c, "Leitsatz", "Ein Satz, der die Woche zusammenhält.", "v04_meth_sentence", 35, 30)
     c.showPage()
 
-    page_head(c, 2, "Kommandoraum", "Wochenarchitektur", "Bevor Aufgaben verteilt werden, wird die Woche entworfen: Thema, Ergebnis, Grenzen, Nicht‑Tun und eine klare Definition von genug.")
-    two_column_boxes(c, [
-        ("Wochenthema", "Der rote Faden, an dem du Entscheidungen prüfst.", "v03_arch_theme"),
-        ("Hauptgewinn", "Was soll am Ende wirklich klarer, leichter oder erledigt sein?", "v03_arch_win"),
-        ("Nicht‑Tun", "Was wird bewusst nicht begonnen, diskutiert oder perfektioniert?", "v03_arch_not"),
-        ("Schutzgrenze", "Welche Grenze verhindert, dass die Woche ausläuft?", "v03_arch_boundary"),
-    ], 164, 55, 12)
-    panel(c, 18*mm, 34*mm, W-36*mm, 39*mm, COL["cream"], 12)
-    para(c, "Genug ist diese Woche …", styles["H2"], 28*mm, 62*mm, W-56*mm); field(c, "v03_arch_enough", 28*mm, 42*mm, W-56*mm, 11*mm)
+    page_head(c, 2, "Architektur", "Wochenarchitektur", "Bevor Termine und Aufgaben ihren Platz bekommen, braucht die Woche eine innere Ordnung: Thema, Ergebnis, Grenze und eine bewusste Form von genug.")
+    box_grid(c, [
+        ("Wochenthema", "Der rote Faden für alle Entscheidungen.", "v04_arch_theme"),
+        ("Wesentliches Ergebnis", "Was soll am Ende wirklich klarer, leichter oder erledigt sein?", "v04_arch_result"),
+        ("Nicht verhandelbar", "Was darf diese Woche nicht verloren gehen?", "v04_arch_nonneg"),
+        ("Nicht‑Tun", "Was wird bewusst nicht begonnen oder perfektioniert?", "v04_arch_not"),
+    ], top=164, box_h=52, gap=13)
+    full_prompt(c, "Genug ist erreicht, wenn …", "Definiere ein ruhiges Ende, bevor die Woche beginnt.", "v04_arch_enough", 35, 30)
     c.showPage()
 
-    page_head(c, 3, "Rollen", "Lebensbereiche bewusst verteilen", "Ein gutes Wochensystem verhindert, dass nur der lauteste Lebensbereich gewinnt. Jeder Bereich bekommt eine bewusste Entscheidung: Raum, Minimum oder Grenze.")
-    areas=["Körper / Energie","Beziehung / Familie","Arbeit / Projekt","Haushalt / Ordnung","Kreativität / Lernen","Stille / Ritual"]
-    y=208*mm
-    for i,a in enumerate(areas):
-        panel(c, 18*mm, y-17*mm, W-36*mm, 14*mm, colors.white, 7)
-        c.setFont("SansBold", 7.6); c.setFillColor(COL["ink"]); c.drawString(25*mm, y-8*mm, a)
-        field(c, f"v03_area_space_{i}", 72*mm, y-15*mm, 42*mm, 8.5*mm)
-        field(c, f"v03_area_min_{i}", 120*mm, y-15*mm, 31*mm, 8.5*mm)
-        field(c, f"v03_area_bound_{i}", 157*mm, y-15*mm, 32*mm, 8.5*mm)
-        y-=23*mm
-    label(c, "Raum", 74*mm, 215*mm); label(c, "Minimum", 121*mm, 215*mm); label(c, "Grenze", 158*mm, 215*mm)
-    panel(c, 18*mm, 39*mm, W-36*mm, 33*mm, COL["cream"], 12)
-    para(c, "Priorität des Schutzes", styles["H2"], 28*mm, 63*mm, W-56*mm); field(c, "v03_area_priority", 28*mm, 45*mm, W-56*mm, 10*mm)
+    page_head(c, 3, "Lebensbereiche", "Rollen & Räume", "Eine edle Woche ist nicht nur effizient, sondern geordnet. Diese Seite schützt davor, dass ein einzelner Bereich die ganze Woche übernimmt.")
+    label(c, "Bereich", 24*mm, 211*mm); label(c, "Raum", 75*mm, 211*mm); label(c, "Minimum", 118*mm, 211*mm); label(c, "Grenze", 157*mm, 211*mm)
+    y = 193*mm
+    for i, area in enumerate(["Körper / Energie", "Beziehung / Familie", "Arbeit / Projekt", "Haushalt / Ordnung", "Kreativität / Lernen", "Stille / Ritual"]):
+        panel(c, M, y-7*mm, CONTENT_W, 14*mm, colors.white, 7)
+        c.setFont("SansBold", 7.4); c.setFillColor(COL["ink"]); c.drawString(25*mm, y*mm, area)
+        field(c, f"v04_area_room_{i}", 72*mm, y-5*mm, 36*mm, 8.2*mm)
+        field(c, f"v04_area_min_{i}", 114*mm, y-5*mm, 36*mm, 8.2*mm)
+        field(c, f"v04_area_bound_{i}", 156*mm, y-5*mm, 33*mm, 8.2*mm)
+        y -= 24*mm
+    full_prompt(c, "Schutzpriorität", "Welcher Bereich braucht diese Woche bewusst mehr Raum oder Grenze?", "v04_area_priority", 34, 30)
     c.showPage()
 
-    page_head(c, 4, "Kapazität", "Energie‑Budget", "Plane mit realer Kapazität. Nicht alle Aufgaben brauchen dieselbe Energie; nicht jede Energie ist jeden Tag verfügbar.")
-    two_column_boxes(c, [
-        ("Tiefenenergie", "Denken, Schreiben, Bauen, Entscheiden. Maximal wenige Slots.", "v03_energy_deep"),
-        ("Pflegeenergie", "Antworten, Sortieren, Admin, Nachziehen.", "v03_energy_care"),
-        ("Körperenergie", "Bewegen, Vorbereiten, Räume ordnen, Wege erledigen.", "v03_energy_body"),
-        ("Integrationsenergie", "Schlafen, verarbeiten, nichts erzwingen, still werden.", "v03_energy_rest"),
-    ], 164, 56, 12)
-    panel(c, 18*mm, 34*mm, W-36*mm, 38*mm, COL["cream"], 12)
-    para(c, "Überlastungsregel: Wenn die Woche kippt, wird zuerst verkleinert …", styles["H2"], 28*mm, 62*mm, W-56*mm); field(c, "v03_energy_reduce", 28*mm, 42*mm, W-56*mm, 11*mm)
+    page_head(c, 4, "Energie", "Energiehaushalt", "Energie wird nicht vorausgesetzt, sondern verteilt. Diese Seite verhindert, dass Tiefenarbeit, Pflegeaufgaben und Regeneration denselben inneren Preis bekommen.")
+    box_grid(c, [
+        ("Tiefenenergie", "Denken, Schreiben, Bauen, Entscheiden.", "v04_energy_deep"),
+        ("Pflegeenergie", "Antworten, Sortieren, Admin, Nachziehen.", "v04_energy_care"),
+        ("Körperenergie", "Bewegen, Vorbereiten, Aufräumen, Wege.", "v04_energy_body"),
+        ("Integrationsenergie", "Schlaf, Stille, Verarbeitung, Leerlauf.", "v04_energy_rest"),
+    ], top=164, box_h=53, gap=13)
+    full_prompt(c, "Überlastungsregel", "Wenn es zu viel wird, wird zuerst verkleinert …", "v04_energy_rule", 34, 30)
     c.showPage()
 
-    page_head(c, 5, "Fokus", "Entscheidungsboard", "Diese Seite trennt wesentlich von möglich. Sie macht sichtbar, was wirklich passieren muss — und was losgelassen werden darf, ohne die Woche zu verlieren.")
-    two_column_boxes(c, [
-        ("Must happen", "Ohne das fühlt sich die Woche unfertig oder unruhig an.", "v03_decide_must"),
-        ("Nice if possible", "Wertvoll, aber nicht tragend.", "v03_decide_nice"),
-        ("Delegate / Ask", "Was muss nicht allein gehalten werden?", "v03_decide_ask"),
-        ("Drop / Defer", "Was darf sichtbar später werden?", "v03_decide_drop"),
-    ], 164, 56, 12)
-    panel(c, 18*mm, 34*mm, W-36*mm, 38*mm, COL["cream"], 12)
-    para(c, "Eine Entscheidung, die diese Woche leichter macht", styles["H2"], 28*mm, 62*mm, W-56*mm); field(c, "v03_decide_one", 28*mm, 42*mm, W-56*mm, 11*mm)
+    page_head(c, 5, "Entscheidung", "Prioritäten‑Matrix", "Diese Seite trennt wesentlich von möglich. Nicht alles, was sinnvoll ist, gehört in diese Woche.")
+    box_grid(c, [
+        ("Muss geschehen", "Tragend für Ruhe, Fortschritt oder Verlässlichkeit.", "v04_prio_must"),
+        ("Darf geschehen", "Schön, wertvoll, aber nicht tragend.", "v04_prio_may"),
+        ("Bitten / Delegieren", "Was muss nicht allein gehalten werden?", "v04_prio_ask"),
+        ("Verschieben / Streichen", "Was verlässt diese Woche bewusst?", "v04_prio_drop"),
+    ], top=164, box_h=53, gap=13)
+    full_prompt(c, "Eine klärende Entscheidung", "Welche Entscheidung macht die ganze Woche leichter?", "v04_prio_one", 34, 30)
     c.showPage()
 
-    page_head(c, 6, "Kreis", "Wochenkreis & Platzierung", "Jetzt wird die Woche sichtbar. Jeder Tag bekommt eine Qualität, einen Hauptslot, eine Grenze und ein kleines Ritual. Das ist die Brücke von Erkenntnis zu Umsetzung.")
-    cx, cy, r = W/2, 155*mm, 50*mm
-    c.setStrokeColor(COL["gold"]); c.setLineWidth(1.2); c.circle(cx, cy, r, stroke=1, fill=0)
-    for i, d in enumerate(["Mo","Di","Mi","Do","Fr","Sa","So"]):
-        a=math.radians(90-i*360/7); c.setStrokeColor(rgba("#B89A5E", .50)); c.line(cx, cy, cx+math.cos(a)*r, cy+math.sin(a)*r)
+    page_head(c, 6, "Wochenkreis", "Mitte & Tagesqualitäten", "Der Kreis macht sichtbar, was eine Liste oft verbirgt: Übergänge, leichte Tage, geschützte Slots und die Mitte, zu der du zurückkehrst.")
+    cx, cy, r = W/2, 154*mm, 50*mm
+    c.setStrokeColor(COL["gold"]); c.setLineWidth(1.1); c.circle(cx, cy, r, stroke=1, fill=0)
+    for i, d in enumerate(["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]):
+        a = math.radians(90 - i*360/7)
+        c.setStrokeColor(rgba("#B89A5E", .52)); c.line(cx, cy, cx+math.cos(a)*r, cy+math.sin(a)*r)
         c.setFillColor(COL["ink"]); c.setFont("SansBold", 7.2); c.drawCentredString(cx+math.cos(a-.43)*r*.78, cy+math.sin(a-.43)*r*.78, d)
-    field(c, "v03_circle_center", cx-27*mm, cy-7*mm, 54*mm, 14*mm)
-    label(c, "Mitte der Woche", cx-18*mm, cy+14*mm)
-    for x,y,title,name in [(18,47,"Zwei leichte Tage","light"),(109,47,"Ein geschützter Tiefenslot","deep")]:
-        panel(c,x*mm,y*mm,82*mm,35*mm,colors.white,10); label(c,title,(x+7)*mm,(y+22)*mm); field(c,f"v03_circle_{name}",(x+7)*mm,(y+7)*mm,68*mm,10*mm)
+    field(c, "v04_circle_center", cx-27*mm, cy-7*mm, 54*mm, 14*mm)
+    label(c, "Mitte", cx-8*mm, cy+14*mm)
+    full_prompt(c, "Zwei leichte Tage", "Welche Tage werden bewusst nicht überladen?", "v04_circle_light", 48, 25)
     c.showPage()
 
-    for page_no, title, days in [(7, "Tage platzieren I", ["Montag","Dienstag","Mittwoch","Donnerstag"]), (8, "Tage platzieren II", ["Freitag","Samstag","Sonntag","Puffer / Leerstelle"] )]:
-        page_head(c, page_no, "Platzierung", title, "Nicht jeder Tag muss alles tragen. Trage nur die stärkste Qualität ein: Hauptslot, Grenze, Ritual und Mindestversion.")
-        y=203*mm
-        for i,d in enumerate(days):
-            panel(c,18*mm,y-32*mm,W-36*mm,29*mm,colors.white,10)
-            c.setFillColor(COL["gold"]); c.setFont("SansBold",7.8); c.drawString(25*mm,y-11*mm,d)
-            label(c,"Hauptslot",55*mm,y-8*mm); field(c,f"v03_day_{page_no}_{i}_slot",55*mm,y-24*mm,36*mm,9*mm)
-            label(c,"Grenze",96*mm,y-8*mm); field(c,f"v03_day_{page_no}_{i}_bound",96*mm,y-24*mm,35*mm,9*mm)
-            label(c,"Ritual",136*mm,y-8*mm); field(c,f"v03_day_{page_no}_{i}_ritual",136*mm,y-24*mm,53*mm,9*mm)
-            y-=41*mm
-        panel(c,18*mm,33*mm,W-36*mm,28*mm,COL["cream"],11)
-        para(c,"Mindestversion, falls die Woche kippt",styles["H2"],28*mm,53*mm,W-56*mm); field(c,f"v03_day_{page_no}_minimum",28*mm,38*mm,W-56*mm,9*mm)
-        c.showPage()
-
-    page_head(c, 9, "Reibung", "Wenn‑dann‑Design", "Gute Planung kennt Hindernisse, bevor sie kommen. Diese Sätze senken Reibung, weil du im schwierigen Moment nicht neu verhandeln musst.")
-    rows=[("Wenn ich zu wenig Energie habe …","dann mache ich die Mindestversion:"),("Wenn ein Tag kippt …","dann rette ich nur:"),("Wenn ich prokrastiniere …","dann starte ich mit 5 Minuten:"),("Wenn andere mehr wollen …","dann lautet meine Grenze:"),("Wenn ich perfektioniere …","dann ist fertig genug bei:")]
-    y=207*mm
-    for i,(a,b) in enumerate(rows):
-        label(c,a,18*mm,y); field(c,f"v03_if_{i}",18*mm,y-17*mm,76*mm,10*mm)
-        label(c,b,103*mm,y); field(c,f"v03_then_{i}",103*mm,y-17*mm,89*mm,10*mm)
-        y-=34*mm
+    page_head(c, 7, "Platzierung", "Wochenplan", "Jeder Tag bekommt nur vier Angaben: Qualität, Hauptslot, Grenze und Ritual. So bleibt die Woche geordnet, ohne sich zu überplanen.")
+    label(c, "Tag", 23*mm, 211*mm); label(c, "Qualität", 43*mm, 211*mm); label(c, "Hauptslot", 82*mm, 211*mm); label(c, "Grenze", 128*mm, 211*mm); label(c, "Ritual", 162*mm, 211*mm)
+    y = 193*mm
+    for d in ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]:
+        panel(c, M, y-7*mm, CONTENT_W, 14*mm, colors.white, 7)
+        c.setFont("SansBold", 7.4); c.setFillColor(COL["gold"]); c.drawString(25*mm, y*mm, d)
+        field(c, f"v04_plan_{d}_quality", 41*mm, y-5*mm, 34*mm, 8.2*mm)
+        field(c, f"v04_plan_{d}_slot", 80*mm, y-5*mm, 42*mm, 8.2*mm)
+        field(c, f"v04_plan_{d}_bound", 127*mm, y-5*mm, 29*mm, 8.2*mm)
+        field(c, f"v04_plan_{d}_ritual", 161*mm, y-5*mm, 28*mm, 8.2*mm)
+        y -= 22*mm
+    full_prompt(c, "Puffer / Leerstelle", "Wo bleibt bewusst Raum für das Unerwartete?", "v04_plan_buffer", 34, 29)
     c.showPage()
 
-    page_head(c, 10, "Grenzen", "Kommunikation & Schutz", "Viele Wochen scheitern nicht am Plan, sondern an ungeklärten Außenkanten. Diese Seite macht Grenzen formulierbar, bevor sie emotional werden.")
-    two_column_boxes(c, [
-        ("Nein‑Satz", "Ein freundlicher Satz, der keine lange Rechtfertigung braucht.", "v03_comm_no"),
-        ("Bitte‑Satz", "Was du aktiv erfragen oder delegieren darfst.", "v03_comm_ask"),
-        ("Antwortfenster", "Wann du Nachrichten beantwortest — und wann nicht.", "v03_comm_window"),
-        ("Abschlusszeichen", "Woran dein Körper merkt: Arbeit ist für heute zu Ende.", "v03_comm_end"),
-    ], 164, 56, 12)
+    page_head(c, 8, "Ritual", "Ritual‑Engine", "Rituale sind keine Dekoration. Sie sind kleine wiederkehrende Handlungen, die Ordnung wiederherstellen, wenn die Woche ihre Form verliert.")
+    box_grid(c, [
+        ("Wochenstart", "Wie betrittst du die Woche bewusst?", "v04_rit_start"),
+        ("Übergang", "Wie wechselst du zwischen Rollen oder Räumen?", "v04_rit_transition"),
+        ("Schutz", "Welche Handlung beendet Arbeit wirklich?", "v04_rit_close"),
+        ("Review", "Wann und wie liest du die Woche?", "v04_rit_review"),
+    ], top=164, box_h=53, gap=13)
+    full_prompt(c, "Kleinste Wiederholung", "Welche Handlung ist so klein, dass sie fast immer möglich bleibt?", "v04_rit_small", 34, 30)
     c.showPage()
 
-    page_head(c, 11, "Ritual", "Ritual‑Engine", "Rituale sind hier keine Deko. Sie sind kleine Anker, die die Woche wieder in Form bringen, wenn sie zerfasert.")
-    two_column_boxes(c, [
-        ("Wochenstart", "Wie betrittst du die Woche bewusst?", "v03_rit_start"),
-        ("Übergang", "Wie wechselst du zwischen Rollen oder Räumen?", "v03_rit_transition"),
-        ("Schutz", "Welche Handlung beendet Arbeit wirklich?", "v03_rit_protect"),
-        ("Review", "Wann und wie liest du die Woche?", "v03_rit_review"),
-    ], 164, 56, 12)
-    panel(c,18*mm,34*mm,W-36*mm,37*mm,COL["cream"],12)
-    para(c,"Kleinste tägliche Wiederholung",styles["H2"],28*mm,61*mm,W-56*mm); field(c,"v03_rit_small",28*mm,42*mm,W-56*mm,10*mm)
+    page_head(c, 9, "Grenzen", "Kommunikation & Schutz", "Grenzen wirken besser, wenn sie vorformuliert sind. Diese Seite macht Schutz freundlich, präzise und wiederholbar.")
+    box_grid(c, [
+        ("Nein‑Satz", "Ein ruhiger Satz ohne lange Rechtfertigung.", "v04_comm_no"),
+        ("Bitte‑Satz", "Was du aktiv erfragen oder delegieren darfst.", "v04_comm_ask"),
+        ("Antwortfenster", "Wann du erreichbar bist — und wann nicht.", "v04_comm_window"),
+        ("Abschlusszeichen", "Woran dein Körper merkt: genug für heute.", "v04_comm_end"),
+    ], top=164, box_h=53, gap=13)
+    full_prompt(c, "Schutzformel", "Ein Satz, der diese Woche deine Energie schützt.", "v04_comm_formula", 34, 30)
     c.showPage()
 
-    page_head(c, 12, "Mitte", "Wochenmitte Reset", "Zur Wochenmitte wird nicht bewertet, sondern nachjustiert. Das Journal darf lebendig bleiben: kleiner, klarer, geschützter.")
-    for title,hint,name,y in [("Was bleibt wesentlich?","Nur die echte Mitte, nicht die lauten Ränder.","essential",205),("Was wird ab jetzt kleiner?","Aufgabe, Anspruch, Gespräch oder Perfektion.","smaller",165),("Welche Grenze wird aktiviert?","Eine konkrete Handlung, kein Wunsch.","boundary",125),("Was bekommt unerwartet Raum?","Weil die Woche etwas Neues gezeigt hat.","new",85)]:
-        label(c,title,18*mm,y*mm); para(c,hint,styles["Small"],18*mm,(y-5)*mm,W-36*mm); field(c,f"v03_mid_{name}",18*mm,(y-24)*mm,W-36*mm,12*mm)
+    page_head(c, 10, "Reibung", "Wenn‑dann‑Design", "Gute Planung kennt Reibung, bevor sie entsteht. Diese Sätze verhindern, dass du im schwierigen Moment neu verhandeln musst.")
+    rows = [
+        ("Wenn meine Energie niedrig ist …", "dann ist die Mindestversion:"),
+        ("Wenn ein Tag kippt …", "dann rette ich nur:"),
+        ("Wenn ich aufschiebe …", "dann beginne ich mit:"),
+        ("Wenn andere mehr wollen …", "dann antworte ich:"),
+        ("Wenn ich perfektioniere …", "dann ist fertig genug bei:"),
+    ]
+    y = 205*mm
+    for i, (a, b) in enumerate(rows):
+        label(c, a, M, y); field(c, f"v04_if_{i}", M, y-17*mm, 78*mm, 10*mm)
+        label(c, b, 105*mm, y); field(c, f"v04_then_{i}", 105*mm, y-17*mm, 87*mm, 10*mm)
+        y -= 34*mm
     c.showPage()
 
-    page_head(c, 13, "Review", "Wochenreview Matrix", "Der Review fragt nicht: War ich gut? Er fragt: Was hat als Design funktioniert — und was wird nächste Woche anders gebaut?")
-    two_column_boxes(c, [
-        ("Behalten", "Was hat messbar getragen?", "v03_rev_keep"),
-        ("Verändern", "Was war richtig, aber falsch platziert?", "v03_rev_change"),
-        ("Loslassen", "Was hat mehr Energie genommen als Wert gebracht?", "v03_rev_release"),
-        ("Verstärken", "Welches kleine Ritual darf wachsen?", "v03_rev_amplify"),
-    ], 164, 56, 12)
-    panel(c,18*mm,34*mm,W-36*mm,38*mm,COL["cream"],12)
-    para(c,"Entscheidung für nächste Woche",styles["H2"],28*mm,62*mm,W-56*mm); field(c,"v03_rev_next",28*mm,42*mm,W-56*mm,11*mm)
+    page_head(c, 11, "Wochenmitte", "Reset & Kalibrierung", "Zur Wochenmitte wird nicht bewertet, sondern neu geordnet. Das Journal bleibt lebendig: kleiner, klarer, geschützter.")
+    full_prompt(c, "Was bleibt wesentlich?", "Nur die Mitte, nicht die lauten Ränder.", "v04_mid_essential", 180, 32)
+    full_prompt(c, "Was wird kleiner?", "Aufgabe, Anspruch, Gespräch oder Perfektion.", "v04_mid_smaller", 137, 32)
+    full_prompt(c, "Welche Grenze wird aktiviert?", "Eine konkrete Handlung, kein Wunsch.", "v04_mid_boundary", 94, 32)
+    full_prompt(c, "Was bekommt Raum?", "Weil die Woche etwas Unerwartetes gezeigt hat.", "v04_mid_room", 51, 32)
     c.showPage()
 
-    page_head(c, 14, "Transfer", "Nächste Woche vorbereiten", "Der Wert des Journals entsteht durch Wiederkehr. Übertrage nur, was wirklich gelernt wurde — nicht alles, was unerledigt blieb.")
-    two_column_boxes(c, [
-        ("Wiederholen", "Was soll bewusst zurückkehren?", "v03_transfer_repeat"),
-        ("Vereinfachen", "Was bekommt eine kleinere Version?", "v03_transfer_simple"),
-        ("Früher platzieren", "Was braucht einen besseren Zeitpunkt?", "v03_transfer_earlier"),
-        ("Nicht mehr tragen", "Was verlässt den Kreis?", "v03_transfer_drop"),
-    ], 164, 56, 12)
-    panel(c,18*mm,34*mm,W-36*mm,38*mm,COL["cream"],12)
-    para(c,"Nächste Woche beginnt mit …",styles["H2"],28*mm,62*mm,W-56*mm); field(c,"v03_transfer_start",28*mm,42*mm,W-56*mm,11*mm)
+    page_head(c, 12, "Review", "Wochenreview", "Der Review fragt nicht: War ich gut? Er fragt: Was hat als Design funktioniert — und was wird nächste Woche anders gebaut?")
+    box_grid(c, [
+        ("Behalten", "Was hat getragen und darf wiederkehren?", "v04_rev_keep"),
+        ("Verändern", "Was war richtig, aber falsch platziert?", "v04_rev_change"),
+        ("Loslassen", "Was kostete mehr Energie als es Wert brachte?", "v04_rev_release"),
+        ("Verstärken", "Welches kleine Ritual darf wachsen?", "v04_rev_amplify"),
+    ], top=164, box_h=53, gap=13)
+    full_prompt(c, "Entscheidung für die nächste Woche", "Eine konkrete Anpassung, nicht nur eine Erkenntnis.", "v04_rev_next", 34, 30)
     c.showPage()
 
-    page_head(c, 15, "App‑Brücke", "Was diese Seiten für SPHAERA testen", "Der Prototyp testet nicht nur ein PDF, sondern App‑Logik: Welche Planungsfragen werden jede Woche wirklich benutzt? Welche Felder sind zu viel? Welche Struktur macht ruhiger?")
-    for i,(title,body) in enumerate([("Wenn eine Seite trägt", "wird sie als späteres App‑Modul gedacht."),("Wenn eine Seite nervt", "wird sie gestrichen oder radikal vereinfacht."),("Wenn du zurückkommst", "ist SPHAERA auf dem richtigen Weg."),("Wenn du bezahlst", "dann nicht für mehr Seiten, sondern für bessere Wochenklarheit.")]):
-        y=(180-i*36)*mm; panel(c,24*mm,y,W-48*mm,25*mm,colors.white if i!=3 else COL["cream"],10); para(c,title,styles["H2"],34*mm,y+18*mm,W-68*mm); para(c,body,styles["Small"],34*mm,y+8*mm,W-68*mm)
-    p_y=40*mm
-    para(c,"Reviewfrage: Welche drei Seiten würdest du wirklich jede Woche öffnen?",styles["Quote"],31*mm,p_y+20*mm,W-62*mm)
-    field(c,"v03_app_feedback",31*mm,p_y,W-62*mm,11*mm)
+    page_head(c, 13, "Transfer", "Nächste Woche vorbereiten", "Übertrage nur, was wirklich gelernt wurde — nicht alles, was unerledigt blieb. Wiederkehr ist die eigentliche Form von Fortschritt.")
+    box_grid(c, [
+        ("Wiederholen", "Was soll bewusst zurückkehren?", "v04_trans_repeat"),
+        ("Vereinfachen", "Was bekommt eine kleinere, bessere Form?", "v04_trans_simple"),
+        ("Früher platzieren", "Was braucht einen besseren Zeitpunkt?", "v04_trans_earlier"),
+        ("Nicht mehr tragen", "Was verlässt den Kreis?", "v04_trans_drop"),
+    ], top=164, box_h=53, gap=13)
+    full_prompt(c, "Nächste Woche beginnt mit …", "Der erste ruhige Schritt.", "v04_trans_start", 34, 30)
     c.showPage()
 
-    bg(c, dark=True)
-    mark(c, W/2, 205*mm, 47*mm, True)
-    para(c, "Eine Woche ist ein System.", styles["Cover"], 28*mm, 154*mm, W-56*mm)
-    para(c, "Der Kompass zeigt Muster. Das Wochenkreis Journal baut daraus eine wiederholbare Praxis: entscheiden, platzieren, schützen, wiederkehren.", styles["CoverSub"], 35*mm, 99*mm, W-70*mm)
-    c.setFillColor(COL["gold2"]); c.setFont("Sans", 7.4); c.drawCentredString(W/2, 22*mm, "Prototyp 0.3 · sphaera.app")
+    page_head(c, 14, "Notizen", "Freier Kreis", "Raum für Skizzen, Sätze, Symbole, Beobachtungen oder eine eigene Wochenkarte.")
+    panel(c, M, 39*mm, CONTENT_W, 170*mm, colors.white, 12)
+    c.setStrokeColor(rgba("#B89A5E", .22)); c.setLineWidth(.35)
+    y = 194*mm
+    for _ in range(13):
+        c.line(27*mm, y, W-27*mm, y)
+        y -= 11*mm
+    mark(c, W/2, 124*mm, 28*mm, False)
     c.showPage()
 
+    closing(c)
     c.save()
     print(OUT)
 
