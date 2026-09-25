@@ -36,7 +36,7 @@ for html in BASE.glob('*.html'):
             pp=P(); pp.feed(local.read_text(encoding='utf-8'))
             if frag not in pp.ids: errors.append(f'{html.name}: missing fragment {href}')
     if html.name=='index.html':
-        required=['/assets/free/sphaera-rhythmus-kompass.pdf','/datenschutz.html','/impressum.html','/assets/icons/sphaera-mark.svg','/favicon.ico','/site.webmanifest']
+        required=['/assets/free/sphaera-rhythmus-kompass.pdf','/assets/free/sphaera-wochenkreis-journal-prototyp.pdf','/datenschutz.html','/impressum.html','/assets/icons/sphaera-mark.svg','/favicon.ico','/site.webmanifest']
         for r in required:
             if r not in text: errors.append(f'index.html: missing {r}')
         forbidden=['Free Produkt','free produkt','Kompass holen']
@@ -46,6 +46,7 @@ for html in BASE.glob('*.html'):
         if '/media/meta' in text: errors.append('index.html links hidden media folder')
 asset_expectations = {
     'assets/free/sphaera-rhythmus-kompass.pdf': 100_000,
+    'assets/free/sphaera-wochenkreis-journal-prototyp.pdf': 100_000,
     'assets/img/og-sphaera.png': 30_000,
     'assets/icons/sphaera-mark.svg': 1_000,
     'assets/icons/sphaera-mark-16.png': 100,
